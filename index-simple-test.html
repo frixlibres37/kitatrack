@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KitaTrack POS</title>
+<meta name="theme-color" content="#16a34a">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#16a34a;--gd:#15803d;--b:#2563eb;--p:#9333ea;--s:#1e293b;--gr:#64748b;--lt:#f8fafc;--bd:#e2e8f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--s)}
+h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.hero{padding:80px 0 52px;background:linear-gradient(180deg,#f0fdf4 0%,#fff 70%)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:6px 14px;border-radius:999px;font-weight:700;font-size:12px}
+.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.03;font-weight:900;max-width:760px;margin:18px 0 14px}
+.hero h1 em{color:var(--g);font-style:normal}
+.hero p{font-size:18px;color:var(--gr);max-width:700px;line-height:1.6}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;border-radius:14px;font-weight:800;text-decoration:none}
+.btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
+.btn.s{background:#fff;color:var(--s);border:2px solid var(--bd)}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:30px}
+.stat{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px 18px;min-width:150px}
+.stat strong{display:block;font-size:28px;font-family:'Outfit',sans-serif;color:var(--g)}
+.sec{padding:60px 0}
+.title{font-size:34px;font-weight:900;margin-bottom:10px}
+.desc{max-width:700px;color:var(--gr);line-height:1.6;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:22px;padding:24px}
+.card h3{font-size:22px;font-weight:900;margin-bottom:6px}
+.card p{font-size:14px;color:var(--gr);line-height:1.55}
+.pricing{background:var(--lt)}
+.price{font-size:28px;font-weight:900;margin:10px 0;color:var(--s)}
+.pill{display:inline-block;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.list{margin:14px 0 18px;padding-left:18px;color:#334155;line-height:1.8}
+.demo-box{background:linear-gradient(135deg,#f0fdf4,#eff6ff);border:2px solid #bbf7d0;border-radius:24px;padding:24px;text-align:center;margin-bottom:24px}
+.demo-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+.demo-link{padding:16px;border-radius:14px;border:2px solid var(--bd);text-decoration:none;color:var(--s);background:#fff;font-weight:800}
+.footer{padding:30px 0 50px;color:#94a3b8;text-align:center;font-size:13px}
+@media(max-width:700px){.hero{padding-top:56px}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="wrap">
+    <div class="badge">100% Offline · Made for Pinoy MSMEs</div>
+    <h1>The POS system that <em>works without internet.</em></h1>
+    <p>Simple, fast, and reliable Point of Sale for sari-sari stores, retail shops, milk tea, and laundry businesses. Track your sales anytime, even offline.</p>
+    <div class="btns">
+      <a class="btn g" href="#demo">Try Free Demo</a>
+      <a class="btn s" href="KitaTrack-Pro.html">Customer App</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>100%</strong><span>Offline ready</span></div>
+      <div class="stat"><strong>₱50</strong><span>Starts per day</span></div>
+      <div class="stat"><strong>1 file</strong><span>Easy to deploy</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="demo">
+  <div class="wrap">
+    <div class="demo-box">
+      <h2 class="title" style="font-size:28px">Try the product right now</h2>
+      <p class="desc" style="margin:0 auto">Open any plan instantly. Demo mode skips the license screen so you can test the actual POS immediately.</p>
+      <div class="demo-links">
+        <a class="demo-link" href="KitaTrack-Pro.html?plan=basic&demo=true">Basic Demo</a>
+        <a class="demo-link" href="KitaTrack-Pro.html?plan=business&demo=true">Business Demo</a>
+        <a class="demo-link" href="KitaTrack-Pro.html?plan=pro&demo=true">Pro Demo</a>
+      </div>
+      <div style="margin-top:12px">
+        <a class="btn s" href="demo.html">Open Demo Launcher</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pricing" id="pricing">
+  <div class="wrap">
+    <h2 class="title">Choose your plan</h2>
+    <p class="desc">Basic is for starting small, Business is the best value for growing stores, and Pro is for serious business owners who want full control.</p>
+    <div class="grid">
+      <div class="card">
+        <span class="pill" style="background:#f0fdf4;color:#16a34a">Starter</span>
+        <h3 style="color:#16a34a">Basic</h3>
+        <p>For sari-sari stores and first-time POS users.</p>
+        <div class="price">₱50/day</div>
+        <ul class="list">
+          <li>POS & checkout</li>
+          <li>Product management</li>
+          <li>Sales history</li>
+          <li>Daily sales total</li>
+          <li>CSV export</li>
+          <li>100% offline</li>
+        </ul>
+        <a class="btn g" style="width:100%" href="KitaTrack-Pro.html?plan=basic&demo=true">Try Basic Demo</a>
+      </div>
+
+      <div class="card" style="border-width:2px;border-color:#2563eb;box-shadow:0 10px 30px rgba(37,99,235,.08)">
+        <span class="pill" style="background:#eff6ff;color:#2563eb">⭐ Best Value</span>
+        <h3 style="color:#2563eb">Business</h3>
+        <p>For growing stores, groceries, and food stalls.</p>
+        <div class="price">₱70/day</div>
+        <ul class="list">
+          <li>Everything in Basic</li>
+          <li>Inventory tracking</li>
+          <li>Low stock alerts</li>
+          <li>Reports dashboard</li>
+          <li>Top products</li>
+          <li>Backup & restore</li>
+        </ul>
+        <a class="btn g" style="width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8)" href="KitaTrack-Pro.html?plan=business&demo=true">Try Business Demo</a>
+      </div>
+
+      <div class="card">
+        <span class="pill" style="background:#faf5ff;color:#9333ea">👑 Most Powerful</span>
+        <h3 style="color:#9333ea">Pro</h3>
+        <p>For serious businesses with bigger operations.</p>
+        <div class="price">₱100/day</div>
+        <ul class="list">
+          <li>Everything in Business</li>
+          <li>Barcode-ready area</li>
+          <li>Roles placeholder</li>
+          <li>Advanced reports</li>
+          <li>Stock history</li>
+          <li>Device-lock ready structure</li>
+        </ul>
+        <a class="btn g" style="width:100%;background:linear-gradient(135deg,#9333ea,#7e22ce)" href="KitaTrack-Pro.html?plan=pro&demo=true">Try Pro Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <h2 class="title">How to test</h2>
+    <div class="grid">
+      <div class="card"><h3>1. Open a demo plan</h3><p>Use the demo buttons above to open Basic, Business, or Pro instantly.</p></div>
+      <div class="card"><h3>2. Add sample sales</h3><p>Tap products, checkout, view history, and test reports.</p></div>
+      <div class="card"><h3>3. Use customer mode</h3><p>Open the main app without demo mode and test the license screen.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  KitaTrack POS — simple testing build for your live product.
+</div>
+</body>
+</html>

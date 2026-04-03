@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>KitaTrack Demo</title>
+<meta name="theme-color" content="#16a34a">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(180deg,#f0fdf4 0%,#fff 70%);color:#1e293b;min-height:100vh;padding:18px}
+.wrap{max-width:520px;margin:0 auto;padding:24px 0}
+.logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+h1{text-align:center;font-size:28px;font-weight:900;margin-bottom:8px}
+p.sub{text-align:center;color:#64748b;line-height:1.6;margin-bottom:22px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.05);margin-bottom:14px}
+.card h2{font-size:18px;font-weight:800;margin-bottom:6px}
+.card p{font-size:14px;color:#64748b;line-height:1.55}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:12px;padding:16px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;text-decoration:none;color:#1e293b}
+.badge{width:46px;height:46px;border-radius:12px;color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt strong{display:block;font-size:16px}
+.opt span{display:block;font-size:12px;color:#64748b}
+.footer{margin-top:18px;text-align:center;color:#94a3b8;font-size:12px}
+.toplink{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:13px;border-radius:14px;background:#1e293b;color:#fff;font-weight:800;text-decoration:none;margin-top:10px}
+.note{margin-top:12px;background:#f8fafc;border:1px solid #e2e8f0;padding:12px;border-radius:12px;font-size:13px;color:#475569;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">K</div>
+  <h1>KitaTrack Demo</h1>
+  <p class="sub">Try Basic, Business, or Pro instantly. No payment, no sign up, no license key needed.</p>
+
+  <div class="card">
+    <h2>Choose a demo plan</h2>
+    <p>Each button opens the same POS app in demo mode, with features limited by plan.</p>
+    <div class="opts">
+      <a class="opt" href="KitaTrack-Pro.html?plan=basic&demo=true">
+        <div class="badge" style="background:#16a34a">B</div>
+        <div><strong style="color:#16a34a">Basic Demo</strong><span>POS, products, history, daily total, CSV export</span></div>
+      </a>
+      <a class="opt" href="KitaTrack-Pro.html?plan=business&demo=true">
+        <div class="badge" style="background:#2563eb">B</div>
+        <div><strong style="color:#2563eb">Business Demo</strong><span>Everything in Basic + inventory, alerts, reports, backup</span></div>
+      </a>
+      <a class="opt" href="KitaTrack-Pro.html?plan=pro&demo=true">
+        <div class="badge" style="background:#9333ea">P</div>
+        <div><strong style="color:#9333ea">Pro Demo</strong><span>Everything in Business + barcode area, roles, advanced reports</span></div>
+      </a>
+    </div>
+    <div class="note">
+      Demo mode skips the license screen and shows a demo badge inside the app. You can reset demo data from Settings.
+    </div>
+    <a class="toplink" href="index.html">Back to landing page</a>
+  </div>
+
+  <div class="footer">Built for quick testing in sari-sari stores, groceries, milk tea, and laundry shops.</div>
+</div>
+</body>
+</html>
