@@ -49,7 +49,7 @@ textarea{resize:vertical}a{text-decoration:none;color:inherit}
 <div id="toastEl" class="hidden"></div><div id="modalEl"></div>
 <script>
 const SB_URL='https://lrixoqxtgfnwadbospae.supabase.co';
-const SB_KEY='REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyaXhvcXh0Z2Zud2FkYm9zcGFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMjY5ODksImV4cCI6MjA5MDcwMjk4OX0.cVg3UDzPdIAgLci7TYWeschTR1tZCzXxcC-DQW6J1QY';
 const sbHeaders={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 const DEFAULT_SETTINGS={publicAppUrl:'https://kitatrack.vercel.app/pos.html',businessName:'KitaTrack POS',supportName:'KitaTrack POS Team',supportPhone:'',adminPin:'0715'};
 function loadSettings(){try{return {...DEFAULT_SETTINGS,...(JSON.parse(localStorage.getItem('kt_admin_settings')||'{}'))};}catch(e){return {...DEFAULT_SETTINGS};}}
