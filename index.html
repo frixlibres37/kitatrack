@@ -7,67 +7,106 @@
 <meta name="theme-color" content="#16a34a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--g:#16a34a;--gd:#15803d;--b:#2563eb;--p:#9333ea;--s:#1e293b;--gr:#64748b;--lt:#f8fafc;--bd:#e2e8f0}
+:root{--g:#16a34a;--gd:#15803d;--b:#2563eb;--bd:#1d4ed8;--p:#9333ea;--pd:#7e22ce;--s:#1e293b;--gr:#64748b;--lt:#f8fafc;--bdc:#e2e8f0;--ok:#16a34a;--warn:#f59e0b;--err:#dc2626}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--s)}
 h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-.hero{padding:80px 0 52px;background:linear-gradient(180deg,#f0fdf4 0%,#fff 70%)}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+button{border:none;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.hero{padding:84px 0 54px;background:linear-gradient(180deg,#f0fdf4 0%,#fff 72%)}
 .badge{display:inline-flex;align-items:center;gap:8px;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:6px 14px;border-radius:999px;font-weight:700;font-size:12px}
-.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.03;font-weight:900;max-width:760px;margin:18px 0 14px}
+.hero h1{font-size:clamp(36px,6vw,60px);line-height:1.02;font-weight:900;max-width:780px;margin:18px 0 14px}
 .hero h1 em{color:var(--g);font-style:normal}
-.hero p{font-size:18px;color:var(--gr);max-width:700px;line-height:1.6}
+.hero p{font-size:18px;color:var(--gr);max-width:720px;line-height:1.6}
 .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;border-radius:14px;font-weight:800;text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:14px;font-weight:800;text-decoration:none}
 .btn.g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
-.btn.s{background:#fff;color:var(--s);border:2px solid var(--bd)}
+.btn.s{background:#fff;color:var(--s);border:2px solid var(--bdc)}
+.btn.b{background:linear-gradient(135deg,var(--b),var(--bd));color:#fff}
+.btn.p{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff}
 .stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:30px}
-.stat{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px 18px;min-width:150px}
+.stat{background:#fff;border:1px solid var(--bdc);border-radius:16px;padding:14px 18px;min-width:155px}
 .stat strong{display:block;font-size:28px;font-family:'Outfit',sans-serif;color:var(--g)}
-.sec{padding:60px 0}
+.sec{padding:64px 0}
 .title{font-size:34px;font-weight:900;margin-bottom:10px}
-.desc{max-width:700px;color:var(--gr);line-height:1.6;margin-bottom:28px}
+.desc{max-width:760px;color:var(--gr);line-height:1.65;margin-bottom:28px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--bd);border-radius:22px;padding:24px}
+.card{background:#fff;border:1px solid var(--bdc);border-radius:22px;padding:24px;box-shadow:0 10px 24px rgba(15,23,42,.04)}
 .card h3{font-size:22px;font-weight:900;margin-bottom:6px}
-.card p{font-size:14px;color:var(--gr);line-height:1.55}
+.card p{font-size:14px;color:var(--gr);line-height:1.6}
 .pricing{background:var(--lt)}
-.price{font-size:28px;font-weight:900;margin:10px 0;color:var(--s)}
-.pill{display:inline-block;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
-.list{margin:14px 0 18px;padding-left:18px;color:#334155;line-height:1.8}
-.demo-box{background:linear-gradient(135deg,#f0fdf4,#eff6ff);border:2px solid #bbf7d0;border-radius:24px;padding:24px;text-align:center;margin-bottom:24px}
+.price-big{font-size:31px;font-weight:900;margin:12px 0 4px;color:var(--s)}
+.price-sub{font-size:13px;color:var(--gr);margin-bottom:14px}
+.pill{display:inline-block;padding:6px 11px;border-radius:999px;font-size:11px;font-weight:800}
+.list{margin:14px 0 20px;padding-left:18px;color:#334155;line-height:1.85}
+.price-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 18px}
+.price-chip{background:#f8fafc;border:1px solid var(--bdc);border-radius:14px;padding:10px 12px}
+.price-chip strong{display:block;font-size:15px}
+.price-chip span{display:block;font-size:12px;color:var(--gr);margin-top:2px}
+.demo-box{background:linear-gradient(135deg,#f0fdf4,#eff6ff);border:2px solid #bbf7d0;border-radius:24px;padding:24px;text-align:center}
 .demo-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
-.demo-link{padding:16px;border-radius:14px;border:2px solid var(--bd);text-decoration:none;color:var(--s);background:#fff;font-weight:800}
+.demo-link{padding:16px;border-radius:14px;border:2px solid var(--bdc);text-decoration:none;color:var(--s);background:#fff;font-weight:800}
+.notice{background:#f8fafc;border:1px solid var(--bdc);border-radius:16px;padding:14px 16px;font-size:14px;color:#475569;line-height:1.65}
+.kicker{font-size:13px;font-weight:800;color:var(--g);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.step{background:#fff;border:1px solid var(--bdc);border-radius:18px;padding:18px}
+.step strong{display:block;font-size:16px;margin-bottom:6px}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.qr-card{text-align:center}
+.qr-card img{width:100%;max-width:320px;border-radius:18px;border:1px solid #e2e8f0;margin-bottom:12px}
+.form-card{max-width:860px;margin:20px auto 0}
+.form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:12px;font-weight:700;color:var(--gr);margin-bottom:6px}
+.input, select, textarea{width:100%;padding:13px 14px;border-radius:14px;border:1.5px solid var(--bdc);font-size:14px;background:#fff}
+textarea{min-height:100px;resize:vertical}
+.input:focus,select:focus,textarea:focus{outline:2px solid #86efac;outline-offset:1px;border-color:#16a34a}
+.summary{background:#f8fafc;border:1px solid var(--bdc);border-radius:18px;padding:16px;margin-bottom:14px}
+.summary-row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #e2e8f0}
+.summary-row:last-child{border-bottom:none}
+.summary-row strong{font-size:15px}
 .footer{padding:30px 0 50px;color:#94a3b8;text-align:center;font-size:13px}
-@media(max-width:700px){.hero{padding-top:56px}}
+.topnav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid #e2e8f0}
+.topnav .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:#1e293b;text-decoration:none}
+.brand img{height:34px;width:auto}
+.navlinks{display:flex;gap:10px;flex-wrap:wrap}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);padding:12px 18px;border-radius:12px;color:#fff;font-weight:700;z-index:50;box-shadow:0 10px 25px rgba(15,23,42,.12)}
+@media(max-width:720px){.hero{padding-top:56px}.form-row{grid-template-columns:1fr}.topnav .wrap{flex-direction:column;align-items:flex-start}.navlinks{width:100%}.navlinks .btn{flex:1}}
 </style>
 </head>
 <body>
-<nav style="position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid #e2e8f0">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px">
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;font-weight:900;color:#1e293b;text-decoration:none">
-      <img src="kitatrack-logo.png" alt="KitaTrack" style="height:34px;width:auto">
+<nav class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <img src="kitatrack-logo.png" alt="KitaTrack">
       <span>KitaTrack</span>
     </a>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a class="btn s" style="padding:10px 16px;border-radius:12px" href="demo.html">Demo</a>
-      <a class="btn g" style="padding:10px 16px;border-radius:12px" href="#pay-now">Pay Now</a>
+    <div class="navlinks">
+      <a class="btn s" href="#demo">Try Demo</a>
+      <a class="btn s" href="#pricing">Pricing</a>
+      <a class="btn g" href="#order">Order Now</a>
     </div>
   </div>
 </nav>
+
 <section class="hero">
   <div class="wrap">
-    <img src="kitatrack-logo.png" alt="KitaTrack Logo" style="height:72px;width:auto;margin-bottom:18px"><div class="badge">100% Offline · Made for Pinoy MSMEs</div>
-    <h1>The POS system that <em>works without internet.</em></h1>
-    <p>Simple, fast, and reliable Point of Sale for sari-sari stores, retail shops, milk tea, and laundry businesses. Track your sales anytime, even offline.</p>
+    <span class="badge">✅ Offline-ready POS for Filipino MSMEs</span>
+    <h1>Simple, fast, and <em>affordable</em> POS for sari-sari stores, groceries, hardware, milk tea, and laundry shops.</h1>
+    <p>KitaTrack helps small businesses record sales, manage products, and keep selling even without internet. Customers can test the live demo first, then choose daily, monthly, or lifetime access.</p>
     <div class="btns">
       <a class="btn g" href="#demo">Try Free Demo</a>
-      <a class="btn s" href="pos.html">Customer App</a>
+      <a class="btn s" href="#pricing">See Pricing</a>
+      <a class="btn b" href="#order">Buy / Start Trial</a>
     </div>
     <div class="stats">
       <div class="stat"><strong>100%</strong><span>Offline ready</span></div>
-      <div class="stat"><strong>₱50</strong><span>Starts per day</span></div>
-      <div class="stat"><strong>1 file</strong><span>Easy to deploy</span></div>
+      <div class="stat"><strong>7 days</strong><span>Basic free trial</span></div>
+      <div class="stat"><strong>₱15</strong><span>Starts per day</span></div>
+      <div class="stat"><strong>1 page</strong><span>Easy ordering flow</span></div>
     </div>
   </div>
 </section>
@@ -76,15 +115,17 @@ h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
   <div class="wrap">
     <div class="demo-box">
       <h2 class="title" style="font-size:28px">Try the product right now</h2>
-      <p class="desc" style="margin:0 auto">Open any plan instantly. Demo mode skips the license screen so you can test the actual POS immediately.</p>
+      <p class="desc" style="margin:0 auto">Each demo opens the real POS in demo mode. Customers can explore safely using sample data that resets when reopened.</p>
       <div class="demo-links">
         <a class="demo-link" href="pos.html?plan=basic&demo=true">Basic Demo</a>
         <a class="demo-link" href="pos.html?plan=business&demo=true">Business Demo</a>
         <a class="demo-link" href="pos.html?plan=pro&demo=true">Pro Demo</a>
       </div>
-      <div style="margin-top:12px">
+      <div style="margin-top:12px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
         <a class="btn s" href="demo.html">Open Demo Launcher</a>
+        <a class="btn g" href="#order">Order After Demo</a>
       </div>
+      <div class="notice" style="max-width:760px;margin:16px auto 0">Demo mode uses sample data only and resets when reopened. For real store use, order a license below.</div>
     </div>
   </div>
 </section>
@@ -92,29 +133,46 @@ h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
 <section class="sec pricing" id="pricing">
   <div class="wrap">
     <h2 class="title">Choose your plan</h2>
-    <p class="desc">Basic is for starting small, Business is the best value for growing stores, and Pro is for serious business owners who want full control.</p>
+    <p class="desc">This pricing is designed to stay affordable for small stores while still giving you room to earn recurring income.</p>
     <div class="grid">
       <div class="card">
         <span class="pill" style="background:#f0fdf4;color:#16a34a">Starter</span>
         <h3 style="color:#16a34a">Basic</h3>
-        <p>For sari-sari stores and first-time POS users.</p>
-        <div class="price">₱50/day</div>
+        <p>For sari-sari stores and first-time POS users who want a simple daily-use system.</p>
+        <div class="price-big">₱15/day</div>
+        <div class="price-sub">Includes a 7-day free trial for first-time users.</div>
+        <div class="price-grid">
+          <div class="price-chip"><strong>Trial</strong><span>7 days free</span></div>
+          <div class="price-chip"><strong>Monthly</strong><span>₱299</span></div>
+          <div class="price-chip"><strong>Daily</strong><span>₱15</span></div>
+          <div class="price-chip"><strong>Lifetime</strong><span>₱1,999</span></div>
+        </div>
         <ul class="list">
           <li>POS & checkout</li>
           <li>Product management</li>
           <li>Sales history</li>
           <li>Daily sales total</li>
           <li>CSV export</li>
-          <li>100% offline</li>
+          <li>100% offline-ready</li>
         </ul>
-        <a class="btn g" style="width:100%" href="pos.html?plan=basic&demo=true">Try Basic Demo</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn s" style="flex:1" href="pos.html?plan=basic&demo=true">Try Demo</a>
+          <a class="btn g" style="flex:1" href="#order" onclick="setPlan('basic')">Choose Basic</a>
+        </div>
       </div>
 
       <div class="card" style="border-width:2px;border-color:#2563eb;box-shadow:0 10px 30px rgba(37,99,235,.08)">
         <span class="pill" style="background:#eff6ff;color:#2563eb">⭐ Best Value</span>
         <h3 style="color:#2563eb">Business</h3>
-        <p>For growing stores, groceries, and food stalls.</p>
-        <div class="price">₱70/day</div>
+        <p>For groceries, hardware, food stalls, and growing stores that need stock and reports.</p>
+        <div class="price-big">₱25/day</div>
+        <div class="price-sub">Best fit for most paying customers.</div>
+        <div class="price-grid">
+          <div class="price-chip"><strong>Daily</strong><span>₱25</span></div>
+          <div class="price-chip"><strong>Monthly</strong><span>₱499</span></div>
+          <div class="price-chip"><strong>Lifetime</strong><span>₱3,499</span></div>
+          <div class="price-chip"><strong>Upgrade path</strong><span>Basic → Business</span></div>
+        </div>
         <ul class="list">
           <li>Everything in Basic</li>
           <li>Inventory tracking</li>
@@ -123,14 +181,24 @@ h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
           <li>Top products</li>
           <li>Backup & restore</li>
         </ul>
-        <a class="btn g" style="width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8)" href="pos.html?plan=business&demo=true">Try Business Demo</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn s" style="flex:1" href="pos.html?plan=business&demo=true">Try Demo</a>
+          <a class="btn b" style="flex:1" href="#order" onclick="setPlan('business')">Choose Business</a>
+        </div>
       </div>
 
       <div class="card">
-        <span class="pill" style="background:#faf5ff;color:#9333ea">👑 Most Powerful</span>
+        <span class="pill" style="background:#faf5ff;color:#9333ea">👑 Pro</span>
         <h3 style="color:#9333ea">Pro</h3>
-        <p>For serious businesses with bigger operations.</p>
-        <div class="price">₱100/day</div>
+        <p>For serious businesses that want more control and the strongest feature set.</p>
+        <div class="price-big">₱40/day</div>
+        <div class="price-sub">Premium plan for advanced users.</div>
+        <div class="price-grid">
+          <div class="price-chip"><strong>Daily</strong><span>₱40</span></div>
+          <div class="price-chip"><strong>Monthly</strong><span>₱799</span></div>
+          <div class="price-chip"><strong>Lifetime</strong><span>₱5,499</span></div>
+          <div class="price-chip"><strong>Best for</strong><span>Larger stores</span></div>
+        </div>
         <ul class="list">
           <li>Everything in Business</li>
           <li>Barcode-ready area</li>
@@ -139,7 +207,10 @@ h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
           <li>Stock history</li>
           <li>Device-lock ready structure</li>
         </ul>
-        <a class="btn g" style="width:100%;background:linear-gradient(135deg,#9333ea,#7e22ce)" href="pos.html?plan=pro&demo=true">Try Pro Demo</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn s" style="flex:1" href="pos.html?plan=pro&demo=true">Try Demo</a>
+          <a class="btn p" style="flex:1" href="#order" onclick="setPlan('pro')">Choose Pro</a>
+        </div>
       </div>
     </div>
   </div>
@@ -147,42 +218,297 @@ h1,h2,h3,.outfit{font-family:'Outfit',sans-serif}
 
 <section class="sec">
   <div class="wrap">
-    <h2 class="title">How to test</h2>
-    <div class="grid">
-      <div class="card"><h3>1. Open a demo plan</h3><p>Use the demo buttons above to open Basic, Business, or Pro instantly.</p></div>
-      <div class="card"><h3>2. Add sample sales</h3><p>Tap products, checkout, view history, and test reports.</p></div>
-      <div class="card"><h3>3. Use customer mode</h3><p>Open the main app without demo mode and test the license screen.</p></div>
+    <div class="kicker">How it works</div>
+    <h2 class="title">Simple flow for your customers</h2>
+    <p class="desc">Your current package already uses a separate landing page, demo launcher, customer POS, and admin panel. This order form submits into the public `orders` intake flow, which your security fix intentionally keeps open for customer submissions. fileciteturn4file12 fileciteturn4file13</p>
+    <div class="flow">
+      <div class="step"><strong>1. Try demo</strong><p>Customer explores Basic, Business, or Pro using demo mode first.</p></div>
+      <div class="step"><strong>2. Choose plan + duration</strong><p>Customer selects trial, daily, monthly, or lifetime depending on the plan.</p></div>
+      <div class="step"><strong>3. Pay via GCash or Maya</strong><p>Customer uploads proof and submits the order form.</p></div>
+      <div class="step"><strong>4. Activate in admin</strong><p>You verify the order in admin, create the license, then send the app link and key.</p></div>
     </div>
   </div>
 </section>
 
-
 <section class="sec" id="pay-now">
   <div class="wrap">
-    <h2 class="title">Pay now and message me your chosen plan</h2>
-    <p class="desc">If a customer wants to pay right away, they can send payment through GCash or Maya, then message you with their chosen plan so you can create and send the license from the admin panel.</p>
-    <div class="grid">
-      <div class="card" style="text-align:center">
-        <img src="gcash-qr.jpeg" alt="GCash QR" style="width:100%;max-width:320px;border-radius:18px;border:1px solid #e2e8f0;margin-bottom:12px">
+    <h2 class="title">Pay now</h2>
+    <p class="desc">Customers can pay first using GCash or Maya, then submit the order form below with their chosen plan, duration, and reference number.</p>
+    <div class="qr-grid">
+      <div class="card qr-card">
+        <img src="gcash-qr.jpeg" alt="GCash QR">
         <h3 style="color:#2563eb">GCash</h3>
         <p>Scan this QR to pay via GCash.</p>
       </div>
-      <div class="card" style="text-align:center">
-        <img src="maya-qr.jpeg" alt="Maya QR" style="width:100%;max-width:320px;border-radius:18px;border:1px solid #e2e8f0;margin-bottom:12px">
+      <div class="card qr-card">
+        <img src="maya-qr.jpeg" alt="Maya QR">
         <h3 style="color:#16a34a">Maya</h3>
         <p>Scan this QR to pay via Maya.</p>
       </div>
     </div>
-    <div class="card" style="margin-top:18px">
-      <h3 style="margin-bottom:10px">How payment works</h3>
-      <p style="line-height:1.7;color:#475569">1. Customer chooses Basic, Business, or Pro.<br>2. Customer pays through GCash or Maya.<br>3. Customer sends screenshot / reference number to you.<br>4. You open <strong>admin.html</strong>, create the license, then send the key and app link.</p>
+  </div>
+</section>
+
+<section class="sec" id="order">
+  <div class="wrap">
+    <h2 class="title">Order form</h2>
+    <p class="desc">This form sends the customer’s order into your `orders` table with the same fields your current admin and schema expect: name, email, phone, plan, period, amount, payment method, reference number, optional screenshot, and notes. fileciteturn4file4turn4file6</p>
+
+    <div class="card form-card">
+      <div class="summary" id="planSummary">
+        <div class="summary-row"><span>Selected plan</span><strong id="sumPlan">Basic</strong></div>
+        <div class="summary-row"><span>Selected duration</span><strong id="sumPeriod">Trial (7 days)</strong></div>
+        <div class="summary-row"><span>Amount to pay</span><strong id="sumAmount">₱0.00</strong></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orderName">Full name *</label>
+          <input class="input" id="orderName" placeholder="Juan Dela Cruz">
+        </div>
+        <div class="form-group">
+          <label for="orderEmail">Email *</label>
+          <input class="input" id="orderEmail" type="email" placeholder="juan@email.com">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orderPhone">Phone</label>
+          <input class="input" id="orderPhone" placeholder="09XX XXX XXXX">
+        </div>
+        <div class="form-group">
+          <label for="orderMethod">Payment method *</label>
+          <select id="orderMethod" onchange="updateSummary()">
+            <option value="gcash">GCash</option>
+            <option value="maya">Maya</option>
+            <option value="cash">Cash</option>
+            <option value="free">Free Trial</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orderPlan">Plan *</label>
+          <select id="orderPlan" onchange="handlePlanChange()">
+            <option value="basic">Basic</option>
+            <option value="business">Business</option>
+            <option value="pro">Pro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="orderPeriod">Duration *</label>
+          <select id="orderPeriod" onchange="updateSummary()"></select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orderRef">Reference number</label>
+          <input class="input" id="orderRef" placeholder="GCash / Maya reference number">
+        </div>
+        <div class="form-group">
+          <label for="orderAmount">Amount (auto)</label>
+          <input class="input" id="orderAmount" type="number" readonly>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="orderProof">Upload payment screenshot (optional for trial / cash)</label>
+        <input class="input" id="orderProof" type="file" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="orderNotes">Notes</label>
+        <textarea id="orderNotes" placeholder="Store type, questions, or anything you want to tell the seller."></textarea>
+      </div>
+
+      <div class="notice" style="margin-bottom:14px">Basic includes a 7-day free trial. Trial is only available for Basic. Business and Pro start with paid access only.</div>
+      <button class="btn g" style="width:100%" onclick="submitOrder()">Submit Order</button>
     </div>
   </div>
 </section>
 
 <footer class="footer">
-
   KitaTrack POS — simple testing build for your live product.
-</div>
+</footer>
+
+<script>
+const SB_URL = 'https://lrixoqxtgfnwadbospae.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyaXhvcXh0Z2Zud2FkYm9zcGFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMjY5ODksImV4cCI6MjA5MDcwMjk4OX0.cVg3UDzPdIAgLci7TYWeschTR1tZCzXxcC-DQW6J1QY';
+const pricing = {
+  basic: {
+    label: 'Basic',
+    color: '#16a34a',
+    periods: {
+      trial: { label: 'Trial (7 days)', amount: 0 },
+      daily: { label: 'Daily', amount: 15 },
+      monthly: { label: 'Monthly', amount: 299 },
+      lifetime: { label: 'Lifetime', amount: 1999 }
+    }
+  },
+  business: {
+    label: 'Business',
+    color: '#2563eb',
+    periods: {
+      daily: { label: 'Daily', amount: 25 },
+      monthly: { label: 'Monthly', amount: 499 },
+      lifetime: { label: 'Lifetime', amount: 3499 }
+    }
+  },
+  pro: {
+    label: 'Pro',
+    color: '#9333ea',
+    periods: {
+      daily: { label: 'Daily', amount: 40 },
+      monthly: { label: 'Monthly', amount: 799 },
+      lifetime: { label: 'Lifetime', amount: 5499 }
+    }
+  }
+};
+
+function peso(n){
+  return '₱' + Number(n || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function showToast(msg, isErr=false){
+  const old = document.querySelector('.toast');
+  if(old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.style.background = isErr ? '#dc2626' : '#16a34a';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+
+function setPlan(plan){
+  document.getElementById('orderPlan').value = plan;
+  handlePlanChange();
+  document.getElementById('order').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function handlePlanChange(){
+  const plan = document.getElementById('orderPlan').value;
+  const periodEl = document.getElementById('orderPeriod');
+  const periods = pricing[plan].periods;
+  periodEl.innerHTML = Object.entries(periods).map(([key,val]) => `<option value="${key}">${val.label}</option>`).join('');
+
+  const methodEl = document.getElementById('orderMethod');
+  if(plan !== 'basic' && methodEl.value === 'free') methodEl.value = 'gcash';
+  updateSummary();
+}
+
+function updateSummary(){
+  const plan = document.getElementById('orderPlan').value;
+  const period = document.getElementById('orderPeriod').value;
+  const method = document.getElementById('orderMethod').value;
+  const cfg = pricing[plan].periods[period];
+  if(!cfg) return;
+
+  if(plan !== 'basic' && period === 'trial') {
+    document.getElementById('orderPeriod').selectedIndex = 0;
+    return updateSummary();
+  }
+
+  if(period === 'trial') {
+    document.getElementById('orderMethod').value = 'free';
+  } else if(method === 'free') {
+    document.getElementById('orderMethod').value = 'gcash';
+  }
+
+  document.getElementById('orderAmount').value = cfg.amount;
+  document.getElementById('sumPlan').textContent = pricing[plan].label;
+  document.getElementById('sumPeriod').textContent = cfg.label;
+  document.getElementById('sumAmount').textContent = peso(cfg.amount);
+}
+
+function fileToDataUrl(file){
+  return new Promise((resolve, reject) => {
+    if(!file) return resolve(null);
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function submitOrder(){
+  const name = document.getElementById('orderName').value.trim();
+  const email = document.getElementById('orderEmail').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const plan = document.getElementById('orderPlan').value;
+  const period = document.getElementById('orderPeriod').value;
+  const method = document.getElementById('orderMethod').value;
+  const amount = Number(document.getElementById('orderAmount').value || 0);
+  const reference = document.getElementById('orderRef').value.trim();
+  const notes = document.getElementById('orderNotes').value.trim();
+  const file = document.getElementById('orderProof').files[0];
+
+  if(!name) return showToast('Please enter your full name.', true);
+  if(!email) return showToast('Please enter your email.', true);
+  if(!pricing[plan] || !pricing[plan].periods[period]) return showToast('Invalid plan or period.', true);
+  if(period !== 'trial' && method !== 'cash' && method !== 'gcash' && method !== 'maya') return showToast('Please choose a valid payment method.', true);
+  if(period === 'trial' && plan !== 'basic') return showToast('Trial is only for Basic.', true);
+  if(amount > 0 && method !== 'cash' && !reference) return showToast('Please enter your reference number.', true);
+
+  let screenshotData = null;
+  try{
+    screenshotData = await fileToDataUrl(file);
+  }catch(e){
+    return showToast('Could not read screenshot file.', true);
+  }
+
+  const payload = {
+    name,
+    email,
+    phone: phone || null,
+    plan,
+    period,
+    amount: String(amount),
+    payment_method: method,
+    reference_number: reference || 'TRIAL',
+    screenshot_data: screenshotData,
+    notes: notes || null,
+    status: 'pending'
+  };
+
+  try{
+    const res = await fetch(`${SB_URL}/rest/v1/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok){
+      const txt = await res.text();
+      throw new Error(txt || 'Order submit failed');
+    }
+
+    document.getElementById('orderName').value = '';
+    document.getElementById('orderEmail').value = '';
+    document.getElementById('orderPhone').value = '';
+    document.getElementById('orderRef').value = '';
+    document.getElementById('orderNotes').value = '';
+    document.getElementById('orderProof').value = '';
+    document.getElementById('orderPlan').value = 'basic';
+    handlePlanChange();
+
+    showToast('Order submitted. Please wait for license activation.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }catch(err){
+    console.error(err);
+    showToast('Order failed. Please try again.', true);
+  }
+}
+
+handlePlanChange();
+</script>
 </body>
 </html>
