@@ -170,17 +170,22 @@ const sampleProducts = [
   {id:14,name:"Piattos Cheese",price:18,cost:13,stock:25,cat:"food",fav:false}
 ];
 
-let settings = loadJson(skey('settings')) || {
+let settings = (DEMO_MODE ? null : loadJson(skey('settings'))) || {
   storeName:'KitaTrack Store',
   receiptFooter:'Thank you! Balik po kayo.',
   autoPrint:false
 };
-let setupState = loadJson(skey('setup')) || { done: false, step: 1, storeName: settings.storeName, useSample: true };
+let setupState = DEMO_MODE
+  ? { done:true, step:2, useSample:true, storeName:`KitaTrack ${PLAN_NAMES[PLAN]} Demo` }
+  : (loadJson(skey('setup')) || { done:false, step:1, useSample:true, storeName:'' });
 
-let products = loadJson(skey('products')) || (setupState.done && !setupState.useSample ? [] : structuredClone(sampleProducts));
-let sales = loadJson(skey('sales')) || [];
-let stockLog = loadJson(skey('stocklog')) || [];
-let users = loadJson(skey('users')) || [{name:'Owner',role:'admin',pin:'1234'}];
+let products = DEMO_MODE
+  ? structuredClone(sampleProducts)
+  : (loadJson(skey('products')) || (setupState.done && !setupState.useSample ? [] : structuredClone(sampleProducts)));
+
+let sales = DEMO_MODE ? [] : (loadJson(skey('sales')) || []);
+let stockLog = DEMO_MODE ? [] : (loadJson(skey('stocklog')) || []);
+let users = DEMO_MODE ? [{name:'Owner',role:'admin',pin:'1234'}] : (loadJson(skey('users')) || [{name:'Owner',role:'admin',pin:'1234'}]);
 let cart = [];
 let screen = 'pos';
 let selCat = 'all';
@@ -243,6 +248,31 @@ function completeSetupStep1(){
 }
 
 function resetDemoData(){
+  if(!confirm('Reset demo data for this plan?')) return;
+
+  [
+    'settings',
+    'products',
+    'sales',
+    'stocklog',
+    'users',
+    'setup'
+  ].forEach(k => localStorage.removeItem(skey(k)));
+
+  settings = {
+    ...settings,
+    storeName: `KitaTrack ${PLAN_NAMES[PLAN]} Demo`
+  };
+  setupState = { done:true, step:2, useSample:true, storeName: settings.storeName };
+  products = structuredClone(sampleProducts);
+  sales = [];
+  stockLog = [];
+  users = [{name:'Owner',role:'admin',pin:'1234'}];
+  cart = [];
+
+  showToast('Demo reset complete.');
+  render();
+}
   if(!confirm('Reset demo data for this plan?')) return;
   localStorage.removeItem(skey('products'));
   localStorage.removeItem(skey('sales'));
