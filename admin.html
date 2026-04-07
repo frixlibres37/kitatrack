@@ -97,6 +97,10 @@ const APP_LOGO_URL='https://kitatrack.vercel.app/kitatrack-logo.png';
 const sbHeaders={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 if(window.emailjs){ emailjs.init({publicKey: EMAILJS_PUBLIC_KEY}); }
 
+// SECURITY NOTE: adminPin is stored in localStorage and checked entirely in the browser.
+// Anyone who can open DevTools can read or override the PIN without knowing it.
+// This is a UI convenience lock, NOT a cryptographic access control.
+// Do not rely on this PIN to protect sensitive data — enforce access at the database layer via RLS and the service role key.
 const DEFAULT_SETTINGS={publicAppUrl:'https://kitatrack.vercel.app/pos.html',businessName:'KitaTrack POS',supportName:'KitaTrack POS Team',supportPhone:'',adminPin:'0715'};
 function loadSettings(){try{return {...DEFAULT_SETTINGS,...(JSON.parse(localStorage.getItem('kt_admin_settings')||'{}'))};}catch(e){return {...DEFAULT_SETTINGS};}}
 function saveSettings(next){localStorage.setItem('kt_admin_settings',JSON.stringify(next));}
@@ -131,6 +135,8 @@ async function sbDelete(table,id){const r=await fetch(`${SB_URL}/rest/v1/${table
 let currentPage='dashboard',licenses=[],payments=[],orders=[],searchQ='',filterStatus='all',filterPlan='all',filterOrders='pending';
 
 let pinValue='';
+// SECURITY NOTE: PIN validation runs client-side only. sessionStorage is used to persist the unlocked
+// state for the current tab session, but it provides no server-side guarantee of identity.
 function getAdminPin(){return loadSettings().adminPin||'0715';}
 function pinAdd(d){if(pinValue.length>=4)return;pinValue+=d;document.getElementById('pinErr').textContent='';document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');if(pinValue.length===4){setTimeout(()=>{if(pinValue===getAdminPin()){unlockAdmin();}else{document.getElementById('pinErr').textContent='Wrong PIN. Try again.';pinValue='';document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#dc2626');setTimeout(()=>document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#e2e8f0'),500);}},180);}}
 function pinDel(){pinValue=pinValue.slice(0,-1);document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');}
