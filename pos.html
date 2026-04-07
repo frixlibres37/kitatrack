@@ -198,12 +198,17 @@ let discountValue = '';
 let discountLabel = '';
 let filters = { history:'all', report:'today' };
 
-function saveSettings(){ localStorage.setItem(skey('settings'), JSON.stringify(settings)); }
-function saveProducts(){ localStorage.setItem(skey('products'), JSON.stringify(products)); }
-function saveSales(){ localStorage.setItem(skey('sales'), JSON.stringify(sales)); }
-function saveStockLog(){ localStorage.setItem(skey('stocklog'), JSON.stringify(stockLog)); }
-function saveUsers(){ localStorage.setItem(skey('users'), JSON.stringify(users)); }
-function saveSetup(){ localStorage.setItem(skey('setup'), JSON.stringify(setupState)); }
+function saveJson(key, value){
+  if(DEMO_MODE) return;
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function saveSettings(){ saveJson(skey('settings'), settings); }
+function saveProducts(){ saveJson(skey('products'), products); }
+function saveSales(){ saveJson(skey('sales'), sales); }
+function saveStockLog(){ saveJson(skey('stocklog'), stockLog); }
+function saveUsers(){ saveJson(skey('users'), users); }
+function saveSetup(){ saveJson(skey('setup'), setupState); }
 function saveAll(){ saveSettings(); saveProducts(); saveSales(); saveStockLog(); saveUsers(); saveSetup(); }
 
 function showToast(msg, err=false){
