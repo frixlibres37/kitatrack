@@ -273,18 +273,6 @@ function resetDemoData(){
   showToast('Demo reset complete.');
   render();
 }
-  if(!confirm('Reset demo data for this plan?')) return;
-  localStorage.removeItem(skey('products'));
-  localStorage.removeItem(skey('sales'));
-  localStorage.removeItem(skey('stocklog'));
-  products = structuredClone(sampleProducts);
-  sales = [];
-  stockLog = [];
-  cart = [];
-  showToast('Demo reset complete.');
-  saveProducts(); saveSales(); saveStockLog();
-  render();
-}
 
 function getSubtotal(){ return cart.reduce((s,c)=>s + (c.price * c.qty), 0); }
 
