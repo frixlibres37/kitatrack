@@ -104,6 +104,10 @@ textarea{min-height:82px;resize:vertical}
 
 <script>
 const params = new URLSearchParams(location.search);
+// SECURITY NOTE: DEMO_MODE bypasses license verification entirely when the URL contains ?demo=true.
+// This is intentional for sales demos, but the URL can be shared or guessed by end users to access
+// the full POS interface without a valid license. If demo access needs to be controlled, require a
+// short-lived demo token validated server-side rather than a plain URL parameter.
 const DEMO_MODE = params.get('demo') === 'true';
 const urlPlan = (params.get('plan') || '').toLowerCase();
 const VALID_PLANS = ['basic','business','pro'];
@@ -586,7 +590,7 @@ function renderSetup(){
 
 function render(){
   const app = document.getElementById('app');
-  if(!DEMO_MODE && !licensed){ renderLicenseScreen(); return; }
+  if(!DEMO_MODE && !licensed){ renderLicenseScreen(); return; } // SECURITY: DEMO_MODE skips license check — see note at DEMO_MODE declaration above
   if(!setupState.done){ renderSetup(); return; }
 
   document.documentElement.style.setProperty('--ac', PLAN_COLORS[PLAN]);
