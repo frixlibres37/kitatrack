@@ -113,8 +113,8 @@ const fmtDT=d=>d?`${fmtDate(d)} ${fmtTime(d)}`:'—';
 function slugPlan(plan){return ['basic','business','pro','custom'].includes(plan)?plan:'basic';}
 function escapeHtml(str=''){return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function genKey(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let key='';for(let i=0;i<16;i++){key+=chars[Math.floor(Math.random()*chars.length)];if(i===3||i===7||i===11)key+='-';}return key;}
-function calcExpiry(period){if(period==='lifetime')return null;const now=new Date();if(period==='daily')now.setDate(now.getDate()+1);else if(period==='monthly')now.setMonth(now.getMonth()+1);else if(period==='trial')now.setDate(now.getDate()+3);return now.toISOString();}
-function calcAmount(plan,period){const prices={basic:{daily:50,monthly:1200,lifetime:3000,trial:0},business:{daily:70,monthly:2000,lifetime:5000,trial:0},pro:{daily:100,monthly:3000,lifetime:8000,trial:0},custom:{daily:100,monthly:3000,lifetime:10000,trial:0}};return prices[slugPlan(plan)]?.[period]??0;}
+function calcExpiry(period){if(period==='lifetime')return null;const now=new Date();if(period==='daily')now.setDate(now.getDate()+1);else if(period==='monthly')now.setMonth(now.getMonth()+1);else if(period==='trial')now.setDate(now.getDate()+7);return now.toISOString();}
+function calcAmount(plan,period){const prices={basic:{daily:15,monthly:299,lifetime:1999,trial:0},business:{daily:25,monthly:499,lifetime:3499,trial:0},pro:{daily:40,monthly:799,lifetime:5499,trial:0},custom:{daily:40,monthly:799,lifetime:5499,trial:0}};return prices[slugPlan(plan)]?.[period]??0;}
 function statusDot(s){const colors={active:'var(--g)',pending:'var(--y)',expired:'var(--r)',suspended:'var(--gr)',completed:'#0f766e'};return `<div class="li-dot" style="background:${colors[s]||'var(--gr)'}"></div>`;}
 function statusBadge(s){const cls={active:'st-active',pending:'st-pending',expired:'st-expired',suspended:'st-suspended',completed:'st-completed'};return `<span class="li-status ${cls[s]||'st-suspended'}">${escapeHtml(s||'unknown')}</span>`;}
 function isExpired(license){return license.expires_at&&new Date(license.expires_at)<new Date();}
@@ -280,7 +280,7 @@ function renderCreate(){
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Plan *</label><select id="cPlan" onchange="updateAmount()"><option value="basic">Basic</option><option value="business">Business</option><option value="pro">Pro</option><option value="custom">Custom</option></select></div>
-        <div class="form-group"><label class="form-label">Period *</label><select id="cPeriod" onchange="updateAmount()"><option value="daily">Daily</option><option value="monthly">Monthly</option><option value="lifetime">Lifetime</option><option value="trial">Trial (3 days)</option></select></div>
+        <div class="form-group"><label class="form-label">Period *</label><select id="cPeriod" onchange="updateAmount()"><option value="daily">Daily</option><option value="monthly">Monthly</option><option value="lifetime">Lifetime</option><option value="trial">Trial (7 days)</option></select></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Payment Method</label><select id="cMethod"><option value="cash">Cash</option><option value="gcash">GCash</option><option value="maya">Maya</option><option value="free">Free Trial</option></select></div>
