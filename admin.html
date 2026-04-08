@@ -1,51 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KitaTrack Admin</title>
+<style>
+body{font-family:sans-serif;background:#f5f5f5;padding:20px}
+.card{background:white;padding:20px;border-radius:10px;max-width:500px;margin:auto}
+input,select,button{width:100%;padding:10px;margin-top:10px}
+button{background:#16a34a;color:white;border:none;border-radius:6px}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>KitaTrack Admin</h2>
+
+<input id="name" placeholder="Customer Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+
+<select id="plan">
+<option value="basic">Basic</option>
+<option value="business">Business</option>
+<option value="pro">Pro</option>
+</select>
+
+<select id="period">
+<option value="daily">Daily</option>
+<option value="monthly">Monthly</option>
+<option value="lifetime">Lifetime</option>
+<option value="trial">Trial</option>
+</select>
+
+<input id="amount" placeholder="Amount">
+
+<button onclick="createLicense()">Create License</button>
+
+</div>
+
 <script>
-const ADMIN_API = '/api/admin';
-
 async function createLicense(){
-  const name=document.getElementById('cName').value.trim();
-  const email=document.getElementById('cEmail').value.trim();
-  const phone=document.getElementById('cPhone').value.trim();
-  const plan=document.getElementById('cPlan').value;
-  const period=document.getElementById('cPeriod').value;
-  const method=document.getElementById('cMethod').value;
-  const amount=document.getElementById('cAmount').value;
-
-  if(!name){
-    alert('Enter name');
-    return;
-  }
+  const data = {
+    action:'create_license',
+    customer_name:document.getElementById('name').value,
+    customer_email:document.getElementById('email').value,
+    customer_phone:document.getElementById('phone').value,
+    plan:document.getElementById('plan').value,
+    period:document.getElementById('period').value,
+    amount:document.getElementById('amount').value
+  };
 
   try{
-    const res = await fetch(ADMIN_API,{
+    const res = await fetch('/api/admin',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
         'x-admin-pin':'0715'
       },
-      body: JSON.stringify({
-        action:'create_license',
-        customer_name:name,
-        customer_email:email,
-        customer_phone:phone,
-        plan:plan,
-        period:period,
-        payment_method:method,
-        amount:amount
-      })
+      body: JSON.stringify(data)
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     if(!res.ok){
-      alert(data.error || 'Failed');
+      alert(result.error);
       return;
     }
 
-    alert('SUCCESS! License Key: ' + data.license.license_key);
+    alert("SUCCESS! License Key:\n" + result.license.license_key);
 
   }catch(e){
+    alert("Error creating license");
     console.error(e);
-    alert('Error');
   }
 }
 </script>
+
+</body>
+</html>
