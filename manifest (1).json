@@ -1,0 +1,20 @@
+{
+  "name": "KitaTrack POS",
+  "short_name": "KitaTrack",
+  "start_url": "/pos.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "kitatrack-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "kitatrack-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
