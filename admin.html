@@ -1,108 +1,24 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>KitaTrack Admin</title>
-<meta name="theme-color" content="#16a34a">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<style>
-:root{--g:#16a34a;--gd:#15803d;--gl:#f0fdf4;--s:#1e293b;--gr:#64748b;--lt:#f8fafc;--wh:#fff;--bd:#e2e8f0;--r:#dc2626;--b:#2563eb;--p:#9333ea;--y:#f59e0b;--shadow:0 10px 30px rgba(15,23,42,.06)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--lt);color:var(--s);min-height:100vh;padding-bottom:76px}
-button{border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-input,select,textarea{font-family:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--bd);font-size:14px;background:var(--wh)}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--g);outline-offset:-1px}
-textarea{resize:vertical}a{text-decoration:none;color:inherit}
-.hidden{display:none!important}
-.hdr{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.hdr-l{display:flex;align-items:center;gap:10px}.logo{height:34px;width:auto}
-.hdr-t{font-weight:800;font-size:16px;color:var(--g)}.hdr-s{font-size:10px;color:var(--gr)}
-.hdr-r{display:flex;align-items:center;gap:10px}.status-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gr);font-weight:600}
-.online-dot{width:8px;height:8px;border-radius:50%;background:var(--g)}.offline-dot{background:var(--r)}
-.icon-btn{background:#fff;border:1px solid var(--bd);padding:8px 10px;border-radius:10px;font-size:16px;box-shadow:var(--shadow)}
-.page{padding:16px}.card{background:var(--wh);border-radius:16px;border:1px solid var(--bd);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card-t{font-size:11px;color:var(--gr);font-weight:700;text-transform:uppercase;letter-spacing:.6px}.card-v{font-size:24px;font-weight:800;margin-top:2px}.card-sub{font-size:12px;color:var(--gr);margin-top:5px}
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat-green .card-v{color:var(--g)}.stat-blue .card-v{color:var(--b)}.stat-red .card-v{color:var(--r)}.stat-purple .card-v{color:var(--p)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:14px;transition:all .15s}
-.btn-g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}.btn-o{background:var(--gl);color:var(--g);border:1px solid #bbf7d0}.btn-r{background:#fef2f2;color:var(--r);border:1px solid #fecaca}.btn-b{background:#eff6ff;color:var(--b);border:1px solid #bfdbfe}.btn-y{background:#fefce8;color:#a16207;border:1px solid #fde68a}.btn-sm{padding:9px 12px;font-size:12px;border-radius:10px}.btn-full{width:100%}
-.form-group{margin-bottom:14px}.form-label{display:block;font-size:12px;font-weight:700;color:var(--gr);margin-bottom:5px}.form-row{display:flex;gap:10px}.form-row>*{flex:1;min-width:0}
-.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}.sec-title{font-size:18px;font-weight:800}
-.search-box{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--wh);border-radius:12px;border:1px solid var(--bd);margin-bottom:12px}.search-box input{border:none;outline:none;padding:0;font-size:14px}
-.pills{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}.pill{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;background:#f1f5f9;color:var(--gr);white-space:nowrap}.pill.act{background:var(--g);color:#fff}
-.list-item{display:flex;align-items:center;padding:12px;background:var(--wh);border-radius:14px;border:1px solid var(--bd);margin-bottom:8px;gap:10px;cursor:pointer;box-shadow:var(--shadow)}
-.li-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}.li-info{flex:1;min-width:0}.li-name{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li-sub{font-size:12px;color:var(--gr);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li-right{text-align:right;flex-shrink:0}
-.li-amount{font-weight:800;font-size:14px;color:var(--g)}.li-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;display:inline-block}
-.st-active{background:var(--gl);color:var(--g)}.st-pending{background:#fef3c7;color:#92400e}.st-expired{background:#fef2f2;color:var(--r)}.st-suspended{background:#f1f5f9;color:var(--gr)}.st-completed{background:#ecfeff;color:#0f766e}
-.empty{text-align:center;padding:42px 20px;color:var(--gr)}.empty .ic{font-size:42px;margin-bottom:8px}
-.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;padding:11px 18px;border-radius:12px;font-weight:700;font-size:13px;z-index:120;box-shadow:var(--shadow)}.toast.err{background:var(--r)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:100;display:flex;align-items:flex-end;justify-content:center}.modal{background:var(--wh);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:92vh;overflow-y:auto}.modal-h{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--bd)}.modal-h h3{font-size:18px;font-weight:800}.modal-close{background:none;font-size:22px;color:var(--gr);padding:4px}.modal-body{padding:18px}
-.detail-section{margin-bottom:20px}.detail-section h4{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}.detail-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:14px}.detail-row:last-child{border-bottom:none}
-.success-card{text-align:center;padding:8px 0 18px}.success-icon{width:66px;height:66px;border-radius:50%;background:var(--gl);color:var(--g);font-size:34px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.key-display{background:var(--lt);border:2px dashed var(--g);border-radius:12px;padding:14px;margin:14px 0;font-family:monospace;font-size:16px;font-weight:800;color:var(--g);word-break:break-all;letter-spacing:1px}
-.msg-preview{background:var(--lt);border-radius:12px;padding:14px;margin:14px 0;font-size:13px;color:var(--s);text-align:left;white-space:pre-line;line-height:1.5;border:1px solid var(--bd)}
-.action-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick-card{padding:14px;border-radius:14px;background:#fff;border:1px solid var(--bd);box-shadow:var(--shadow)}.quick-card h4{font-size:13px;font-weight:800;margin-bottom:4px}.quick-card p{font-size:12px;color:var(--gr);line-height:1.45}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--bd);display:flex;z-index:40;padding:4px 0 max(4px,env(safe-area-inset-bottom))}
-.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 0;background:none;font-size:10px;color:var(--gr);gap:2px}.bnav button.act{color:var(--g);font-weight:800}.bnav .ic{font-size:20px}
-.pin-wrap{position:fixed;inset:0;background:#f8fafc;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;width:100%}.pin-btn{padding:16px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;font-size:22px;font-weight:800;box-shadow:var(--shadow)}.p-dot{width:16px;height:16px;border-radius:50%;background:#e2e8f0}
-.note{font-size:12px;color:var(--gr);line-height:1.5}.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;background:#eff6ff;color:var(--b)}
-.proof-img{width:100%;border-radius:14px;border:1px solid var(--bd)}
-@media(max-width:420px){.form-row,.quick-grid,.kpi-grid{grid-template-columns:1fr;display:grid}.form-row>*{min-width:0}}
-</style>
-</head>
-<body>
-<header class="hdr hidden" id="mainHeader">
-  <div class="hdr-l"><img src="kitatrack-logo.png" alt="KitaTrack" class="logo"><div><div class="hdr-t">KitaTrack Admin</div><div class="hdr-s" id="hdrSub">Dashboard</div></div></div>
-  <div class="hdr-r"><button class="icon-btn" onclick="showSettings()">⚙️</button><button class="icon-btn" onclick="loadData(true)">↻</button><div class="status-chip"><div id="onlineStatus" class="online-dot"></div><span id="onlineText">Online</span></div></div>
-</header>
-
-<div id="pinScreen" class="pin-wrap">
-  <img src="kitatrack-logo.png" alt="KitaTrack" style="height:82px;width:auto;display:block;margin:0 auto 18px">
-  <h2 style="font-size:20px;font-weight:800;margin-bottom:4px">KitaTrack Admin</h2>
-  <p style="color:#64748b;font-size:14px;margin-bottom:24px">Enter PIN to continue</p>
-  <div style="display:flex;gap:12px;margin-bottom:24px" id="pinDots"><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div></div>
-  <div id="pinErr" style="color:#dc2626;font-size:13px;margin-bottom:12px;height:20px"></div>
-  <div class="pin-grid">
-    <button class="pin-btn" onclick="pinAdd('1')">1</button><button class="pin-btn" onclick="pinAdd('2')">2</button><button class="pin-btn" onclick="pinAdd('3')">3</button>
-    <button class="pin-btn" onclick="pinAdd('4')">4</button><button class="pin-btn" onclick="pinAdd('5')">5</button><button class="pin-btn" onclick="pinAdd('6')">6</button>
-    <button class="pin-btn" onclick="pinAdd('7')">7</button><button class="pin-btn" onclick="pinAdd('8')">8</button><button class="pin-btn" onclick="pinAdd('9')">9</button>
-    <div></div><button class="pin-btn" onclick="pinAdd('0')">0</button><button class="pin-btn" onclick="pinDel()">⌫</button>
-  </div>
-</div>
-
-<div id="app" class="hidden"></div>
-
-<nav class="bnav hidden" id="mainNav">
-  <button onclick="go('dashboard')" id="nav-dashboard" class="act"><span class="ic">📊</span>Dashboard</button>
-  <button onclick="go('orders')" id="nav-orders"><span class="ic">🧾</span>Orders</button>
-  <button onclick="go('create')" id="nav-create"><span class="ic">➕</span>Create</button>
-  <button onclick="go('licenses')" id="nav-licenses"><span class="ic">🔑</span>Licenses</button>
-  <button onclick="go('payments')" id="nav-payments"><span class="ic">💰</span>Payments</button>
-</nav>
-
-<div id="toastEl" class="hidden"></div>
-<div id="modalEl"></div>
-
 <script>
-const SB_URL='https://lrixoqxtgfnwadbospae.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyaXhvcXh0Z2Zud2FkYm9zcGFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMjY5ODksImV4cCI6MjA5MDcwMjk4OX0.cVg3UDzPdIAgLci7TYWeschTR1tZCzXxcC-DQW6J1QY';
+const ADMIN_API = '/api/admin';
 const EMAILJS_PUBLIC_KEY='tQmEhBYzAZAM9KcRK';
 const EMAILJS_SERVICE_ID='Service_tv56duv';
 const EMAILJS_PENDING_TEMPLATE_ID='template_3oqrd3m';
 const EMAILJS_VERIFIED_TEMPLATE_ID='template_xxxxxxx';
 const APP_LOGO_URL='https://kitatrack.vercel.app/kitatrack-logo.png';
-const sbHeaders={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 if(window.emailjs){ emailjs.init({publicKey: EMAILJS_PUBLIC_KEY}); }
 
-// SECURITY NOTE: adminPin is stored in localStorage and checked entirely in the browser.
-// Anyone who can open DevTools can read or override the PIN without knowing it.
-// This is a UI convenience lock, NOT a cryptographic access control.
-// Do not rely on this PIN to protect sensitive data — enforce access at the database layer via RLS and the service role key.
-const DEFAULT_SETTINGS={publicAppUrl:'https://kitatrack.vercel.app/pos.html',businessName:'KitaTrack POS',supportName:'KitaTrack POS Team',supportPhone:'',adminPin:'0715'};
-function loadSettings(){try{return {...DEFAULT_SETTINGS,...(JSON.parse(localStorage.getItem('kt_admin_settings')||'{}'))};}catch(e){return {...DEFAULT_SETTINGS};}}
+const DEFAULT_SETTINGS={
+  publicAppUrl:'https://kitatrack.vercel.app/pos.html',
+  businessName:'KitaTrack POS',
+  supportName:'KitaTrack POS Team',
+  supportPhone:'',
+  adminPin:'0715'
+};
+
+function loadSettings(){
+  try{return {...DEFAULT_SETTINGS,...(JSON.parse(localStorage.getItem('kt_admin_settings')||'{}'))};}
+  catch(e){return {...DEFAULT_SETTINGS};}
+}
 function saveSettings(next){localStorage.setItem('kt_admin_settings',JSON.stringify(next));}
 let settings=loadSettings();
 
@@ -114,48 +30,124 @@ function slugPlan(plan){return ['basic','business','pro','custom'].includes(plan
 function escapeHtml(str=''){return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function genKey(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let key='';for(let i=0;i<16;i++){key+=chars[Math.floor(Math.random()*chars.length)];if(i===3||i===7||i===11)key+='-';}return key;}
 function calcExpiry(period){if(period==='lifetime')return null;const now=new Date();if(period==='daily')now.setDate(now.getDate()+1);else if(period==='monthly')now.setMonth(now.getMonth()+1);else if(period==='trial')now.setDate(now.getDate()+7);return now.toISOString();}
-function calcAmount(plan,period){const prices={basic:{daily:15,monthly:299,lifetime:1999,trial:0},business:{daily:25,monthly:499,lifetime:3499,trial:0},pro:{daily:40,monthly:799,lifetime:5499,trial:0},custom:{daily:40,monthly:799,lifetime:5499,trial:0}};return prices[slugPlan(plan)]?.[period]??0;}
-function statusDot(s){const colors={active:'var(--g)',pending:'var(--y)',expired:'var(--r)',suspended:'var(--gr)',completed:'#0f766e'};return `<div class="li-dot" style="background:${colors[s]||'var(--gr)'}"></div>`;}
-function statusBadge(s){const cls={active:'st-active',pending:'st-pending',expired:'st-expired',suspended:'st-suspended',completed:'st-completed'};return `<span class="li-status ${cls[s]||'st-suspended'}">${escapeHtml(s||'unknown')}</span>`;}
+function calcAmount(plan,period){
+  const prices={
+    basic:{daily:15,monthly:299,lifetime:1999,trial:0},
+    business:{daily:25,monthly:499,lifetime:3499,trial:0},
+    pro:{daily:40,monthly:799,lifetime:5499,trial:0},
+    custom:{daily:40,monthly:799,lifetime:5499,trial:0}
+  };
+  return prices[slugPlan(plan)]?.[period]??0;
+}
+function statusDot(s){const colors={active:'var(--g)',pending:'var(--y)',expired:'var(--r)',suspended:'var(--gr)',completed:'#0f766e',rejected:'var(--r)',verified:'#0f766e'};return `<div class="li-dot" style="background:${colors[s]||'var(--gr)'}"></div>`;}
+function statusBadge(s){const cls={active:'st-active',pending:'st-pending',expired:'st-expired',suspended:'st-suspended',completed:'st-completed',verified:'st-completed',rejected:'st-expired'};return `<span class="li-status ${cls[s]||'st-suspended'}">${escapeHtml(s||'unknown')}</span>`;}
 function isExpired(license){return license.expires_at&&new Date(license.expires_at)<new Date();}
 function effectiveStatus(license){if(license.status==='active'&&isExpired(license))return 'expired';return license.status||'pending';}
 function publicLinkForLicense(lic){return `${settings.publicAppUrl}?plan=${slugPlan(lic.plan)}`;}
 function publicDemoLink(plan){return `${settings.publicAppUrl}?plan=${slugPlan(plan)}&demo=true`;}
-function genMessage(lic){return `Hi ${lic.customer_name}! 👋\n\nYour ${settings.businessName} is now activated ✅\n\n🔑 License Key:\n${lic.license_key}\n\n📦 Plan: ${(lic.plan||'').charAt(0).toUpperCase()+(lic.plan||'').slice(1)}\n📅 ${lic.period==='lifetime'?'Lifetime (never expires)':'Valid until: '+fmtDate(lic.expires_at)}\n\n👉 Open the app:\n${settings.publicAppUrl}\n\nEnter your key to start.\n\n${settings.supportPhone?'📞 Support: '+settings.supportPhone+'\n\n':''}Salamat! 🙏\n— ${settings.supportName}`;}
-function toast(msg,err=false){const el=document.getElementById('toastEl');el.className='toast'+(err?' err':'');el.textContent=msg;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2600);}
+function genMessage(lic){
+  return `Hi ${lic.customer_name}! 👋\n\nYour ${settings.businessName} is now activated ✅\n\n🔑 License Key:\n${lic.license_key}\n\n📦 Plan: ${(lic.plan||'').charAt(0).toUpperCase()+(lic.plan||'').slice(1)}\n📅 ${lic.period==='lifetime'?'Lifetime (never expires)':'Valid until: '+fmtDate(lic.expires_at)}\n\n👉 Open the app:\n${settings.publicAppUrl}\n\nEnter your key to start.\n\n${settings.supportPhone?'📞 Support: '+settings.supportPhone+'\n\n':''}Salamat! 🙏\n— ${settings.supportName}`;
+}
+function toast(msg,err=false){
+  const el=document.getElementById('toastEl');
+  el.className='toast'+(err?' err':'');
+  el.textContent=msg;
+  el.classList.remove('hidden');
+  setTimeout(()=>el.classList.add('hidden'),2600);
+}
 async function copyText(text){try{await navigator.clipboard.writeText(text);toast('Copied!');}catch{toast('Copy failed',true);}}
-function downloadJson(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);}
-function downloadCsv(filename,rows){const csv=rows.map(row=>row.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);}
-
-async function sbGet(table,query='select=*'){const connector=query?(query.startsWith('select=')?'?':'?'+query):'?select=*';const r=await fetch(`${SB_URL}/rest/v1/${table}${connector}${connector.includes('order=')?'':(connector.includes('?')?'&':'?')+'order=created_at.desc'}`,{headers:{...sbHeaders}});if(!r.ok) throw new Error(`GET ${table} failed`);return await r.json();}
-async function sbInsert(table,data){const r=await fetch(`${SB_URL}/rest/v1/${table}`,{method:'POST',headers:{...sbHeaders,'Prefer':'return=representation'},body:JSON.stringify(data)});if(!r.ok) return null;return await r.json();}
-async function sbUpdate(table,id,data){const r=await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{...sbHeaders,'Prefer':'return=representation'},body:JSON.stringify(data)});if(!r.ok) return null;return await r.json();}
-async function sbDelete(table,id){const r=await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:'DELETE',headers:{...sbHeaders}});return r.ok;}
 
 let currentPage='dashboard',licenses=[],payments=[],orders=[],searchQ='',filterStatus='all',filterPlan='all',filterOrders='pending';
-
 let pinValue='';
-// SECURITY NOTE: PIN validation runs client-side only. sessionStorage is used to persist the unlocked
-// state for the current tab session, but it provides no server-side guarantee of identity.
-function getAdminPin(){return loadSettings().adminPin||'0715';}
-function pinAdd(d){if(pinValue.length>=4)return;pinValue+=d;document.getElementById('pinErr').textContent='';document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');if(pinValue.length===4){setTimeout(()=>{if(pinValue===getAdminPin()){unlockAdmin();}else{document.getElementById('pinErr').textContent='Wrong PIN. Try again.';pinValue='';document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#dc2626');setTimeout(()=>document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#e2e8f0'),500);}},180);}}
-function pinDel(){pinValue=pinValue.slice(0,-1);document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');}
-function unlockAdmin(){document.getElementById('pinScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('mainHeader').classList.remove('hidden');document.getElementById('mainNav').classList.remove('hidden');sessionStorage.setItem('kt_admin_auth','true');}
-function logoutAdmin(){sessionStorage.removeItem('kt_admin_auth');location.reload();}
-document.addEventListener('keydown',e=>{if(document.getElementById('pinScreen').classList.contains('hidden'))return;if(e.key>='0'&&e.key<='9')pinAdd(e.key);if(e.key==='Backspace')pinDel();});
 
-function updateOnlineStatus(){const dot=document.getElementById('onlineStatus');const text=document.getElementById('onlineText');if(navigator.onLine){dot.className='online-dot';text.textContent='Online';}else{dot.className='online-dot offline-dot';text.textContent='Offline';}}
-window.addEventListener('online',updateOnlineStatus);window.addEventListener('offline',updateOnlineStatus);
+function getAdminPin(){return loadSettings().adminPin||'0715';}
+function adminHeaders(extra={}){
+  return {
+    'Content-Type':'application/json',
+    'x-admin-pin': getAdminPin(),
+    ...extra
+  };
+}
+
+async function apiGet(mode){
+  const r=await fetch(`${ADMIN_API}?mode=${encodeURIComponent(mode)}`,{
+    headers: adminHeaders()
+  });
+  const data=await r.json().catch(()=>null);
+  if(!r.ok) throw new Error(data?.error || `GET ${mode} failed`);
+  return data;
+}
+async function apiPost(body){
+  const r=await fetch(ADMIN_API,{
+    method:'POST',
+    headers: adminHeaders(),
+    body: JSON.stringify(body)
+  });
+  const data=await r.json().catch(()=>null);
+  if(!r.ok) throw new Error(data?.error || 'Request failed');
+  return data;
+}
+
+function pinAdd(d){
+  if(pinValue.length>=4)return;
+  pinValue+=d;
+  document.getElementById('pinErr').textContent='';
+  document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');
+  if(pinValue.length===4){
+    setTimeout(()=>{
+      if(pinValue===getAdminPin()){
+        unlockAdmin();
+      }else{
+        document.getElementById('pinErr').textContent='Wrong PIN. Try again.';
+        pinValue='';
+        document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#dc2626');
+        setTimeout(()=>document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#e2e8f0'),500);
+      }
+    },180);
+  }
+}
+function pinDel(){
+  pinValue=pinValue.slice(0,-1);
+  document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');
+}
+function unlockAdmin(){
+  document.getElementById('pinScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('mainHeader').classList.remove('hidden');
+  document.getElementById('mainNav').classList.remove('hidden');
+  sessionStorage.setItem('kt_admin_auth','true');
+}
+function logoutAdmin(){sessionStorage.removeItem('kt_admin_auth');location.reload();}
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('pinScreen').classList.contains('hidden'))return;
+  if(e.key>='0'&&e.key<='9')pinAdd(e.key);
+  if(e.key==='Backspace')pinDel();
+});
+
+function updateOnlineStatus(){
+  const dot=document.getElementById('onlineStatus');
+  const text=document.getElementById('onlineText');
+  if(navigator.onLine){dot.className='online-dot';text.textContent='Online';}
+  else{dot.className='online-dot offline-dot';text.textContent='Offline';}
+}
+window.addEventListener('online',updateOnlineStatus);
+window.addEventListener('offline',updateOnlineStatus);
 
 async function loadData(showMessage=false){
   try{
-    licenses=await sbGet('licenses','select=*');
-    payments=await sbGet('payments','select=*');
-    try{ orders=await sbGet('orders','select=*'); }catch(e){ orders=[]; }
+    const [licRes, payRes, ordRes] = await Promise.all([
+      apiGet('licenses'),
+      apiGet('payments'),
+      apiGet('orders')
+    ]);
+    licenses = licRes.licenses || [];
+    payments = payRes.payments || [];
+    orders = ordRes.orders || [];
     syncExpiredLocally();
     if(showMessage) toast('Data refreshed');
   }catch(e){
-    console.error(e);toast('Failed to load data',true);
+    console.error(e);
+    toast(e.message || 'Failed to load data', true);
   }
   render();
 }
@@ -187,7 +179,7 @@ async function sendPendingEmail(order){
 }
 async function sendVerifiedEmail(lic){
   if(!window.emailjs) return {ok:false,error:'EmailJS SDK not loaded'};
-  if(EMAILJS_VERIFIED_TEMPLATE_ID==='PASTE_TEMPLATE_2_ID_HERE') return {ok:false,error:'Paste your Template 2 ID first'};
+  if(EMAILJS_VERIFIED_TEMPLATE_ID==='template_xxxxxxx') return {ok:false,error:'Paste your verified EmailJS template ID first'};
   if(!lic?.customer_email) return {ok:false,error:'Customer email missing'};
   try{
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_VERIFIED_TEMPLATE_ID, {
@@ -284,28 +276,72 @@ function renderCreate(){
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Payment Method</label><select id="cMethod"><option value="cash">Cash</option><option value="gcash">GCash</option><option value="maya">Maya</option><option value="free">Free Trial</option></select></div>
-        <div class="form-group"><label class="form-label">Amount (₱)</label><input id="cAmount" type="number" value="50"></div>
+        <div class="form-group"><label class="form-label">Amount (₱)</label><input id="cAmount" type="number" value="15"></div>
       </div>
       <div class="form-group"><label class="form-label">Notes</label><textarea id="cNotes" rows="2" placeholder="Optional notes..."></textarea></div>
       <button class="btn btn-g btn-full" onclick="createLicense()">🔑 Create & Activate License</button>
     </div>
   </div>`;
 }
-function updateAmount(){const plan=document.getElementById('cPlan').value;const period=document.getElementById('cPeriod').value;document.getElementById('cAmount').value=calcAmount(plan,period);}
+function updateAmount(){
+  const plan=document.getElementById('cPlan').value;
+  const period=document.getElementById('cPeriod').value;
+  document.getElementById('cAmount').value=calcAmount(plan,period);
+}
 async function createLicense(){
-  const name=document.getElementById('cName').value.trim(),email=document.getElementById('cEmail').value.trim(),phone=document.getElementById('cPhone').value.trim(),plan=document.getElementById('cPlan').value,period=document.getElementById('cPeriod').value,method=document.getElementById('cMethod').value,amount=Number(document.getElementById('cAmount').value||0),notes=document.getElementById('cNotes').value.trim();
+  const name=document.getElementById('cName').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const phone=document.getElementById('cPhone').value.trim();
+  const plan=document.getElementById('cPlan').value;
+  const period=document.getElementById('cPeriod').value;
+  const method=document.getElementById('cMethod').value;
+  const amount=Number(document.getElementById('cAmount').value||0);
+  const notes=document.getElementById('cNotes').value.trim();
+
   if(!name) return toast('Please enter customer name',true);
-  const key=genKey(),now=new Date().toISOString(),expires=calcExpiry(period);
-  const data={customer_name:name,customer_email:email||null,customer_phone:phone||null,plan,period,payment_method:method,amount,license_key:key,status:'active',activated_at:now,expires_at:expires,notes:notes||null};
-  const result=await sbInsert('licenses',data);
-  if(result&&result.length){
-    const lic=result[0];licenses.unshift(lic);
-    if(amount>0){const pay=await sbInsert('payments',{license_id:lic.id,amount:amount,method:method,reference_number:null,verified:true,verified_at:now});if(pay&&pay.length)payments.unshift(pay[0]);}
+  if(period==='trial' && plan!=='basic') return toast('Trial is only for Basic plan', true);
+
+  try{
+    const result = await apiPost({
+      action:'create_license',
+      customer_name:name,
+      customer_email:email || null,
+      customer_phone:phone || null,
+      plan,
+      period,
+      payment_method:method,
+      amount,
+      notes:notes || null
+    });
+
+    const lic = result.license;
+    if(!lic) return toast('Failed to create license', true);
+
+    licenses.unshift(lic);
+
+    if(amount>0){
+      try{
+        const payResult = await apiPost({
+          action:'record_payment',
+          license_id: lic.id,
+          amount: amount,
+          method: method,
+          reference_number: null
+        });
+        if(payResult.payment) payments.unshift(payResult.payment);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
     const emailRes=await sendVerifiedEmail(lic);
     showSuccessModal(lic);
     toast(emailRes.ok?'License created + email sent!':'License created. Email not sent.', !emailRes.ok);
     render();
-  }else toast('Failed to create license',true);
+  }catch(e){
+    console.error(e);
+    toast(e.message || 'Failed to create license', true);
+  }
 }
 
 function renderLicenses(){
@@ -343,7 +379,7 @@ function showSuccessModal(lic){
 function showLicenseDetail(id){
   const l=licenses.find(x=>x.id===id); if(!l) return;
   const msg=genMessage(l);
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>License Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="detail-section"><div class="detail-row"><span>Customer</span><strong>${escapeHtml(l.customer_name||'Unknown')}</strong></div><div class="detail-row"><span>Key</span><strong style="font-family:monospace;color:var(--g)">${escapeHtml(l.license_key||'—')}</strong></div><div class="detail-row"><span>Plan</span><strong>${escapeHtml((l.plan||'').toUpperCase())}</strong></div><div class="detail-row"><span>Email</span><strong>${escapeHtml(l.customer_email||'—')}</strong></div><div class="detail-row"><span>Status</span>${statusBadge(effectiveStatus(l))}</div></div><div class="action-btns"><button class="btn btn-g btn-full" onclick="copyText('${escapeHtml(l.license_key)}')">📋 Copy Key</button><button class="btn btn-o btn-full" onclick='copyText(${JSON.stringify(msg)})'>💬 Copy Message</button><button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(publicLinkForLicense(l))})'>🔗 Copy App Link</button><button class="btn btn-y btn-full" onclick="resendVerifiedEmail('${l.id}')">✉️ Send License Email</button>${effectiveStatus(l)==='active'?`<button class="btn btn-r btn-full" onclick="updateLicenseStatus('${l.id}','suspended')">⏸ Suspend</button>`:''}${['suspended','expired','pending'].includes(effectiveStatus(l))?`<button class="btn btn-g btn-full" onclick="updateLicenseStatus('${l.id}','active')">✅ Activate</button>`:''}</div></div></div></div>`;
+  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>License Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="detail-section"><div class="detail-row"><span>Customer</span><strong>${escapeHtml(l.customer_name||'Unknown')}</strong></div><div class="detail-row"><span>Key</span><strong style="font-family:monospace;color:var(--g)">${escapeHtml(l.license_key||'—')}</strong></div><div class="detail-row"><span>Plan</span><strong>${escapeHtml((l.plan||'').toUpperCase())}</strong></div><div class="detail-row"><span>Email</span><strong>${escapeHtml(l.customer_email||'—')}</strong></div><div class="detail-row"><span>Status</span>${statusBadge(effectiveStatus(l))}</div></div><div class="action-btns"><button class="btn btn-g btn-full" onclick="copyText('${escapeHtml(l.license_key)}')">📋 Copy Key</button><button class="btn btn-o btn-full" onclick='copyText(${JSON.stringify(msg)})'>💬 Copy Message</button><button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(publicLinkForLicense(l))})'>🔗 Copy App Link</button><button class="btn btn-y btn-full" onclick="resendVerifiedEmail('${l.id}')">✉️ Send License Email</button></div></div></div></div>`;
 }
 
 function showOrderDetail(id){
@@ -363,88 +399,7 @@ function showOrderDetail(id){
     </div>
     ${o.screenshot_data ? `<div class="detail-section"><h4>Proof Screenshot</h4><img class="proof-img" src="${o.screenshot_data}" alt="Proof of payment"></div>` : `<div class="note">No screenshot uploaded.</div>`}
     ${o.notes ? `<div class="detail-section"><h4>Notes</h4><div class="note">${escapeHtml(o.notes)}</div></div>`:''}
-    <div class="action-btns">
-      ${(o.status||'pending')==='pending' ? `<button class="btn btn-g btn-full" onclick="verifyOrder('${o.id}')">✅ Verify Order & Create License</button><button class="btn btn-r btn-full" onclick="rejectOrder('${o.id}')">❌ Reject Order</button>`:''}
-      ${o.screenshot_data ? `<button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(o.reference_number||"")})'>📋 Copy Reference</button>`:''}
-    </div>
   </div></div></div>`;
-}
-
-async function verifyOrder(id){
-  const o=orders.find(x=>x.id===id); if(!o) return toast('Order not found',true);
-  const now=new Date().toISOString();
-  const licData={
-    customer_name:o.name,
-    customer_email:o.email,
-    customer_phone:o.phone||null,
-    plan:o.plan,
-    period:o.period,
-    payment_method:o.payment_method,
-    amount:o.amount,
-    license_key:genKey(),
-    status:'active',
-    activated_at:now,
-    expires_at:calcExpiry(o.period),
-    notes:o.notes || `Order ${o.id}`
-  };
-  const licRes=await sbInsert('licenses',licData);
-  if(!(licRes&&licRes.length)) return toast('Failed to create license',true);
-  const lic=licRes[0];
-  licenses.unshift(lic);
-
-  const payRes=await sbInsert('payments',{
-    license_id: lic.id,
-    amount: o.amount,
-    method: o.payment_method,
-    reference_number: o.reference_number || null,
-    verified: true,
-    verified_at: now
-  });
-  if(payRes&&payRes.length) payments.unshift(payRes[0]);
-
-  const ordRes=await sbUpdate('orders',id,{status:'completed'});
-  if(ordRes){
-    const idx=orders.findIndex(x=>x.id===id);
-    if(idx>=0) orders[idx]={...orders[idx],status:'completed'};
-  }
-
-  const emailRes=await sendVerifiedEmail(lic);
-  closeModal();
-  toast(emailRes.ok?'Order verified + license emailed!':'Order verified. Email not sent.',!emailRes.ok);
-  render();
-}
-
-async function rejectOrder(id){
-  const result=await sbUpdate('orders',id,{status:'rejected'});
-  if(result){
-    const idx=orders.findIndex(x=>x.id===id);
-    if(idx>=0) orders[idx]={...orders[idx],status:'rejected'};
-    closeModal(); toast('Order rejected'); render();
-  }else toast('Reject failed',true);
-}
-
-async function updateLicenseStatus(id,status){
-  const update={status};
-  if(status==='active') update.activated_at=new Date().toISOString();
-  const result=await sbUpdate('licenses',id,update);
-  if(result){
-    const idx=licenses.findIndex(l=>l.id===id);
-    if(idx>=0) licenses[idx]={...licenses[idx],...update};
-    if(status==='active'){
-      const lic=licenses.find(l=>l.id===id);
-      const emailRes=await sendVerifiedEmail(lic);
-      toast(emailRes.ok?'Status updated + license email sent!':'Status updated. Email not sent.',!emailRes.ok);
-    }else{
-      toast('Status updated!');
-    }
-    closeModal(); render();
-  }else toast('Update failed',true);
-}
-
-async function resendVerifiedEmail(id){
-  const lic=licenses.find(x=>x.id===id); if(!lic) return toast('License not found',true);
-  const res=await sendVerifiedEmail(lic);
-  toast(res.ok?'License email sent!':(res.error||'Email failed'),!res.ok);
 }
 
 function showDemoLinks(){
@@ -456,7 +411,7 @@ function showPaymentQR(){
 
 function showSettings(){
   settings=loadSettings();
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>⚙️ Settings</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="card"><div class="form-group"><label class="form-label">Public App URL</label><input id="sPublicUrl" value="${escapeHtml(settings.publicAppUrl)}"></div><div class="form-group"><label class="form-label">Business Name</label><input id="sBusinessName" value="${escapeHtml(settings.businessName)}"></div><div class="form-group"><label class="form-label">Support Name</label><input id="sSupportName" value="${escapeHtml(settings.supportName)}"></div><div class="form-group"><label class="form-label">Support Phone</label><input id="sSupportPhone" value="${escapeHtml(settings.supportPhone)}"></div></div><div class="card"><h4 style="font-weight:800;font-size:15px;margin-bottom:8px">EmailJS</h4><div class="note">Pending email uses template_3oqrd3m. Replace <strong>PASTE_TEMPLATE_2_ID_HERE</strong> in this file with your Template 2 ID for license delivery emails.</div></div><button class="btn btn-b btn-full" onclick="savePublicSettings()">💾 Save Settings</button><button class="btn btn-r btn-full" style="margin-top:10px" onclick="logoutAdmin()">🚪 Lock Admin</button></div></div></div>`;
+  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>⚙️ Settings</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="card"><div class="form-group"><label class="form-label">Public App URL</label><input id="sPublicUrl" value="${escapeHtml(settings.publicAppUrl)}"></div><div class="form-group"><label class="form-label">Business Name</label><input id="sBusinessName" value="${escapeHtml(settings.businessName)}"></div><div class="form-group"><label class="form-label">Support Name</label><input id="sSupportName" value="${escapeHtml(settings.supportName)}"></div><div class="form-group"><label class="form-label">Support Phone</label><input id="sSupportPhone" value="${escapeHtml(settings.supportPhone)}"></div></div><div class="card"><h4 style="font-weight:800;font-size:15px;margin-bottom:8px">EmailJS</h4><div class="note">Pending email uses template_3oqrd3m. Replace <strong>template_xxxxxxx</strong> with your real verified template ID for license delivery emails.</div></div><button class="btn btn-b btn-full" onclick="savePublicSettings()">💾 Save Settings</button><button class="btn btn-r btn-full" style="margin-top:10px" onclick="logoutAdmin()">🚪 Lock Admin</button></div></div></div>`;
 }
 function savePublicSettings(){
   settings={...loadSettings(),publicAppUrl:document.getElementById('sPublicUrl').value.trim()||DEFAULT_SETTINGS.publicAppUrl,businessName:document.getElementById('sBusinessName').value.trim()||DEFAULT_SETTINGS.businessName,supportName:document.getElementById('sSupportName').value.trim()||DEFAULT_SETTINGS.supportName,supportPhone:document.getElementById('sSupportPhone').value.trim()};
@@ -464,8 +419,7 @@ function savePublicSettings(){
 }
 
 if(sessionStorage.getItem('kt_admin_auth')==='true') unlockAdmin();
-updateOnlineStatus(); loadData();
+updateOnlineStatus();
+loadData();
 setInterval(()=>{ if(navigator.onLine) loadData(); }, 60000);
 </script>
-</body>
-</html>
