@@ -2,517 +2,128 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>KitaTrack Admin</title>
-<meta name="theme-color" content="#16a34a">
-<link rel="icon" href="kitatrack-logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
-:root{
-  --g:#16a34a;--gd:#15803d;--gl:#f0fdf4;--s:#1e293b;--gr:#64748b;--lt:#f8fafc;--wh:#fff;
-  --bd:#e2e8f0;--r:#dc2626;--b:#2563eb;--p:#9333ea;--y:#f59e0b;--teal:#0f766e;
-  --shadow:0 10px 30px rgba(15,23,42,.06)
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--lt);color:var(--s);min-height:100vh;padding-bottom:76px}
-button{border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-input,select,textarea{font-family:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--bd);font-size:14px;background:var(--wh)}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--g);outline-offset:-1px}
-textarea{resize:vertical}
-a{text-decoration:none;color:inherit}
-.hidden{display:none!important}
-.hdr{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.hdr-l{display:flex;align-items:center;gap:10px}
-.logo{height:34px;width:auto}
-.hdr-t{font-weight:800;font-size:16px;color:var(--g)}
-.hdr-s{font-size:10px;color:var(--gr)}
-.hdr-r{display:flex;align-items:center;gap:10px}
-.status-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gr);font-weight:600}
-.online-dot{width:8px;height:8px;border-radius:50%;background:var(--g)}
-.offline-dot{background:var(--r)}
-.icon-btn{background:#fff;border:1px solid var(--bd);padding:8px 10px;border-radius:10px;font-size:16px;box-shadow:var(--shadow)}
-.page{padding:16px}
-.card{background:var(--wh);border-radius:16px;border:1px solid var(--bd);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card-t{font-size:11px;color:var(--gr);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
-.card-v{font-size:24px;font-weight:800;margin-top:2px}
-.card-sub{font-size:12px;color:var(--gr);margin-top:5px}
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat-green .card-v{color:var(--g)}
-.stat-blue .card-v{color:var(--b)}
-.stat-red .card-v{color:var(--r)}
-.stat-purple .card-v{color:var(--p)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:14px;transition:all .15s}
-.btn-g{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff}
-.btn-o{background:var(--gl);color:var(--g);border:1px solid #bbf7d0}
-.btn-r{background:#fef2f2;color:var(--r);border:1px solid #fecaca}
-.btn-b{background:#eff6ff;color:var(--b);border:1px solid #bfdbfe}
-.btn-y{background:#fefce8;color:#a16207;border:1px solid #fde68a}
-.btn-sm{padding:9px 12px;font-size:12px;border-radius:10px}
-.btn-full{width:100%}
-.form-group{margin-bottom:14px}
-.form-label{display:block;font-size:12px;font-weight:700;color:var(--gr);margin-bottom:5px}
-.form-row{display:flex;gap:10px}
-.form-row>*{flex:1;min-width:0}
-.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
-.sec-title{font-size:18px;font-weight:800}
-.search-box{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--wh);border-radius:12px;border:1px solid var(--bd);margin-bottom:12px}
-.search-box input{border:none;outline:none;padding:0;font-size:14px}
-.pills{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
-.pill{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;background:#f1f5f9;color:var(--gr);white-space:nowrap}
-.pill.act{background:var(--g);color:#fff}
-.list-item{display:flex;align-items:center;padding:12px;background:var(--wh);border-radius:14px;border:1px solid var(--bd);margin-bottom:8px;gap:10px;cursor:pointer;box-shadow:var(--shadow)}
-.li-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.li-info{flex:1;min-width:0}
-.li-name{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.li-sub{font-size:12px;color:var(--gr);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.li-right{text-align:right;flex-shrink:0}
-.li-amount{font-weight:800;font-size:14px;color:var(--g)}
-.li-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;display:inline-block}
-.st-active{background:var(--gl);color:var(--g)}
-.st-pending{background:#fef3c7;color:#92400e}
-.st-expired{background:#fef2f2;color:var(--r)}
-.st-suspended{background:#f1f5f9;color:var(--gr)}
-.st-completed{background:#ecfeff;color:var(--teal)}
-.empty{text-align:center;padding:42px 20px;color:var(--gr)}
-.empty .ic{font-size:42px;margin-bottom:8px}
-.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;padding:11px 18px;border-radius:12px;font-weight:700;font-size:13px;z-index:120;box-shadow:var(--shadow)}
-.toast.err{background:var(--r)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:100;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:var(--wh);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:92vh;overflow-y:auto}
-.modal-h{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--bd)}
-.modal-h h3{font-size:18px;font-weight:800}
-.modal-close{background:none;font-size:22px;color:var(--gr);padding:4px}
-.modal-body{padding:18px}
-.detail-section{margin-bottom:20px}
-.detail-section h4{font-size:12px;font-weight:800;color:var(--gr);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-.detail-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
-.detail-row:last-child{border-bottom:none}
-.success-card{text-align:center;padding:8px 0 18px}
-.success-icon{width:66px;height:66px;border-radius:50%;background:var(--gl);color:var(--g);font-size:34px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.key-display{background:var(--lt);border:2px dashed var(--g);border-radius:12px;padding:14px;margin:14px 0;font-family:monospace;font-size:16px;font-weight:800;color:var(--g);word-break:break-all;letter-spacing:1px}
-.msg-preview{background:var(--lt);border-radius:12px;padding:14px;margin:14px 0;font-size:13px;color:var(--s);text-align:left;white-space:pre-line;line-height:1.5;border:1px solid var(--bd)}
-.action-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.quick-card{padding:14px;border-radius:14px;background:#fff;border:1px solid var(--bd);box-shadow:var(--shadow)}
-.quick-card h4{font-size:13px;font-weight:800;margin-bottom:4px}
-.quick-card p{font-size:12px;color:var(--gr);line-height:1.45}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--bd);display:flex;z-index:40;padding:4px 0 max(4px,env(safe-area-inset-bottom))}
-.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 0;background:none;font-size:10px;color:var(--gr);gap:2px}
-.bnav button.act{color:var(--g);font-weight:800}
-.bnav .ic{font-size:20px}
-.pin-wrap{position:fixed;inset:0;background:#f8fafc;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;width:100%}
-.pin-btn{padding:16px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;font-size:22px;font-weight:800;box-shadow:var(--shadow)}
-.p-dot{width:16px;height:16px;border-radius:50%;background:#e2e8f0}
-.note{font-size:12px;color:var(--gr);line-height:1.5}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;background:#eff6ff;color:var(--b)}
-.proof-img{width:100%;border-radius:14px;border:1px solid var(--bd)}
-.mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-@media(max-width:420px){.form-row,.quick-grid,.kpi-grid{grid-template-columns:1fr;display:grid}.form-row>*{min-width:0}}
+body{font-family:sans-serif;background:#f8fafc;margin:0}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;border:1px solid #e2e8f0}
+button{padding:10px 14px;border:none;border-radius:8px;cursor:pointer}
+.btn-g{background:#16a34a;color:#fff}
+.btn-r{background:#dc2626;color:#fff}
+input,select{width:100%;padding:10px;margin-top:5px;border-radius:8px;border:1px solid #ccc}
 </style>
 </head>
-<body>
-<header class="hdr hidden" id="mainHeader">
-  <div class="hdr-l">
-    <img src="kitatrack-logo.png" alt="KitaTrack" class="logo">
-    <div>
-      <div class="hdr-t">KitaTrack Admin</div>
-      <div class="hdr-s" id="hdrSub">Dashboard</div>
-    </div>
-  </div>
-  <div class="hdr-r">
-    <button class="icon-btn" onclick="showSettings()">⚙️</button>
-    <button class="icon-btn" onclick="loadData(true)">↻</button>
-    <div class="status-chip"><div id="onlineStatus" class="online-dot"></div><span id="onlineText">Online</span></div>
-  </div>
-</header>
 
-<div id="pinScreen" class="pin-wrap">
-  <img src="kitatrack-logo.png" alt="KitaTrack" style="height:82px;width:auto;display:block;margin:0 auto 18px">
-  <h2 style="font-size:20px;font-weight:800;margin-bottom:4px">KitaTrack Admin</h2>
-  <p style="color:#64748b;font-size:14px;margin-bottom:24px">Enter PIN to continue</p>
-  <div style="display:flex;gap:12px;margin-bottom:24px" id="pinDots"><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div></div>
-  <div id="pinErr" style="color:#dc2626;font-size:13px;margin-bottom:12px;height:20px"></div>
-  <div class="pin-grid">
-    <button class="pin-btn" onclick="pinAdd('1')">1</button><button class="pin-btn" onclick="pinAdd('2')">2</button><button class="pin-btn" onclick="pinAdd('3')">3</button>
-    <button class="pin-btn" onclick="pinAdd('4')">4</button><button class="pin-btn" onclick="pinAdd('5')">5</button><button class="pin-btn" onclick="pinAdd('6')">6</button>
-    <button class="pin-btn" onclick="pinAdd('7')">7</button><button class="pin-btn" onclick="pinAdd('8')">8</button><button class="pin-btn" onclick="pinAdd('9')">9</button>
-    <div></div><button class="pin-btn" onclick="pinAdd('0')">0</button><button class="pin-btn" onclick="pinDel()">⌫</button>
-  </div>
+<body>
+<div class="container">
+  <h2>KitaTrack Admin</h2>
+
+  <div id="orders"></div>
 </div>
 
-<div id="app" class="hidden"></div>
-
-<nav class="bnav hidden" id="mainNav">
-  <button onclick="go('dashboard')" id="nav-dashboard" class="act"><span class="ic">📊</span>Dashboard</button>
-  <button onclick="go('orders')" id="nav-orders"><span class="ic">🧾</span>Orders</button>
-  <button onclick="go('create')" id="nav-create"><span class="ic">➕</span>Create</button>
-  <button onclick="go('licenses')" id="nav-licenses"><span class="ic">🔑</span>Licenses</button>
-  <button onclick="go('payments')" id="nav-payments"><span class="ic">💰</span>Payments</button>
-</nav>
-
-<div id="toastEl" class="hidden"></div>
-<div id="modalEl"></div>
-
 <script>
-const ADMIN_API = '/api/admin';
-const EMAILJS_PUBLIC_KEY='tQmEhBYzAZAM9KcRK';
-const EMAILJS_SERVICE_ID='Service_tv56duv';
-const EMAILJS_PENDING_TEMPLATE_ID='template_3oqrd3m';
-const EMAILJS_VERIFIED_TEMPLATE_ID='template_xxxxxxx';
-const APP_LOGO_URL='https://kitatrack.vercel.app/kitatrack-logo.png';
-if(window.emailjs){ emailjs.init({publicKey: EMAILJS_PUBLIC_KEY}); }
+const API = "/api/admin";
 
-const DEFAULT_SETTINGS={
-  publicAppUrl:'https://kitatrack.vercel.app/pos.html',
-  businessName:'KitaTrack POS',
-  supportName:'KitaTrack POS Team',
-  supportPhone:'',
-  adminPin:'0715'
-};
-function loadSettings(){try{return {...DEFAULT_SETTINGS,...(JSON.parse(localStorage.getItem('kt_admin_settings')||'{}'))};}catch(e){return {...DEFAULT_SETTINGS};}}
-function saveSettings(next){localStorage.setItem('kt_admin_settings',JSON.stringify(next));}
-let settings=loadSettings();
-
-const peso=n=>'₱'+Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:2});
-const fmtDate=d=>d?new Date(d).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}):'—';
-const fmtTime=d=>d?new Date(d).toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}):'';
-const fmtDT=d=>d?`${fmtDate(d)} ${fmtTime(d)}`:'—';
-function slugPlan(plan){return ['basic','business','pro','custom'].includes(plan)?plan:'basic';}
-function escapeHtml(str=''){return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function calcExpiry(period){if(period==='lifetime')return null;const now=new Date();if(period==='daily')now.setDate(now.getDate()+1);else if(period==='monthly')now.setMonth(now.getMonth()+1);else if(period==='trial')now.setDate(now.getDate()+7);return now.toISOString();}
-function calcAmount(plan,period){const prices={basic:{daily:15,monthly:299,lifetime:1999,trial:0},business:{daily:25,monthly:499,lifetime:3499,trial:0},pro:{daily:40,monthly:799,lifetime:5499,trial:0},custom:{daily:40,monthly:799,lifetime:5499,trial:0}};return prices[slugPlan(plan)]?.[period]??0;}
-function statusDot(s){const colors={active:'var(--g)',pending:'var(--y)',expired:'var(--r)',suspended:'var(--gr)',completed:'#0f766e',rejected:'var(--r)',verified:'#0f766e'};return `<div class="li-dot" style="background:${colors[s]||'var(--gr)'}"></div>`;}
-function statusBadge(s){const cls={active:'st-active',pending:'st-pending',expired:'st-expired',suspended:'st-suspended',completed:'st-completed',verified:'st-completed',rejected:'st-expired'};return `<span class="li-status ${cls[s]||'st-suspended'}">${escapeHtml(s||'unknown')}</span>`;}
-function isExpired(license){return license.expires_at&&new Date(license.expires_at)<new Date();}
-function effectiveStatus(license){if(license.status==='active'&&isExpired(license))return 'expired';return license.status||'pending';}
-function publicLinkForLicense(lic){return `${settings.publicAppUrl}?plan=${slugPlan(lic.plan)}`;}
-function publicDemoLink(plan){return `${settings.publicAppUrl}?plan=${slugPlan(plan)}&demo=true`;}
-function genMessage(lic){return `Hi ${lic.customer_name}! 👋\n\nYour ${settings.businessName} is now activated ✅\n\n🔑 License Key:\n${lic.license_key}\n\n📦 Plan: ${(lic.plan||'').charAt(0).toUpperCase()+(lic.plan||'').slice(1)}\n📅 ${lic.period==='lifetime'?'Lifetime (never expires)':'Valid until: '+fmtDate(lic.expires_at)}\n\n👉 Open the app:\n${settings.publicAppUrl}\n\nEnter your key to start.\n\n${settings.supportPhone?'📞 Support: '+settings.supportPhone+'\n\n':''}Salamat! 🙏\n— ${settings.supportName}`;}
-function toast(msg,err=false){const el=document.getElementById('toastEl');el.className='toast'+(err?' err':'');el.textContent=msg;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2600);}
-async function copyText(text){try{await navigator.clipboard.writeText(text);toast('Copied!');}catch{toast('Copy failed',true);}}
-
-let currentPage='dashboard',licenses=[],payments=[],orders=[],searchQ='',filterStatus='all',filterPlan='all',filterOrders='pending';
-let pinValue='';
-
-function getAdminPin(){return loadSettings().adminPin||'0715';}
-function adminHeaders(extra={}){return {'Content-Type':'application/json','x-admin-pin': getAdminPin(),...extra};}
-
-async function apiGet(mode){
-  const r=await fetch(`${ADMIN_API}?mode=${encodeURIComponent(mode)}`,{headers: adminHeaders()});
-  const data=await r.json().catch(()=>null);
-  if(!r.ok) throw new Error(data?.error || `GET ${mode} failed`);
-  return data;
-}
-async function apiPost(body){
-  const r=await fetch(ADMIN_API,{method:'POST',headers: adminHeaders(),body: JSON.stringify(body)});
-  const data=await r.json().catch(()=>null);
-  if(!r.ok) throw new Error(data?.error || 'Request failed');
-  return data;
-}
-
-function pinAdd(d){
-  if(pinValue.length>=4)return;
-  pinValue+=d;
-  document.getElementById('pinErr').textContent='';
-  document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');
-  if(pinValue.length===4){
-    setTimeout(()=>{
-      if(pinValue===getAdminPin()){unlockAdmin();}
-      else{
-        document.getElementById('pinErr').textContent='Wrong PIN. Try again.';
-        pinValue='';
-        document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#dc2626');
-        setTimeout(()=>document.querySelectorAll('.p-dot').forEach(dot=>dot.style.background='#e2e8f0'),500);
-      }
-    },180);
-  }
-}
-function pinDel(){pinValue=pinValue.slice(0,-1);document.querySelectorAll('.p-dot').forEach((dot,i)=>dot.style.background=i<pinValue.length?'#16a34a':'#e2e8f0');}
-function unlockAdmin(){document.getElementById('pinScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('mainHeader').classList.remove('hidden');document.getElementById('mainNav').classList.remove('hidden');sessionStorage.setItem('kt_admin_auth','true');}
-function logoutAdmin(){sessionStorage.removeItem('kt_admin_auth');location.reload();}
-document.addEventListener('keydown',e=>{if(document.getElementById('pinScreen').classList.contains('hidden'))return;if(e.key>='0'&&e.key<='9')pinAdd(e.key);if(e.key==='Backspace')pinDel();});
-
-function updateOnlineStatus(){const dot=document.getElementById('onlineStatus');const text=document.getElementById('onlineText');if(navigator.onLine){dot.className='online-dot';text.textContent='Online';}else{dot.className='online-dot offline-dot';text.textContent='Offline';}}
-window.addEventListener('online',updateOnlineStatus);window.addEventListener('offline',updateOnlineStatus);
-
-async function loadData(showMessage=false){
-  try{
-    const [licRes,payRes,ordRes]=await Promise.all([apiGet('licenses'),apiGet('payments'),apiGet('orders')]);
-    licenses=licRes.licenses||[];
-    payments=payRes.payments||[];
-    orders=ordRes.orders||[];
-    syncExpiredLocally();
-    if(showMessage) toast('Data refreshed');
-  }catch(e){console.error(e);toast(e.message||'Failed to load data',true);}
-  render();
-}
-function syncExpiredLocally(){licenses=licenses.map(l=>effectiveStatus(l)==='expired'?{...l,status:'expired'}:l);}
-
-function go(page){
-  currentPage=page;searchQ='';filterStatus='all';filterPlan='all';
-  document.querySelectorAll('.bnav button').forEach(b=>b.classList.remove('act'));
-  const navBtn=document.getElementById('nav-'+page); if(navBtn) navBtn.classList.add('act');
-  document.getElementById('hdrSub').textContent={dashboard:'Dashboard',orders:'Orders',create:'Create License',licenses:'Licenses',payments:'Payments'}[page]||'';
-  render();
-}
-
-async function sendVerifiedEmail(lic){
-  if(!window.emailjs) return {ok:false,error:'EmailJS SDK not loaded'};
-  if(EMAILJS_VERIFIED_TEMPLATE_ID==='template_xxxxxxx') return {ok:false,error:'Paste your verified EmailJS template ID first'};
-  if(!lic?.customer_email) return {ok:false,error:'Customer email missing'};
-  try{
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_VERIFIED_TEMPLATE_ID, {
-      to_email: lic.customer_email,
-      customer_name: lic.customer_name || 'Customer',
-      plan_name: (lic.plan || '').charAt(0).toUpperCase() + (lic.plan || '').slice(1),
-      period: lic.period || '',
-      license_key: lic.license_key || '',
-      app_link: publicLinkForLicense(lic),
-      logo_url: APP_LOGO_URL
-    });
-    return {ok:true};
-  }catch(e){console.error(e);return {ok:false,error:String(e)};}
-}
-
-function render(){
-  const app=document.getElementById('app');
-  if(currentPage==='dashboard') app.innerHTML=renderDashboard();
-  else if(currentPage==='orders') app.innerHTML=renderOrders();
-  else if(currentPage==='create') app.innerHTML=renderCreate();
-  else if(currentPage==='licenses') app.innerHTML=renderLicenses();
-  else if(currentPage==='payments') app.innerHTML=renderPayments();
-}
-
-function renderDashboard(){
-  const active=licenses.filter(l=>effectiveStatus(l)==='active').length;
-  const pendingOrders=orders.filter(o=>(o.status||'pending')==='pending').length;
-  const totalRevenue=payments.reduce((s,p)=>s+Number(p.amount||0),0);
-  const totalOrders=orders.length;
-  let h=`<div class="page">
-    <div class="kpi-grid">
-      <div class="card stat-green"><div class="card-t">Active Licenses</div><div class="card-v">${active}</div><div class="card-sub">${licenses.length} total licenses</div></div>
-      <div class="card stat-purple"><div class="card-t">Pending Orders</div><div class="card-v">${pendingOrders}</div><div class="card-sub">${totalOrders} total orders</div></div>
-      <div class="card stat-blue"><div class="card-t">Revenue</div><div class="card-v">${peso(totalRevenue)}</div><div class="card-sub">${payments.length} payment records</div></div>
-      <div class="card stat-red"><div class="card-t">Expired</div><div class="card-v">${licenses.filter(l=>effectiveStatus(l)==='expired').length}</div><div class="card-sub">Need renewal</div></div>
-    </div>
-
-    <div class="quick-grid">
-      <div class="quick-card"><h4>🧾 Orders</h4><p>Review pending submissions and customer details.</p><button class="btn btn-y btn-sm btn-full" style="margin-top:10px" onclick="go('orders')">Open Orders</button></div>
-      <div class="quick-card"><h4>➕ Create Cash License</h4><p>Create and send a key instantly for walk-in customers.</p><button class="btn btn-g btn-sm btn-full" style="margin-top:10px" onclick="go('create')">Create Now</button></div>
-      <div class="quick-card"><h4>🎮 Demo Links</h4><p>Copy test links for Basic, Business, and Pro.</p><button class="btn btn-o btn-sm btn-full" style="margin-top:10px" onclick="showDemoLinks()">Open</button></div>
-      <div class="quick-card"><h4>💳 Payment QR</h4><p>Show GCash and Maya QR codes for customers ready to pay.</p><button class="btn btn-b btn-sm btn-full" style="margin-top:10px" onclick="showPaymentQR()">Show QR</button></div>
-    </div>`;
-  if(pendingOrders){
-    h += `<div class="sec-header" style="margin-top:16px"><div class="sec-title">Latest Pending Orders</div><button class="btn btn-o btn-sm" onclick="go('orders')">View All</button></div>`;
-    orders.filter(o=>(o.status||'pending')==='pending').slice(0,5).forEach(o=>{
-      h += `<div class="list-item" onclick="showOrderDetail('${o.id}')">${statusDot('pending')}<div class="li-info"><div class="li-name">${escapeHtml(o.name||'Unknown')}</div><div class="li-sub">${escapeHtml((o.plan||'').toUpperCase())} · ${escapeHtml(o.period||'')} · ${escapeHtml(o.reference_number||'No ref')}</div></div><div class="li-right"><div class="li-amount">${peso(o.amount)}</div>${statusBadge(o.status||'pending')}</div></div>`;
-    });
-  }
-  h += `</div>`;
-  return h;
-}
-
-function renderOrders(){
-  let filtered=[...orders];
-  if(filterOrders!=='all') filtered=filtered.filter(o=>(o.status||'pending')===filterOrders);
-  if(searchQ){
-    const q=searchQ.toLowerCase();
-    filtered=filtered.filter(o=>(o.name||'').toLowerCase().includes(q)||(o.email||'').toLowerCase().includes(q)||(o.reference_number||'').toLowerCase().includes(q)||(o.plan||'').toLowerCase().includes(q));
-  }
-  let h=`<div class="page">
-    <div class="sec-header"><div class="sec-title">Orders</div><button class="btn btn-o btn-sm" onclick="loadData(true)">Refresh</button></div>
-    <div class="search-box"><span>🔍</span><input placeholder="Search name, email, reference..." value="${escapeHtml(searchQ)}" oninput="searchQ=this.value;render()"></div>
-    <div class="pills">
-      <button class="pill${filterOrders==='pending'?' act':''}" onclick="filterOrders='pending';render()">Pending</button>
-      <button class="pill${filterOrders==='completed'?' act':''}" onclick="filterOrders='completed';render()">Completed</button>
-      <button class="pill${filterOrders==='rejected'?' act':''}" onclick="filterOrders='rejected';render()">Rejected</button>
-      <button class="pill${filterOrders==='all'?' act':''}" onclick="filterOrders='all';render()">All</button>
-    </div>`;
-  if(!filtered.length) h += `<div class="empty"><div class="ic">🧾</div>No orders found.</div>`;
-  else filtered.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).forEach(o=>{
-    h += `<div class="list-item" onclick="showOrderDetail('${o.id}')">${statusDot(o.status||'pending')}<div class="li-info"><div class="li-name">${escapeHtml(o.name||'Unknown')}</div><div class="li-sub">${escapeHtml((o.plan||'').toUpperCase())} · ${escapeHtml(o.period||'')} · ${escapeHtml(o.reference_number||'No ref')}</div></div><div class="li-right"><div class="li-amount">${peso(o.amount)}</div>${statusBadge(o.status||'pending')}</div></div>`;
+async function fetchOrders(){
+  const res = await fetch(API + "?mode=orders", {
+    headers: {
+      "x-admin-pin": "0715"
+    }
   });
-  h += `</div>`;
-  return h;
+
+  const data = await res.json();
+  renderOrders(data.orders || []);
 }
 
-function renderCreate(){
-  return `<div class="page">
-    <div class="card">
-      <h3 style="font-weight:800;font-size:16px;margin-bottom:16px">➕ Create New License</h3>
-      <div class="form-group"><label class="form-label">Customer Name *</label><input id="cName" placeholder="Juan Dela Cruz"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Email</label><input id="cEmail" type="email" placeholder="Optional"></div>
-        <div class="form-group"><label class="form-label">Phone</label><input id="cPhone" placeholder="09XX XXX XXXX"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Plan *</label><select id="cPlan" onchange="updateAmount()"><option value="basic">Basic</option><option value="business">Business</option><option value="pro">Pro</option><option value="custom">Custom</option></select></div>
-        <div class="form-group"><label class="form-label">Period *</label><select id="cPeriod" onchange="updateAmount()"><option value="daily">Daily</option><option value="monthly">Monthly</option><option value="lifetime">Lifetime</option><option value="trial">Trial (7 days)</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Payment Method</label><select id="cMethod"><option value="cash">Cash</option><option value="gcash">GCash</option><option value="maya">Maya</option><option value="free">Free Trial</option></select></div>
-        <div class="form-group"><label class="form-label">Amount (₱)</label><input id="cAmount" type="number" value="15"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Notes</label><textarea id="cNotes" rows="2" placeholder="Optional notes..."></textarea></div>
-      <button class="btn btn-g btn-full" onclick="createLicense()">🔑 Create & Activate License</button>
-    </div>
-  </div>`;
-}
-function updateAmount(){const plan=document.getElementById('cPlan').value;const period=document.getElementById('cPeriod').value;document.getElementById('cAmount').value=calcAmount(plan,period);}
-async function createLicense(){
-  const name=document.getElementById('cName').value.trim(),email=document.getElementById('cEmail').value.trim(),phone=document.getElementById('cPhone').value.trim(),plan=document.getElementById('cPlan').value,period=document.getElementById('cPeriod').value,method=document.getElementById('cMethod').value,amount=Number(document.getElementById('cAmount').value||0),notes=document.getElementById('cNotes').value.trim();
-  if(!name) return toast('Please enter customer name',true);
-  if(period==='trial' && plan!=='basic') return toast('Trial is only for Basic plan', true);
-  try{
-    const result = await apiPost({action:'create_license',customer_name:name,customer_email:email || null,customer_phone:phone || null,plan,period,payment_method:method,amount,notes:notes || null});
-    const lic = result.license;
-    if(!lic) return toast('Failed to create license', true);
-    licenses.unshift(lic);
-    if(amount>0){
-      try{
-        const payResult = await apiPost({action:'record_payment',license_id: lic.id,amount: amount,method: method,reference_number: null});
-        if(payResult.payment) payments.unshift(payResult.payment);
-      }catch(e){console.error(e);}
-    }
-    const emailRes=await sendVerifiedEmail(lic);
-    showSuccessModal(lic);
-    toast(emailRes.ok?'License created + email sent!':'License created. Email not sent.', !emailRes.ok);
-    render();
-  }catch(e){console.error(e);toast(e.message || 'Failed to create license', true);}
-}
+function renderOrders(list){
+  const el = document.getElementById("orders");
+  el.innerHTML = "";
 
-function renderLicenses(){
-  let filtered=[...licenses];
-  if(filterStatus!=='all') filtered=filtered.filter(l=>effectiveStatus(l)===filterStatus);
-  if(filterPlan!=='all') filtered=filtered.filter(l=>slugPlan(l.plan)===filterPlan);
-  if(searchQ){
-    const q=searchQ.toLowerCase();
-    filtered=filtered.filter(l=>(l.customer_name||'').toLowerCase().includes(q)||(l.license_key||'').toLowerCase().includes(q)||(l.customer_email||'').toLowerCase().includes(q));
+  if(!list.length){
+    el.innerHTML = "<p>No orders</p>";
+    return;
   }
-  let h=`<div class="page"><div class="search-box"><span>🔍</span><input placeholder="Search name, key, email..." value="${escapeHtml(searchQ)}" oninput="searchQ=this.value;render()"></div>
-  <div class="pills"><button class="pill${filterStatus==='all'?' act':''}" onclick="filterStatus='all';render()">All</button><button class="pill${filterStatus==='active'?' act':''}" onclick="filterStatus='active';render()">Active</button><button class="pill${filterStatus==='expired'?' act':''}" onclick="filterStatus='expired';render()">Expired</button></div>
-  <div class="pills"><button class="pill${filterPlan==='all'?' act':''}" onclick="filterPlan='all';render()">All Plans</button><button class="pill${filterPlan==='basic'?' act':''}" onclick="filterPlan='basic';render()">Basic</button><button class="pill${filterPlan==='business'?' act':''}" onclick="filterPlan='business';render()">Business</button><button class="pill${filterPlan==='pro'?' act':''}" onclick="filterPlan='pro';render()">Pro</button></div>`;
-  if(!filtered.length) h += `<div class="empty"><div class="ic">🔑</div>No licenses found.</div>`;
-  else filtered.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).forEach(l=>{h += `<div class="list-item" onclick="showLicenseDetail('${l.id}')">${statusDot(effectiveStatus(l))}<div class="li-info"><div class="li-name">${escapeHtml(l.customer_name||'Unknown')}</div><div class="li-sub">${escapeHtml(l.license_key||'—')}</div></div><div class="li-right"><div class="li-amount">${peso(l.amount)}</div>${statusBadge(effectiveStatus(l))}</div></div>`;});
-  h += `</div>`; return h;
+
+  list.forEach(o=>{
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <h3>${o.customer_name || "Unknown"}</h3>
+      <p><b>Email:</b> ${o.customer_email || "-"}</p>
+      <p><b>Phone:</b> ${o.customer_phone || "-"}</p>
+      <p><b>Plan:</b> ${o.plan}</p>
+      <p><b>Period:</b> ${o.period}</p>
+      <p><b>Amount:</b> ₱${o.amount}</p>
+      <p><b>Ref:</b> ${o.reference_number || "-"}</p>
+      <p><b>Status:</b> ${o.status}</p>
+
+      ${o.status === "pending" ? `
+        <button class="btn-g" onclick="verify('${o.id}')">Verify</button>
+        <button class="btn-r" onclick="reject('${o.id}')">Reject</button>
+      ` : ""}
+    `;
+
+    el.appendChild(div);
+  });
 }
 
-function renderPayments(){
-  let filtered=[...payments];
-  if(searchQ){
-    const q=searchQ.toLowerCase();
-    filtered=filtered.filter(p=>{const lic=licenses.find(l=>l.id===p.license_id);return (lic?.customer_name||'').toLowerCase().includes(q)||(p.method||'').toLowerCase().includes(q)||(p.reference_number||'').toLowerCase().includes(q);});
-  }
-  let h=`<div class="page"><div class="search-box"><span>🔍</span><input placeholder="Search customer, method, ref..." value="${escapeHtml(searchQ)}" oninput="searchQ=this.value;render()"></div>`;
-  if(!filtered.length) h += `<div class="empty"><div class="ic">💰</div>No payments recorded yet.</div>`;
-  else filtered.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).forEach(p=>{const lic=licenses.find(l=>l.id===p.license_id);h += `<div class="list-item">${statusDot(p.verified?'active':'pending')}<div class="li-info"><div class="li-name">${escapeHtml(lic?.customer_name||'Unknown')}</div><div class="li-sub">${escapeHtml(p.method||'—')} · ${escapeHtml(p.reference_number||'No ref')} · ${fmtDate(p.created_at)}</div></div><div class="li-right"><div class="li-amount">${peso(p.amount)}</div>${p.verified?'<span class="li-status st-active">Verified</span>':'<span class="li-status st-pending">Pending</span>'}</div></div>`;});
-  h += `</div>`; return h;
-}
-
-function closeModal(){document.getElementById('modalEl').innerHTML='';}
-function showSuccessModal(lic){
-  const msg=genMessage(lic);
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>License Created! 🎉</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="success-card"><div class="success-icon">✓</div><h3 style="font-size:18px;font-weight:800;margin-bottom:4px">${escapeHtml(lic.customer_name)}</h3><p style="color:var(--gr);font-size:14px">${escapeHtml((lic.plan||'').charAt(0).toUpperCase()+(lic.plan||'').slice(1))} · ${escapeHtml(lic.period)}</p><div class="key-display">${escapeHtml(lic.license_key)}</div></div><div class="action-btns"><button class="btn btn-g btn-full" onclick="copyText('${escapeHtml(lic.license_key)}')">📋 Copy License Key</button><button class="btn btn-o btn-full" onclick='copyText(${JSON.stringify(msg)})'>💬 Copy Full Message</button><button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(publicLinkForLicense(lic))})'>🔗 Copy App Link</button></div></div></div></div>`;
-}
-function showLicenseDetail(id){
-  const l=licenses.find(x=>x.id===id); if(!l) return;
-  const msg=genMessage(l);
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>License Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="detail-section"><div class="detail-row"><span>Customer</span><strong>${escapeHtml(l.customer_name||'Unknown')}</strong></div><div class="detail-row"><span>Key</span><strong class="mono" style="color:var(--g)">${escapeHtml(l.license_key||'—')}</strong></div><div class="detail-row"><span>Plan</span><strong>${escapeHtml((l.plan||'').toUpperCase())}</strong></div><div class="detail-row"><span>Period</span><strong>${escapeHtml(l.period||'—')}</strong></div><div class="detail-row"><span>Email</span><strong>${escapeHtml(l.customer_email||'—')}</strong></div><div class="detail-row"><span>Expires</span><strong>${escapeHtml(l.expires_at ? fmtDT(l.expires_at) : 'Never')}</strong></div><div class="detail-row"><span>Status</span>${statusBadge(effectiveStatus(l))}</div></div><div class="action-btns"><button class="btn btn-g btn-full" onclick="copyText('${escapeHtml(l.license_key)}')">📋 Copy Key</button><button class="btn btn-o btn-full" onclick='copyText(${JSON.stringify(msg)})'>💬 Copy Message</button><button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(publicLinkForLicense(l))})'>🔗 Copy App Link</button><button class="btn btn-y btn-full" onclick="resendVerifiedEmail('${l.id}')">✉️ Send License Email</button></div></div></div></div>`;
-}
-function showOrderDetail(id){
-  const o=orders.find(x=>x.id===id); if(!o) return;
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>Order Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">
-    <div class="detail-section">
-      <div class="detail-row"><span>Name</span><strong>${escapeHtml(o.name||'Unknown')}</strong></div>
-      <div class="detail-row"><span>Email</span><strong>${escapeHtml(o.email||'—')}</strong></div>
-      <div class="detail-row"><span>Phone</span><strong>${escapeHtml(o.phone||'—')}</strong></div>
-      <div class="detail-row"><span>Plan</span><strong>${escapeHtml((o.plan||'').toUpperCase())}</strong></div>
-      <div class="detail-row"><span>Period</span><strong>${escapeHtml(o.period||'—')}</strong></div>
-      <div class="detail-row"><span>Amount</span><strong>${peso(o.amount)}</strong></div>
-      <div class="detail-row"><span>Payment Method</span><strong>${escapeHtml(o.payment_method||'—')}</strong></div>
-      <div class="detail-row"><span>Reference</span><strong>${escapeHtml(o.reference_number||'—')}</strong></div>
-      <div class="detail-row"><span>Status</span>${statusBadge(o.status||'pending')}</div>
-      <div class="detail-row"><span>Created</span><strong>${fmtDT(o.created_at)}</strong></div>
-    </div>
-    ${o.screenshot_data ? `<div class="detail-section"><h4>Proof Screenshot</h4><img class="proof-img" src="${o.screenshot_data}" alt="Proof of payment"></div>` : `<div class="note">No screenshot uploaded.</div>`}
-    ${o.notes ? `<div class="detail-section"><h4>Notes</h4><div class="note">${escapeHtml(o.notes)}</div></div>`:''}
-    ${(o.status||'pending')==='pending' ? `<div class="action-btns"><button class="btn btn-g btn-full" onclick="verifyOrder('${o.id}')">✅ Verify Order & Create License</button><button class="btn btn-r btn-full" onclick="rejectOrder('${o.id}')">❌ Reject Order</button></div>`:''}
-  </div></div></div>`;
-}
-async function verifyOrder(id){
-  const o=orders.find(x=>x.id===id); if(!o) return toast('Order not found',true);
+async function verify(id){
   try{
-    const licRes = await apiPost({
-      action:'create_license',
-      customer_name:o.name,
-      customer_email:o.email || null,
-      customer_phone:o.phone || null,
-      plan:o.plan,
-      period:o.period,
-      payment_method:o.payment_method || 'gcash',
-      amount:Number(o.amount || 0),
-      notes:o.notes || `Order ${o.id}`
+    const res = await fetch(API,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-admin-pin":"0715"
+      },
+      body: JSON.stringify({
+        action:"verify_order",
+        id
+      })
     });
-    const lic=licRes.license;
-    if(!lic) return toast('Failed to create license', true);
-    licenses.unshift(lic);
 
-    if(Number(o.amount||0) > 0){
-      try{
-        const payRes = await apiPost({
-          action:'record_payment',
-          license_id: lic.id,
-          amount: Number(o.amount||0),
-          method: o.payment_method || 'gcash',
-          reference_number: o.reference_number || null
-        });
-        if(payRes.payment) payments.unshift(payRes.payment);
-      }catch(e){console.error(e);}
+    const data = await res.json();
+
+    if(!res.ok){
+      alert(data.error || "Error");
+      return;
     }
 
-    await apiPost({action:'update_order_status', id:o.id, status:'completed'});
-    const idx=orders.findIndex(x=>x.id===id);
-    if(idx>=0) orders[idx]={...orders[idx],status:'completed'};
+    alert("Order verified!");
+    fetchOrders();
 
-    const emailRes=await sendVerifiedEmail(lic);
-    closeModal();
-    toast(emailRes.ok?'Order verified + license emailed!':'Order verified. Email not sent.',!emailRes.ok);
-    render();
-  }catch(e){console.error(e);toast(e.message || 'Failed to verify order', true);}
-}
-async function rejectOrder(id){
-  try{
-    await apiPost({action:'update_order_status', id:id, status:'rejected'});
-    const idx=orders.findIndex(x=>x.id===id);
-    if(idx>=0) orders[idx]={...orders[idx],status:'rejected'};
-    closeModal(); toast('Order rejected'); render();
-  }catch(e){console.error(e);toast(e.message || 'Reject failed', true);}
-}
-async function resendVerifiedEmail(id){
-  const lic=licenses.find(x=>x.id===id); if(!lic) return toast('License not found',true);
-  const res=await sendVerifiedEmail(lic);
-  toast(res.ok?'License email sent!':(res.error||'Email failed'),!res.ok);
-}
-function showDemoLinks(){
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>Demo Links</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="action-btns"><button class="btn btn-o btn-full" onclick='copyText(${JSON.stringify(publicDemoLink("basic"))})'>📋 Copy Basic Demo</button><button class="btn btn-b btn-full" onclick='copyText(${JSON.stringify(publicDemoLink("business"))})'>📋 Copy Business Demo</button><button class="btn btn-y btn-full" onclick='copyText(${JSON.stringify(publicDemoLink("pro"))})'>📋 Copy Pro Demo</button></div></div></div></div>`;
-}
-function showPaymentQR(){
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>Pay Now</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="card" style="text-align:center"><img src="gcash-qr.jpeg" alt="GCash QR" style="width:100%;max-width:320px;border-radius:18px;border:1px solid #e2e8f0;margin-bottom:12px"><div style="font-weight:800;color:#2563eb;font-size:16px">GCash</div></div><div class="card" style="text-align:center"><img src="maya-qr.jpeg" alt="Maya QR" style="width:100%;max-width:320px;border-radius:18px;border:1px solid #e2e8f0;margin-bottom:12px"><div style="font-weight:800;color:#16a34a;font-size:16px">Maya</div></div></div></div></div>`;
-}
-function showSettings(){
-  settings=loadSettings();
-  document.getElementById('modalEl').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-h"><h3>⚙️ Settings</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="card"><div class="form-group"><label class="form-label">Public App URL</label><input id="sPublicUrl" value="${escapeHtml(settings.publicAppUrl)}"></div><div class="form-group"><label class="form-label">Business Name</label><input id="sBusinessName" value="${escapeHtml(settings.businessName)}"></div><div class="form-group"><label class="form-label">Support Name</label><input id="sSupportName" value="${escapeHtml(settings.supportName)}"></div><div class="form-group"><label class="form-label">Support Phone</label><input id="sSupportPhone" value="${escapeHtml(settings.supportPhone)}"></div><div class="form-group"><label class="form-label">Admin PIN</label><input id="sAdminPin" value="${escapeHtml(settings.adminPin)}" maxlength="4"></div></div><div class="card"><h4 style="font-weight:800;font-size:15px;margin-bottom:8px">EmailJS</h4><div class="note">Replace <strong>template_xxxxxxx</strong> in this file with your real verified EmailJS template ID if you want one-click sending from admin.</div></div><button class="btn btn-b btn-full" onclick="savePublicSettings()">💾 Save Settings</button><button class="btn btn-r btn-full" style="margin-top:10px" onclick="logoutAdmin()">🚪 Lock Admin</button></div></div></div>`;
-}
-function savePublicSettings(){
-  settings={...loadSettings(),publicAppUrl:document.getElementById('sPublicUrl').value.trim()||DEFAULT_SETTINGS.publicAppUrl,businessName:document.getElementById('sBusinessName').value.trim()||DEFAULT_SETTINGS.businessName,supportName:document.getElementById('sSupportName').value.trim()||DEFAULT_SETTINGS.supportName,supportPhone:document.getElementById('sSupportPhone').value.trim(),adminPin:document.getElementById('sAdminPin').value.trim()||DEFAULT_SETTINGS.adminPin};
-  saveSettings(settings); toast('Settings saved'); closeModal();
+  }catch(e){
+    alert("Error verifying");
+  }
 }
 
-if(sessionStorage.getItem('kt_admin_auth')==='true') unlockAdmin();
-updateOnlineStatus(); loadData();
-setInterval(()=>{ if(navigator.onLine) loadData(); }, 60000);
+async function reject(id){
+  const res = await fetch(API,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "x-admin-pin":"0715"
+    },
+    body: JSON.stringify({
+      action:"reject_order",
+      id
+    })
+  });
+
+  const data = await res.json();
+
+  if(!res.ok){
+    alert(data.error || "Error");
+    return;
+  }
+
+  alert("Order rejected");
+  fetchOrders();
+}
+
+fetchOrders();
 </script>
 </body>
 </html>
