@@ -220,7 +220,7 @@ textarea{min-height:100px;resize:vertical}
   <div class="wrap">
     <div class="kicker">How it works</div>
     <h2 class="title">Simple flow for your customers</h2>
-    <p class="desc">Your current package already uses a separate landing page, demo launcher, customer POS, and admin panel. This order form submits into the public `orders` intake flow, which your security fix intentionally keeps open for customer submissions. fileciteturn4file12 fileciteturn4file13</p>
+    <p class="desc">Customers try the demo, choose a plan, pay using GCash or Maya, then submit the form below for manual activation.</p>
     <div class="flow">
       <div class="step"><strong>1. Try demo</strong><p>Customer explores Basic, Business, or Pro using demo mode first.</p></div>
       <div class="step"><strong>2. Choose plan + duration</strong><p>Customer selects trial, daily, monthly, or lifetime depending on the plan.</p></div>
@@ -252,7 +252,7 @@ textarea{min-height:100px;resize:vertical}
 <section class="sec" id="order">
   <div class="wrap">
     <h2 class="title">Order form</h2>
-    <p class="desc">This form sends the customer’s order into your `orders` table with the same fields your current admin and schema expect: name, email, phone, plan, period, amount, payment method, reference number, optional screenshot, and notes. fileciteturn4file4turn4file6</p>
+    <p class="desc">Submit your details below and we will activate your license after payment verification.</p>
 
     <div class="card form-card">
       <div class="summary" id="planSummary">
@@ -325,7 +325,7 @@ textarea{min-height:100px;resize:vertical}
       </div>
 
       <div class="notice" style="margin-bottom:14px">Basic includes a 7-day free trial. Trial is only available for Basic. Business and Pro start with paid access only.</div>
-      <button class="btn g" style="width:100%" onclick="submitOrder()">Submit Order</button>
+      <button class="btn g" style="width:100%" type="button" onclick="submitOrder()">Submit Order</button>
     </div>
   </div>
 </section>
@@ -335,8 +335,6 @@ textarea{min-height:100px;resize:vertical}
 </footer>
 
 <script>
-const SB_URL = 'https://lrixoqxtgfnwadbospae.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyaXhvcXh0Z2Zud2FkYm9zcGFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMjY5ODksImV4cCI6MjA5MDcwMjk4OX0.cVg3UDzPdIAgLci7TYWeschTR1tZCzXxcC-DQW6J1QY';
 const pricing = {
   basic: {
     label: 'Basic',
@@ -461,34 +459,32 @@ async function submitOrder(){
   }
 
   const payload = {
-    name,
-    email,
-    phone: phone || null,
+    customer_name: name,
+    customer_email: email,
+    customer_phone: phone || null,
     plan,
     period,
     amount: String(amount),
     payment_method: method,
-    reference_number: reference || 'TRIAL',
+    reference_number: reference || null,
     screenshot_data: screenshotData,
-    notes: notes || null,
-    status: 'pending'
+    notes: notes || null
   };
 
   try{
-    const res = await fetch(`${SB_URL}/rest/v1/orders`, {
+    const res = await fetch('/api/orders', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'apikey': SB_KEY,
-        'Authorization': 'Bearer ' + SB_KEY,
-        'Prefer': 'return=representation'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
 
-    if(!res.ok){
-      const txt = await res.text();
-      throw new Error(txt || 'Order submit failed');
+    const data = await res.json();
+
+    if(!res.ok || !data.success){
+      console.error(data);
+      return showToast(data.error || 'Order failed. Please try again.', true);
     }
 
     document.getElementById('orderName').value = '';
@@ -504,7 +500,7 @@ async function submitOrder(){
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }catch(err){
     console.error(err);
-    showToast('Order failed. Please try again.', true);
+    showToast('Network error. Please try again.', true);
   }
 }
 
