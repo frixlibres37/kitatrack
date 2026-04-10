@@ -115,15 +115,14 @@ export default async function handler(req, res) {
   }
 
   async function createLicenseFromOrder(order) {
-    const plan = clean(order.plan).toLowerCase();
-    const period = clean(order.period).toLowerCase();
-
     const customer_name = clean(order.customer_name || order.name);
     const customer_email = clean(order.customer_email || order.email);
     const customer_phone = clean(order.customer_phone || order.phone);
+    const plan = clean(order.plan).toLowerCase();
+    const period = clean(order.period).toLowerCase();
     const payment_method = clean(order.payment_method || "GCash");
-    const notes = clean(order.notes);
     const reference_number = clean(order.reference_number);
+    const notes = clean(order.notes);
     const amount =
       order.amount !== undefined && order.amount !== null && order.amount !== ""
         ? String(order.amount)
@@ -133,11 +132,11 @@ export default async function handler(req, res) {
     const validPeriods = ["trial", "daily", "monthly", "lifetime"];
 
     if (!customer_name || !customer_email || !plan || !period) {
-      throw new Error("Missing required order fields.");
+      throw new Error("Order is missing required fields for license creation.");
     }
 
     if (!validPlans.includes(plan) || !validPeriods.includes(period)) {
-      throw new Error("Invalid plan or period.");
+      throw new Error("Invalid plan or period in order.");
     }
 
     if (period === "trial" && plan !== "basic") {
@@ -325,7 +324,7 @@ export default async function handler(req, res) {
           });
         }
 
-        if (String(order.status).toLowerCase() !== "pending") {
+        if (String(order.status || "").toLowerCase() !== "pending") {
           return res.status(400).json({
             ok: false,
             error: "Only pending orders can be verified."
