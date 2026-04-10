@@ -4,175 +4,536 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>KitaTrack Admin</title>
-
   <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8fafc;
-      margin: 0;
-      color: #0f172a;
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --green:#16a34a;
+      --green-dark:#15803d;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --red:#dc2626;
+      --red-dark:#b91c1c;
+      --amber:#f59e0b;
+      --slate:#475569;
     }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:Arial,sans-serif;
+      color:var(--text);
     }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+      padding:20px;
     }
-    .topbar h2 {
-      margin: 0;
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
     }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 15px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+
+    .title-wrap h1{
+      margin:0;
+      font-size:28px;
     }
-    .row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+
+    .title-wrap p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:14px;
     }
-    .muted {
-      color: #64748b;
-      font-size: 14px;
+
+    .auth-box{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    .status {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 8px 24px rgba(15,23,42,.04);
     }
-    .status.pending {
-      background: #fef3c7;
-      color: #92400e;
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
     }
-    .status.completed,
-    .status.active {
-      background: #dcfce7;
-      color: #166534;
+
+    .tab-btn{
+      border:none;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      background:#fff;
+      border:1px solid var(--border);
+      font-weight:700;
+      color:var(--text);
     }
-    .status.rejected,
-    .status.expired,
-    .status.suspended {
-      background: #fee2e2;
-      color: #991b1b;
+
+    .tab-btn.active{
+      background:var(--blue);
+      color:#fff;
+      border-color:var(--blue);
     }
-    button {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
+
+    .section{
+      display:none;
     }
-    .btn-g { background: #16a34a; color: #fff; }
-    .btn-r { background: #dc2626; color: #fff; }
-    .btn-b { background: #2563eb; color: #fff; }
-    .btn-s { background: #475569; color: #fff; }
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-      flex-wrap: wrap;
+
+    .section.active{
+      display:block;
     }
-    .pin-box {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
     }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
+
+    .kpi{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px;
     }
-    .pin-input {
-      width: 140px;
-      margin-top: 0;
+
+    .kpi .label{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:8px;
     }
-    .loading {
-      padding: 20px;
-      text-align: center;
-      color: #64748b;
+
+    .kpi .value{
+      font-size:28px;
+      font-weight:800;
     }
-    .error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 16px;
+
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
     }
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #f8fafc;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      font-size: 12px;
+
+    .toolbar .left,
+    .toolbar .right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    input, select, textarea{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font-size:14px;
+      background:#fff;
+    }
+
+    textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .small-input{
+      width:180px;
+    }
+
+    .btn{
+      border:none;
+      padding:11px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .btn-green{background:var(--green);color:#fff}
+    .btn-green:hover{background:var(--green-dark)}
+    .btn-blue{background:var(--blue);color:#fff}
+    .btn-blue:hover{background:var(--blue-dark)}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-red:hover{background:var(--red-dark)}
+    .btn-slate{background:var(--slate);color:#fff}
+    .btn-outline{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    .list{
+      display:grid;
+      gap:14px;
+    }
+
+    .item{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .item h3{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+    }
+
+    .meta p{
+      margin:5px 0;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .status{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .status.pending{background:#fef3c7;color:#92400e}
+    .status.completed{background:#dcfce7;color:#166534}
+    .status.active{background:#dcfce7;color:#166534}
+    .status.rejected{background:#fee2e2;color:#991b1b}
+    .status.expired{background:#fee2e2;color:#991b1b}
+    .status.suspended{background:#fee2e2;color:#991b1b}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+
+    .form-group label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--muted);
+    }
+
+    .message{
+      margin-bottom:16px;
+      padding:12px 14px;
+      border-radius:12px;
+      font-weight:700;
+      display:none;
+    }
+
+    .message.ok{
+      display:block;
+      background:#dcfce7;
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+
+    .message.err{
+      display:block;
+      background:#fee2e2;
+      color:#991b1b;
+      border:1px solid #fecaca;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .code-box{
+      background:#0f172a;
+      color:#e2e8f0;
+      border-radius:12px;
+      padding:12px;
+      font-family:monospace;
+      font-size:14px;
+      word-break:break-all;
+      margin-top:10px;
+    }
+
+    .empty{
+      text-align:center;
+      padding:30px;
+      color:var(--muted);
+      border:1px dashed var(--border);
+      border-radius:14px;
+      background:#fff;
+    }
+
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+
+    .table th, .table td{
+      padding:12px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      font-size:14px;
+      vertical-align:top;
+    }
+
+    .table th{
+      background:#f8fafc;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border-radius:14px;
+    }
+
+    @media(max-width:720px){
+      .title-wrap h1{font-size:24px}
+      .small-input{width:100%}
+      .auth-box{width:100%}
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <div class="topbar">
-      <h2>KitaTrack Admin</h2>
-      <div class="pin-box">
-        <label for="adminPin"><b>Admin PIN</b></label>
-        <input id="adminPin" class="pin-input" type="password" placeholder="Enter PIN" />
-        <button class="btn-b" onclick="savePin()">Save PIN</button>
-        <button class="btn-s" onclick="fetchOrders()">Refresh</button>
+      <div class="title-wrap">
+        <h1>KitaTrack Admin</h1>
+        <p>Manage orders, create licenses, monitor payments, and review active customers.</p>
+      </div>
+
+      <div class="auth-box">
+        <input id="adminPin" class="small-input" type="password" placeholder="Admin PIN" />
+        <button class="btn btn-blue" onclick="savePin()">Save PIN</button>
+        <button class="btn btn-slate" onclick="refreshCurrent()">Refresh</button>
       </div>
     </div>
 
-    <div id="message"></div>
-    <div id="orders" class="loading">Loading orders...</div>
+    <div id="message" class="message"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="tab-btn" data-tab="orders" onclick="showTab('orders')">Orders</button>
+      <button class="tab-btn" data-tab="create-license" onclick="showTab('create-license')">Create License</button>
+      <button class="tab-btn" data-tab="licenses" onclick="showTab('licenses')">Licenses</button>
+      <button class="tab-btn" data-tab="payments" onclick="showTab('payments')">Payments</button>
+    </div>
+
+    <section id="tab-dashboard" class="section active">
+      <div class="card">
+        <div class="toolbar">
+          <div class="left">
+            <h2 style="margin:0">Dashboard</h2>
+          </div>
+          <div class="right">
+            <button class="btn btn-blue" onclick="loadDashboard()">Reload Dashboard</button>
+          </div>
+        </div>
+
+        <div class="grid" id="dashboardKpis">
+          <div class="kpi"><span class="label">Pending Orders</span><span class="value">0</span></div>
+          <div class="kpi"><span class="label">Completed Orders</span><span class="value">0</span></div>
+          <div class="kpi"><span class="label">Active Licenses</span><span class="value">0</span></div>
+          <div class="kpi"><span class="label">Payments</span><span class="value">0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-orders" class="section">
+      <div class="card">
+        <div class="toolbar">
+          <div class="left">
+            <h2 style="margin:0">Orders</h2>
+            <span class="muted">Review customer submissions and verify them into real licenses.</span>
+          </div>
+          <div class="right">
+            <button class="btn btn-blue" onclick="loadOrders()">Reload Orders</button>
+          </div>
+        </div>
+        <div id="ordersList" class="list"></div>
+      </div>
+    </section>
+
+    <section id="tab-create-license" class="section">
+      <div class="card">
+        <div class="toolbar">
+          <div class="left">
+            <h2 style="margin:0">Create License</h2>
+            <span class="muted">For walk-in, cash, or manual activation customers.</span>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="clName">Customer Name *</label>
+            <input id="clName" placeholder="Juan Dela Cruz" />
+          </div>
+          <div class="form-group">
+            <label for="clEmail">Customer Email *</label>
+            <input id="clEmail" type="email" placeholder="juan@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="clPhone">Customer Phone</label>
+            <input id="clPhone" placeholder="09XXXXXXXXX" />
+          </div>
+          <div class="form-group">
+            <label for="clPlan">Plan *</label>
+            <select id="clPlan" onchange="syncManualAmount()">
+              <option value="basic">Basic</option>
+              <option value="business">Business</option>
+              <option value="pro">Pro</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clPeriod">Period *</label>
+            <select id="clPeriod" onchange="syncManualAmount()">
+              <option value="trial">Trial</option>
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthly</option>
+              <option value="lifetime">Lifetime</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clAmount">Amount</label>
+            <input id="clAmount" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="clMethod">Payment Method</label>
+            <select id="clMethod">
+              <option value="Cash">Cash</option>
+              <option value="GCash">GCash</option>
+              <option value="Maya">Maya</option>
+              <option value="Free Trial">Free Trial</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clNotes">Notes</label>
+            <textarea id="clNotes" placeholder="Optional notes"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="createManualLicense()">Create License</button>
+        </div>
+
+        <div id="manualLicenseResult"></div>
+      </div>
+    </section>
+
+    <section id="tab-licenses" class="section">
+      <div class="card">
+        <div class="toolbar">
+          <div class="left">
+            <h2 style="margin:0">Licenses</h2>
+          </div>
+          <div class="right">
+            <button class="btn btn-blue" onclick="loadLicenses()">Reload Licenses</button>
+          </div>
+        </div>
+        <div id="licensesList" class="list"></div>
+      </div>
+    </section>
+
+    <section id="tab-payments" class="section">
+      <div class="card">
+        <div class="toolbar">
+          <div class="left">
+            <h2 style="margin:0">Payments</h2>
+          </div>
+          <div class="right">
+            <button class="btn btn-blue" onclick="loadPayments()">Reload Payments</button>
+          </div>
+        </div>
+        <div id="paymentsWrap"></div>
+      </div>
+    </section>
   </div>
 
   <script>
     const API = "/api/admin";
     const PIN_KEY = "kt_admin_pin";
+    let currentTab = "dashboard";
 
     function getPin() {
       return localStorage.getItem(PIN_KEY) || "0715";
     }
 
     function savePin() {
-      const input = document.getElementById("adminPin");
-      const pin = String(input.value || "").trim();
-
+      const pin = document.getElementById("adminPin").value.trim();
       if (!pin) {
-        showMessage("Please enter an admin PIN.", true);
+        showMessage("Please enter your admin PIN.", true);
         return;
       }
-
       localStorage.setItem(PIN_KEY, pin);
       showMessage("Admin PIN saved.");
-      fetchOrders();
+      refreshCurrent();
     }
 
     function showMessage(text, isError = false) {
       const el = document.getElementById("message");
-      if (!text) {
-        el.innerHTML = "";
-        return;
-      }
-      el.innerHTML = `<div class="${isError ? "error" : "card"}">${text}</div>`;
+      el.className = isError ? "message err" : "message ok";
+      el.textContent = text;
+    }
+
+    function clearMessage() {
+      const el = document.getElementById("message");
+      el.className = "message";
+      el.textContent = "";
+    }
+
+    function esc(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function peso(n) {
+      return "₱" + Number(n || 0).toLocaleString("en-PH", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
     }
 
     async function apiGet(url) {
@@ -210,89 +571,126 @@
       return data;
     }
 
-    async function fetchOrders() {
-      const ordersEl = document.getElementById("orders");
-      ordersEl.innerHTML = '<div class="loading">Loading orders...</div>';
-      showMessage("");
+    function showTab(tab) {
+      currentTab = tab;
+
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tab);
+      });
+
+      document.querySelectorAll(".section").forEach(sec => {
+        sec.classList.remove("active");
+      });
+
+      document.getElementById("tab-" + tab).classList.add("active");
+      refreshCurrent();
+    }
+
+    function refreshCurrent() {
+      clearMessage();
+
+      if (currentTab === "dashboard") return loadDashboard();
+      if (currentTab === "orders") return loadOrders();
+      if (currentTab === "create-license") return syncManualAmount();
+      if (currentTab === "licenses") return loadLicenses();
+      if (currentTab === "payments") return loadPayments();
+    }
+
+    async function loadDashboard() {
+      try {
+        const data = await apiGet(API + "?mode=dashboard");
+        const d = data.dashboard || {};
+        const orders = Array.isArray(d.orders) ? d.orders : [];
+        const licenses = Array.isArray(d.licenses) ? d.licenses : [];
+        const payments = Array.isArray(d.payments) ? d.payments : [];
+
+        const pendingOrders = orders.filter(o => String(o.status || "").toLowerCase() === "pending").length;
+        const completedOrders = orders.filter(o => String(o.status || "").toLowerCase() === "completed").length;
+        const activeLicenses = licenses.filter(l => String(l.status || "").toLowerCase() === "active").length;
+
+        document.getElementById("dashboardKpis").innerHTML = `
+          <div class="kpi">
+            <span class="label">Pending Orders</span>
+            <span class="value">${pendingOrders}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Completed Orders</span>
+            <span class="value">${completedOrders}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Active Licenses</span>
+            <span class="value">${activeLicenses}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Payments</span>
+            <span class="value">${payments.length}</span>
+          </div>
+        `;
+      } catch (error) {
+        showMessage(error.message || "Failed to load dashboard.", true);
+      }
+    }
+
+    async function loadOrders() {
+      const wrap = document.getElementById("ordersList");
+      wrap.innerHTML = `<div class="empty">Loading orders...</div>`;
 
       try {
         const data = await apiGet(API + "?mode=orders");
-        renderOrders(Array.isArray(data.orders) ? data.orders : []);
+        const orders = Array.isArray(data.orders) ? data.orders : [];
+
+        if (!orders.length) {
+          wrap.innerHTML = `<div class="empty">No orders found.</div>`;
+          return;
+        }
+
+        wrap.innerHTML = orders.map(o => {
+          const customerName = o.customer_name || o.name || "Unknown";
+          const customerEmail = o.customer_email || o.email || "-";
+          const customerPhone = o.customer_phone || o.phone || "-";
+          const paymentMethod = o.payment_method || "-";
+          const status = String(o.status || "pending").toLowerCase();
+
+          return `
+            <div class="item">
+              <div class="row">
+                <div class="meta">
+                  <h3>${esc(customerName)}</h3>
+                  <p><b>Email:</b> ${esc(customerEmail)}</p>
+                  <p><b>Phone:</b> ${esc(customerPhone)}</p>
+                  <p><b>Status:</b> <span class="status ${esc(status)}">${esc(status)}</span></p>
+                </div>
+                <div class="meta">
+                  <p><b>Plan:</b> ${esc(o.plan || "-")}</p>
+                  <p><b>Period:</b> ${esc(o.period || "-")}</p>
+                  <p><b>Amount:</b> ${peso(o.amount || 0)}</p>
+                  <p><b>Payment:</b> ${esc(paymentMethod)}</p>
+                </div>
+                <div class="meta">
+                  <p><b>Reference:</b> ${esc(o.reference_number || "-")}</p>
+                  <p><b>Created:</b> ${esc(o.created_at || "-")}</p>
+                  <p><b>Notes:</b> ${esc(o.notes || "-")}</p>
+                </div>
+              </div>
+
+              ${o.screenshot_data ? `<div class="code-box">Screenshot attached in screenshot_data</div>` : ""}
+
+              <div class="actions">
+                ${status === "pending" ? `
+                  <button class="btn btn-green" onclick="verifyOrder('${esc(o.id)}')">Verify & Create License</button>
+                  <button class="btn btn-red" onclick="rejectOrder('${esc(o.id)}')">Reject</button>
+                ` : ""}
+              </div>
+            </div>
+          `;
+        }).join("");
       } catch (error) {
-        ordersEl.innerHTML = "";
+        wrap.innerHTML = `<div class="empty">Failed to load orders.</div>`;
         showMessage(error.message || "Failed to load orders.", true);
       }
     }
 
-    function esc(value) {
-      return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function renderOrders(list) {
-      const el = document.getElementById("orders");
-      el.innerHTML = "";
-
-      if (!list.length) {
-        el.innerHTML = '<div class="card"><p>No orders found.</p></div>';
-        return;
-      }
-
-      list.forEach((o) => {
-        const div = document.createElement("div");
-        div.className = "card";
-
-        const statusClass = String(o.status || "pending").toLowerCase();
-
-        div.innerHTML = `
-          <div class="row">
-            <div>
-              <h3 style="margin:0 0 8px 0;">${esc(o.customer_name || o.name || "Unknown Customer")}</h3>
-              <p><b>Email:</b> ${esc(o.customer_email || o.email || "-")}</p>
-              <p><b>Phone:</b> ${esc(o.customer_phone || o.phone || "-")}</p>
-            </div>
-            <div>
-              <p><b>Plan:</b> ${esc(o.plan || "-")}</p>
-              <p><b>Period:</b> ${esc(o.period || "-")}</p>
-              <p><b>Amount:</b> ₱${esc(o.amount || "0")}</p>
-              <p><b>Method:</b> ${esc(o.payment_method || "-")}</p>
-            </div>
-            <div>
-              <p><b>Reference:</b> ${esc(o.reference_number || "-")}</p>
-              <p><b>Status:</b> <span class="status ${statusClass}">${esc(o.status || "pending")}</span></p>
-              <p><b>Created:</b> ${esc(o.created_at || "-")}</p>
-            </div>
-          </div>
-
-          ${o.notes ? `<p><b>Notes:</b> ${esc(o.notes)}</p>` : ""}
-
-          ${
-            o.screenshot_data
-              ? `<details><summary>Screenshot Data</summary><pre>${esc(o.screenshot_data)}</pre></details>`
-              : ""
-          }
-
-          ${
-            String(o.status).toLowerCase() === "pending"
-              ? `
-              <div class="actions">
-                <button class="btn-g" onclick="verify('${esc(o.id)}')">Verify</button>
-                <button class="btn-r" onclick="reject('${esc(o.id)}')">Reject</button>
-              </div>
-            `
-              : ""
-          }
-        `;
-
-        el.appendChild(div);
-      });
-    }
-
-    async function verify(id) {
+    async function verifyOrder(id) {
       const ok = confirm("Verify this order and create a license?");
       if (!ok) return;
 
@@ -302,15 +700,22 @@
           id
         });
 
-        const key = data.license?.license_key ? `<br><b>License Key:</b> ${data.license.license_key}` : "";
-        showMessage(`Order verified successfully.${key}`);
-        fetchOrders();
+        const licenseKey = data?.license?.license_key || "";
+        showMessage(
+          licenseKey
+            ? `Order verified successfully. License Key: ${licenseKey}`
+            : "Order verified successfully."
+        );
+
+        await loadOrders();
+        await loadDashboard();
+        showTab("orders");
       } catch (error) {
-        showMessage(error.message || "Error verifying order.", true);
+        showMessage(error.message || "Failed to verify order.", true);
       }
     }
 
-    async function reject(id) {
+    async function rejectOrder(id) {
       const ok = confirm("Reject this order?");
       if (!ok) return;
 
@@ -321,15 +726,179 @@
         });
 
         showMessage("Order rejected.");
-        fetchOrders();
+        await loadOrders();
+        await loadDashboard();
       } catch (error) {
-        showMessage(error.message || "Error rejecting order.", true);
+        showMessage(error.message || "Failed to reject order.", true);
       }
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
+    function getManualPrice(plan, period) {
+      const pricing = {
+        basic: { trial: 0, daily: 15, monthly: 299, lifetime: 1999 },
+        business: { daily: 25, monthly: 499, lifetime: 3499 },
+        pro: { daily: 40, monthly: 799, lifetime: 5499 }
+      };
+
+      if (plan === "custom") return "";
+      return pricing?.[plan]?.[period] ?? "";
+    }
+
+    function syncManualAmount() {
+      const plan = document.getElementById("clPlan").value;
+      const period = document.getElementById("clPeriod").value;
+      const amount = getManualPrice(plan, period);
+
+      if (period === "trial" && plan !== "basic") {
+        document.getElementById("clPeriod").value = "daily";
+      }
+
+      document.getElementById("clAmount").value = amount;
+    }
+
+    async function createManualLicense() {
+      const customer_name = document.getElementById("clName").value.trim();
+      const customer_email = document.getElementById("clEmail").value.trim();
+      const customer_phone = document.getElementById("clPhone").value.trim();
+      const plan = document.getElementById("clPlan").value.trim();
+      const period = document.getElementById("clPeriod").value.trim();
+      const amount = document.getElementById("clAmount").value.trim();
+      const payment_method = document.getElementById("clMethod").value.trim();
+      const notes = document.getElementById("clNotes").value.trim();
+
+      if (!customer_name || !customer_email || !plan || !period) {
+        showMessage("Please fill in the required license fields.", true);
+        return;
+      }
+
+      try {
+        const data = await apiPost({
+          action: "create_license",
+          customer_name,
+          customer_email,
+          customer_phone,
+          plan,
+          period,
+          amount,
+          payment_method,
+          notes
+        });
+
+        const license = data.license || {};
+        document.getElementById("manualLicenseResult").innerHTML = `
+          <div class="card" style="margin-top:16px">
+            <h3 style="margin-top:0">License Created</h3>
+            <p><b>Name:</b> ${esc(license.customer_name || customer_name)}</p>
+            <p><b>Email:</b> ${esc(license.customer_email || customer_email)}</p>
+            <p><b>Plan:</b> ${esc(license.plan || plan)}</p>
+            <p><b>Period:</b> ${esc(license.period || period)}</p>
+            <div class="code-box">${esc(license.license_key || "No key returned")}</div>
+          </div>
+        `;
+
+        showMessage("Manual license created successfully.");
+        await loadDashboard();
+        await loadLicenses();
+      } catch (error) {
+        showMessage(error.message || "Failed to create license.", true);
+      }
+    }
+
+    async function loadLicenses() {
+      const wrap = document.getElementById("licensesList");
+      wrap.innerHTML = `<div class="empty">Loading licenses...</div>`;
+
+      try {
+        const data = await apiGet(API + "?mode=licenses");
+        const licenses = Array.isArray(data.licenses) ? data.licenses : [];
+
+        if (!licenses.length) {
+          wrap.innerHTML = `<div class="empty">No licenses found.</div>`;
+          return;
+        }
+
+        wrap.innerHTML = licenses.map(l => `
+          <div class="item">
+            <div class="row">
+              <div class="meta">
+                <h3>${esc(l.customer_name || "Unknown")}</h3>
+                <p><b>Email:</b> ${esc(l.customer_email || "-")}</p>
+                <p><b>Phone:</b> ${esc(l.customer_phone || "-")}</p>
+                <p><b>Status:</b> <span class="status ${esc(String(l.status || "active").toLowerCase())}">${esc(l.status || "active")}</span></p>
+              </div>
+              <div class="meta">
+                <p><b>Plan:</b> ${esc(l.plan || "-")}</p>
+                <p><b>Period:</b> ${esc(l.period || "-")}</p>
+                <p><b>Amount:</b> ${peso(l.amount || 0)}</p>
+                <p><b>Expires:</b> ${esc(l.expires_at || "Lifetime / None")}</p>
+              </div>
+              <div class="meta">
+                <p><b>Created:</b> ${esc(l.created_at || "-")}</p>
+                <p><b>Activated:</b> ${esc(l.activated_at || "-")}</p>
+                <div class="code-box">${esc(l.license_key || "-")}</div>
+              </div>
+            </div>
+          </div>
+        `).join("");
+      } catch (error) {
+        wrap.innerHTML = `<div class="empty">Failed to load licenses.</div>`;
+        showMessage(error.message || "Failed to load licenses.", true);
+      }
+    }
+
+    async function loadPayments() {
+      const wrap = document.getElementById("paymentsWrap");
+      wrap.innerHTML = `<div class="empty">Loading payments...</div>`;
+
+      try {
+        const data = await apiGet(API + "?mode=payments");
+        const payments = Array.isArray(data.payments) ? data.payments : [];
+
+        if (!payments.length) {
+          wrap.innerHTML = `<div class="empty">No payments found.</div>`;
+          return;
+        }
+
+        wrap.innerHTML = `
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>License ID</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Reference</th>
+                  <th>Verified</th>
+                  <th>Verified At</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${payments.map(p => `
+                  <tr>
+                    <td>${esc(p.license_id || "-")}</td>
+                    <td>${peso(p.amount || 0)}</td>
+                    <td>${esc(p.method || "-")}</td>
+                    <td>${esc(p.reference_number || "-")}</td>
+                    <td>${esc(String(p.verified ?? false))}</td>
+                    <td>${esc(p.verified_at || "-")}</td>
+                    <td>${esc(p.created_at || "-")}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } catch (error) {
+        wrap.innerHTML = `<div class="empty">Failed to load payments.</div>`;
+        showMessage(error.message || "Failed to load payments.", true);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("adminPin").value = getPin();
-      fetchOrders();
+      syncManualAmount();
+      await loadDashboard();
     });
   </script>
 </body>
