@@ -1,129 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KitaTrack Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>KitaTrack Admin</title>
 
-<style>
-body{font-family:sans-serif;background:#f8fafc;margin:0}
-.container{max-width:900px;margin:auto;padding:20px}
-.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:15px;border:1px solid #e2e8f0}
-button{padding:10px 14px;border:none;border-radius:8px;cursor:pointer}
-.btn-g{background:#16a34a;color:#fff}
-.btn-r{background:#dc2626;color:#fff}
-input,select{width:100%;padding:10px;margin-top:5px;border-radius:8px;border:1px solid #ccc}
-</style>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      color: #0f172a;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .topbar h2 {
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .muted {
+      color: #64748b;
+      font-size: 14px;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .status.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status.completed,
+    .status.active {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .status.rejected,
+    .status.expired,
+    .status.suspended {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-g { background: #16a34a; color: #fff; }
+    .btn-r { background: #dc2626; color: #fff; }
+    .btn-b { background: #2563eb; color: #fff; }
+    .btn-s { background: #475569; color: #fff; }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .pin-box {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+    .pin-input {
+      width: 140px;
+      margin-top: 0;
+    }
+    .loading {
+      padding: 20px;
+      text-align: center;
+      color: #64748b;
+    }
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      font-size: 12px;
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-  <h2>KitaTrack Admin</h2>
+  <div class="container">
+    <div class="topbar">
+      <h2>KitaTrack Admin</h2>
+      <div class="pin-box">
+        <label for="adminPin"><b>Admin PIN</b></label>
+        <input id="adminPin" class="pin-input" type="password" placeholder="Enter PIN" />
+        <button class="btn-b" onclick="savePin()">Save PIN</button>
+        <button class="btn-s" onclick="fetchOrders()">Refresh</button>
+      </div>
+    </div>
 
-  <div id="orders"></div>
-</div>
+    <div id="message"></div>
+    <div id="orders" class="loading">Loading orders...</div>
+  </div>
 
-<script>
-const API = "/api/admin";
+  <script>
+    const API = "/api/admin";
+    const PIN_KEY = "kt_admin_pin";
 
-async function fetchOrders(){
-  const res = await fetch(API + "?mode=orders", {
-    headers: {
-      "x-admin-pin": "0715"
+    function getPin() {
+      return localStorage.getItem(PIN_KEY) || "0715";
     }
-  });
 
-  const data = await res.json();
-  renderOrders(data.orders || []);
-}
+    function savePin() {
+      const input = document.getElementById("adminPin");
+      const pin = String(input.value || "").trim();
 
-function renderOrders(list){
-  const el = document.getElementById("orders");
-  el.innerHTML = "";
+      if (!pin) {
+        showMessage("Please enter an admin PIN.", true);
+        return;
+      }
 
-  if(!list.length){
-    el.innerHTML = "<p>No orders</p>";
-    return;
-  }
+      localStorage.setItem(PIN_KEY, pin);
+      showMessage("Admin PIN saved.");
+      fetchOrders();
+    }
 
-  list.forEach(o=>{
-    const div = document.createElement("div");
-    div.className = "card";
+    function showMessage(text, isError = false) {
+      const el = document.getElementById("message");
+      if (!text) {
+        el.innerHTML = "";
+        return;
+      }
+      el.innerHTML = `<div class="${isError ? "error" : "card"}">${text}</div>`;
+    }
 
-    div.innerHTML = `
-      <h3>${o.customer_name || "Unknown"}</h3>
-      <p><b>Email:</b> ${o.customer_email || "-"}</p>
-      <p><b>Phone:</b> ${o.customer_phone || "-"}</p>
-      <p><b>Plan:</b> ${o.plan}</p>
-      <p><b>Period:</b> ${o.period}</p>
-      <p><b>Amount:</b> ₱${o.amount}</p>
-      <p><b>Ref:</b> ${o.reference_number || "-"}</p>
-      <p><b>Status:</b> ${o.status}</p>
+    async function apiGet(url) {
+      const res = await fetch(url, {
+        headers: {
+          "x-admin-pin": getPin()
+        }
+      });
 
-      ${o.status === "pending" ? `
-        <button class="btn-g" onclick="verify('${o.id}')">Verify</button>
-        <button class="btn-r" onclick="reject('${o.id}')">Reject</button>
-      ` : ""}
-    `;
+      const data = await res.json().catch(() => ({}));
 
-    el.appendChild(div);
-  });
-}
+      if (!res.ok) {
+        throw new Error(data.error || "Request failed.");
+      }
 
-async function verify(id){
-  try{
-    const res = await fetch(API,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-admin-pin":"0715"
-      },
-      body: JSON.stringify({
-        action:"verify_order",
-        id
-      })
+      return data;
+    }
+
+    async function apiPost(body) {
+      const res = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-pin": getPin()
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "Request failed.");
+      }
+
+      return data;
+    }
+
+    async function fetchOrders() {
+      const ordersEl = document.getElementById("orders");
+      ordersEl.innerHTML = '<div class="loading">Loading orders...</div>';
+      showMessage("");
+
+      try {
+        const data = await apiGet(API + "?mode=orders");
+        renderOrders(Array.isArray(data.orders) ? data.orders : []);
+      } catch (error) {
+        ordersEl.innerHTML = "";
+        showMessage(error.message || "Failed to load orders.", true);
+      }
+    }
+
+    function esc(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderOrders(list) {
+      const el = document.getElementById("orders");
+      el.innerHTML = "";
+
+      if (!list.length) {
+        el.innerHTML = '<div class="card"><p>No orders found.</p></div>';
+        return;
+      }
+
+      list.forEach((o) => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        const statusClass = String(o.status || "pending").toLowerCase();
+
+        div.innerHTML = `
+          <div class="row">
+            <div>
+              <h3 style="margin:0 0 8px 0;">${esc(o.customer_name || o.name || "Unknown Customer")}</h3>
+              <p><b>Email:</b> ${esc(o.customer_email || o.email || "-")}</p>
+              <p><b>Phone:</b> ${esc(o.customer_phone || o.phone || "-")}</p>
+            </div>
+            <div>
+              <p><b>Plan:</b> ${esc(o.plan || "-")}</p>
+              <p><b>Period:</b> ${esc(o.period || "-")}</p>
+              <p><b>Amount:</b> ₱${esc(o.amount || "0")}</p>
+              <p><b>Method:</b> ${esc(o.payment_method || "-")}</p>
+            </div>
+            <div>
+              <p><b>Reference:</b> ${esc(o.reference_number || "-")}</p>
+              <p><b>Status:</b> <span class="status ${statusClass}">${esc(o.status || "pending")}</span></p>
+              <p><b>Created:</b> ${esc(o.created_at || "-")}</p>
+            </div>
+          </div>
+
+          ${o.notes ? `<p><b>Notes:</b> ${esc(o.notes)}</p>` : ""}
+
+          ${
+            o.screenshot_data
+              ? `<details><summary>Screenshot Data</summary><pre>${esc(o.screenshot_data)}</pre></details>`
+              : ""
+          }
+
+          ${
+            String(o.status).toLowerCase() === "pending"
+              ? `
+              <div class="actions">
+                <button class="btn-g" onclick="verify('${esc(o.id)}')">Verify</button>
+                <button class="btn-r" onclick="reject('${esc(o.id)}')">Reject</button>
+              </div>
+            `
+              : ""
+          }
+        `;
+
+        el.appendChild(div);
+      });
+    }
+
+    async function verify(id) {
+      const ok = confirm("Verify this order and create a license?");
+      if (!ok) return;
+
+      try {
+        const data = await apiPost({
+          action: "verify_order",
+          id
+        });
+
+        const key = data.license?.license_key ? `<br><b>License Key:</b> ${data.license.license_key}` : "";
+        showMessage(`Order verified successfully.${key}`);
+        fetchOrders();
+      } catch (error) {
+        showMessage(error.message || "Error verifying order.", true);
+      }
+    }
+
+    async function reject(id) {
+      const ok = confirm("Reject this order?");
+      if (!ok) return;
+
+      try {
+        await apiPost({
+          action: "reject_order",
+          id
+        });
+
+        showMessage("Order rejected.");
+        fetchOrders();
+      } catch (error) {
+        showMessage(error.message || "Error rejecting order.", true);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("adminPin").value = getPin();
+      fetchOrders();
     });
-
-    const data = await res.json();
-
-    if(!res.ok){
-      alert(data.error || "Error");
-      return;
-    }
-
-    alert("Order verified!");
-    fetchOrders();
-
-  }catch(e){
-    alert("Error verifying");
-  }
-}
-
-async function reject(id){
-  const res = await fetch(API,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "x-admin-pin":"0715"
-    },
-    body: JSON.stringify({
-      action:"reject_order",
-      id
-    })
-  });
-
-  const data = await res.json();
-
-  if(!res.ok){
-    alert(data.error || "Error");
-    return;
-  }
-
-  alert("Order rejected");
-  fetchOrders();
-}
-
-fetchOrders();
-</script>
+  </script>
 </body>
 </html>
