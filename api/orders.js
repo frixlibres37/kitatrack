@@ -1,16 +1,13 @@
 export default async function handler(req, res) {
-  // Allow requests
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // Handle preflight
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Allow only POST
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -19,7 +16,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get environment variables from Vercel
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -30,21 +26,19 @@ export default async function handler(req, res) {
       });
     }
 
-    // Read incoming data
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
 
-    const customer_name = (body.customer_name || "").trim();
-    const customer_email = (body.customer_email || "").trim();
-    const customer_phone = (body.customer_phone || "").trim();
-    const plan = (body.plan || "").trim().toLowerCase();
-    const period = (body.period || "").trim().toLowerCase();
-    const amount = body.amount ? String(body.amount).trim() : "";
-    const payment_method = (body.payment_method || "").trim();
-    const reference_number = (body.reference_number || "").trim();
-    const notes = (body.notes || "").trim();
+    const customer_name = String(body.customer_name || "").trim();
+    const customer_email = String(body.customer_email || "").trim();
+    const customer_phone = String(body.customer_phone || "").trim();
+    const plan = String(body.plan || "").trim().toLowerCase();
+    const period = String(body.period || "").trim().toLowerCase();
+    const amount = body.amount !== undefined && body.amount !== null ? String(body.amount).trim() : "";
+    const payment_method = String(body.payment_method || "").trim();
+    const reference_number = String(body.reference_number || "").trim();
+    const notes = String(body.notes || "").trim();
     const screenshot_data = body.screenshot_data || null;
 
-    // Simple validation
     const validPlans = ["basic", "business", "pro", "custom"];
     const validPeriods = ["daily", "monthly", "lifetime", "trial"];
 
@@ -52,6 +46,13 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         error: "Customer name is required"
+      });
+    }
+
+    if (!customer_email) {
+      return res.status(400).json({
+        success: false,
+        error: "Customer email is required"
       });
     }
 
@@ -69,7 +70,13 @@ export default async function handler(req, res) {
       });
     }
 
-    // Auto pricing if amount is empty
+    if (period === "trial" && plan !== "basic") {
+      return res.status(400).json({
+        success: false,
+        error: "Trial is only allowed for Basic plan"
+      });
+    }
+
     const pricing = {
       basic: {
         daily: "15",
@@ -80,14 +87,12 @@ export default async function handler(req, res) {
       business: {
         daily: "25",
         monthly: "499",
-        lifetime: "3499",
-        trial: "0"
+        lifetime: "3499"
       },
       pro: {
         daily: "40",
         monthly: "799",
-        lifetime: "5499",
-        trial: "0"
+        lifetime: "5499"
       },
       custom: {
         daily: "0",
@@ -97,13 +102,11 @@ export default async function handler(req, res) {
       }
     };
 
-    const finalAmount =
-      amount || pricing[plan]?.[period] || "0";
+    const finalAmount = amount || pricing[plan]?.[period] || "0";
 
-    // Data to save in Supabase
     const orderPayload = {
       customer_name,
-      customer_email: customer_email || null,
+      customer_email,
       customer_phone: customer_phone || null,
       plan,
       period,
@@ -116,7 +119,6 @@ export default async function handler(req, res) {
       created_at: new Date().toISOString()
     };
 
-    // Send to Supabase
     const response = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
       method: "POST",
       headers: {
@@ -133,7 +135,7 @@ export default async function handler(req, res) {
 
     try {
       data = text ? JSON.parse(text) : null;
-    } catch (e) {
+    } catch {
       data = text;
     }
 
@@ -150,7 +152,6 @@ export default async function handler(req, res) {
       message: "Order submitted successfully",
       order: Array.isArray(data) ? data[0] : data
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
