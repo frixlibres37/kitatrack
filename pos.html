@@ -2,271 +2,1263 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>KitaTrack POS</title>
-
+<meta name="theme-color" content="#16a34a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="kitatrack-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body { font-family: Arial; margin:0; background:#f1f5f9 }
-.container { max-width:1000px; margin:auto; padding:20px }
-
-.card { background:#fff; padding:15px; border-radius:12px; margin-bottom:10px }
-button { padding:10px; border:none; border-radius:8px; cursor:pointer }
-.btn { background:#2563eb; color:#fff }
-.btn-g { background:#16a34a; color:#fff }
-.btn-r { background:#dc2626; color:#fff }
-
-input { padding:10px; width:100%; margin:5px 0; border-radius:8px; border:1px solid #ccc }
-
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px }
-.product { padding:10px; background:#e2e8f0; border-radius:8px; cursor:pointer }
-
-.cart-item { display:flex; justify-content:space-between; margin:5px 0 }
-
-.topbar { display:flex; justify-content:space-between; margin-bottom:10px }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ac:#16a34a;
+  --ac2:#15803d;
+  --bg:#f8fafc;
+  --txt:#1e293b;
+  --muted:#64748b;
+  --bd:#e2e8f0;
+  --card:#fff;
+  --warn:#f59e0b;
+  --danger:#dc2626;
+  --blue:#2563eb;
+  --purple:#9333ea;
+  --shadow:0 12px 30px rgba(15,23,42,.08)
+}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  height:100vh;
+  overflow:hidden
+}
+button,input,select,textarea{font-family:inherit}
+button{border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:-1px}
+a{text-decoration:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:6px}
+.app{display:flex;flex-direction:column;height:100vh}
+.hdr{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 14px;background:#fff;border-bottom:1px solid var(--bd);gap:10px
+}
+.hdr-l{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;overflow:hidden;flex-shrink:0}
+.logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:4px}
+.hdr-t{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hdr-s{font-size:11px;color:#94a3b8}
+.plan-pill,.demo-badge,.status-pill{
+  display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;
+  padding:4px 8px;border-radius:999px;border:1px solid
+}
+.plan-pill{background:color-mix(in srgb,var(--ac) 12%,white);color:var(--ac);border-color:color-mix(in srgb,var(--ac) 25%,white)}
+.demo-badge{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.status-pill{background:#f1f5f9;color:#475569;border-color:#cbd5e1}
+.main{flex:1;overflow-y:auto;overflow-x:hidden}
+.banner{
+  margin:10px 14px 0;padding:12px 14px;border-radius:14px;border:1px solid var(--bd);
+  background:linear-gradient(135deg,#ffffff,#f8fafc);font-size:12px;line-height:1.45;
+  box-shadow:0 6px 18px rgba(15,23,42,.04)
+}
+.hero{
+  margin:12px 14px 0;
+  background:linear-gradient(135deg,var(--ac),var(--ac2));
+  color:#fff;border-radius:22px;padding:18px;box-shadow:var(--shadow)
+}
+.hero h1{font-size:21px;font-weight:900;line-height:1.08;margin-bottom:8px}
+.hero p{font-size:13px;opacity:.95;line-height:1.55}
+.hero-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hero-chip{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800
+}
+.stats{display:flex;gap:10px;padding:12px 14px;overflow-x:auto}
+.stat{
+  flex:0 0 auto;min-width:136px;padding:14px;background:#fff;border-radius:16px;
+  border:1px solid var(--bd);box-shadow:0 8px 20px rgba(15,23,42,.04)
+}
+.stat-l{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.stat-v{font-size:21px;font-weight:900;color:var(--ac);margin-top:4px}
+.stat-s{font-size:11px;color:#94a3b8;margin-top:3px}
+.toolbar{display:flex;gap:8px;padding:0 14px 10px}
+.ibox{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;
+  background:#fff;border-radius:14px;border:1px solid var(--bd);font-weight:800;
+  box-shadow:0 6px 18px rgba(15,23,42,.03)
+}
+.sbox{
+  display:flex;align-items:center;gap:8px;padding:11px 12px;background:#fff;border-radius:14px;
+  border:1px solid var(--bd);margin:0 14px 10px;box-shadow:0 6px 18px rgba(15,23,42,.03)
+}
+.sbox input{flex:1;border:none;outline:none;font-size:14px;background:transparent}
+.cats{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto}
+.cat{
+  flex:0 0 auto;padding:8px 12px;border-radius:999px;font-size:11px;font-weight:800;
+  background:#f1f5f9;color:#475569
+}
+.cat.act{background:var(--ac);color:#fff}
+.fav-wrap{padding:0 14px 10px}
+.fav-title{font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px}
+.fav-row{display:flex;gap:8px;overflow:auto}
+.fchip{
+  flex:0 0 auto;padding:9px 14px;border-radius:12px;background:#fff;border:1px solid var(--bd);
+  font-size:12px;font-weight:800;color:#334155;box-shadow:0 6px 16px rgba(15,23,42,.03)
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;padding:0 14px 110px}
+.pcard{
+  padding:12px;border-radius:16px;border:2px solid var(--bd);text-align:left;position:relative;
+  min-height:130px;background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.04)
+}
+.pcard.in{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 5%,#fff)}
+.pcard .fav{position:absolute;top:7px;left:8px;font-size:13px}
+.pcard .qb{
+  position:absolute;top:8px;right:8px;background:var(--ac);color:#fff;font-size:10px;font-weight:800;
+  min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:flex;align-items:center;justify-content:center
+}
+.pcard .nm{font-weight:800;font-size:13px;line-height:1.35;margin:20px 0 4px}
+.pcard .pr{font-weight:900;font-size:15px;color:var(--ac)}
+.pcard .st,.pcard .ct{font-size:10px;color:#94a3b8;margin-top:3px}
+.stock-bad{color:var(--danger)!important;font-weight:800}
+.fcart{
+  position:fixed;bottom:62px;left:12px;right:12px;color:#fff;padding:14px 18px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;z-index:50;
+  background:linear-gradient(135deg,var(--ac),var(--ac2));box-shadow:0 16px 36px rgba(22,163,74,.28)
+}
+.cpanel{
+  position:fixed;bottom:0;left:0;right:0;top:24%;background:#fff;border-radius:20px 20px 0 0;
+  box-shadow:0 -8px 36px rgba(0,0,0,.16);display:flex;flex-direction:column;z-index:60
+}
+.cpanel .ch{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #f1f5f9}
+.cpanel .ci{flex:1;overflow-y:auto;padding:0 16px}
+.citem{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #f8fafc;gap:8px}
+.qbtn{
+  width:30px;height:30px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900
+}
+.qty-input{
+  width:74px;padding:7px 8px;border-radius:10px;border:1px solid var(--bd);font-size:13px;font-weight:800;text-align:center
+}
+.cpanel .cf{padding:14px 16px;border-top:1px solid var(--bd)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:flex-end;justify-content:center;z-index:100}
+.modal{
+  background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;
+  box-shadow:0 -10px 40px rgba(0,0,0,.18)
+}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #f1f5f9}
+.bigbtn{
+  width:100%;padding:14px;border-radius:14px;color:#fff;font-weight:900;font-size:15px;
+  display:flex;align-items:center;justify-content:center
+}
+.row{
+  display:flex;align-items:center;padding:12px;background:#fff;border-radius:14px;border:1px solid var(--bd);
+  gap:8px;margin-bottom:8px;box-shadow:0 6px 16px rgba(15,23,42,.03)
+}
+.toast{
+  position:fixed;top:58px;left:50%;transform:translateX(-50%);color:#fff;padding:11px 18px;border-radius:14px;
+  font-weight:800;font-size:13px;z-index:999;box-shadow:0 10px 28px rgba(0,0,0,.18)
+}
+.empty{padding:34px 20px;text-align:center;color:#94a3b8;font-size:14px}
+.section{padding:14px}
+.section h2{font-weight:900;font-size:17px;margin-bottom:10px}
+.section h3{font-weight:900;font-size:14px;margin:16px 0 8px}
+.kv{
+  display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #f1f5f9;font-size:13px
+}
+.card{
+  background:#fff;border:1px solid var(--bd);border-radius:16px;padding:15px;margin-bottom:10px;
+  box-shadow:0 8px 20px rgba(15,23,42,.04)
+}
+.pillbar{display:flex;gap:6px;overflow:auto;padding-bottom:6px}
+.pill{
+  flex:0 0 auto;padding:8px 13px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800
+}
+.pill.act{background:var(--ac);color:#fff}
+textarea{min-height:90px;resize:vertical}
+.small{font-size:12px;color:var(--muted)}
+.notice{
+  padding:13px;border-radius:14px;background:#f8fafc;border:1px solid var(--bd);font-size:13px;color:#475569;line-height:1.55
+}
+.locked{opacity:.8}
+.lock-icon{
+  width:24px;height:24px;border-radius:8px;background:color-mix(in srgb,var(--ac) 15%,#fff);
+  display:flex;align-items:center;justify-content:center;color:var(--ac);font-size:12px;font-weight:900
+}
+.setup-wrap{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(180deg,#f0fdf4 0%,#fff 60%)
+}
+.setup-card{
+  width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-radius:28px;padding:24px;
+  box-shadow:0 16px 40px rgba(0,0,0,.08)
+}
+.setup-logo{
+  width:62px;height:62px;border-radius:18px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;
+  font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px
+}
+.setup-title{font-size:25px;font-weight:900;text-align:center}
+.setup-sub{font-size:14px;color:var(--muted);text-align:center;line-height:1.55;margin:8px 0 20px}
+.choice{
+  padding:15px;border:2px solid var(--bd);border-radius:16px;margin-bottom:10px;background:#fff;text-align:left
+}
+.choice.act{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 5%,#fff)}
+.toplink{display:inline-flex;align-items:center;gap:6px;color:var(--ac);font-weight:800;font-size:13px}
+.install-btn{
+  background:#fff;border:1px solid var(--bd);padding:9px 10px;border-radius:12px;font-size:12px;font-weight:900;color:var(--ac)
+}
+.mini-badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px;
+  background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe
+}
+@media (max-width:560px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero h1{font-size:19px}
+}
 </style>
 </head>
-
 <body>
-
-<div class="container">
-
-  <!-- LOGIN -->
-  <div id="loginCard" class="card">
-    <h3>Enter License Key</h3>
-    <input id="licenseKey" placeholder="XXXX-XXXX-XXXX-XXXX">
-    <button class="btn" onclick="activate()">Activate</button>
-    <button class="btn" onclick="useDemo()">Use Demo</button>
-    <p id="loginMsg"></p>
-  </div>
-
-  <!-- POS -->
-  <div id="posApp" style="display:none">
-
-    <div class="topbar">
-      <h3>KitaTrack POS</h3>
-      <button class="btn-r" onclick="logout()">Logout</button>
-    </div>
-
-    <!-- PRODUCTS -->
-    <div class="card">
-      <h4>Add Product</h4>
-      <input id="pName" placeholder="Product name">
-      <input id="pPrice" placeholder="Price" type="number">
-      <button class="btn-g" onclick="addProduct()">Add</button>
-    </div>
-
-    <div class="card">
-      <h4>Products</h4>
-      <div id="products" class="grid"></div>
-    </div>
-
-    <!-- CART -->
-    <div class="card">
-      <h4>Cart</h4>
-      <div id="cart"></div>
-      <h3>Total: ₱<span id="total">0</span></h3>
-
-      <input id="cash" placeholder="Cash">
-      <button class="btn" onclick="checkout()">Checkout</button>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="card">
-      <h4>Sales History</h4>
-      <div id="history"></div>
-    </div>
-
-  </div>
-
-</div>
+<div id="app"></div>
 
 <script>
-const DEMO = location.pathname.includes("demo.html");
+const params = new URLSearchParams(location.search);
+const DEMO_MODE = params.get('demo') === 'true';
+const urlPlan = (params.get('plan') || '').toLowerCase();
+const VALID_PLANS = ['basic','business','pro'];
+const DEFAULT_PLAN = 'basic';
 
-function key(k){ return "kt_" + k }
+const PLAN_COLORS = { basic:'#16a34a', business:'#2563eb', pro:'#9333ea' };
+const PLAN_DARK = { basic:'#15803d', business:'#1d4ed8', pro:'#7e22ce' };
+const PLAN_NAMES = { basic:'Basic', business:'Business', pro:'Pro' };
 
-// ---------------------- LICENSE ----------------------
+const FEATURES = {
+  basic:['pos','products','history','dailySales','csvExport','favorites','quickAdd','settings','receiptPreview'],
+  business:['pos','products','history','dailySales','csvExport','favorites','quickAdd','settings','receiptPreview','inventory','reports','lowStock','backup','discounts','profitView'],
+  pro:['pos','products','history','dailySales','csvExport','favorites','quickAdd','settings','receiptPreview','inventory','reports','lowStock','backup','discounts','profitView','barcode','roles','advancedReports','stockHistory','keyboardShortcuts','deviceLock']
+};
 
-async function verifyLicense(keyInput){
+function getSafePlan(v){ return VALID_PLANS.includes(v) ? v : DEFAULT_PLAN; }
+let PLAN = DEMO_MODE ? getSafePlan(urlPlan || 'pro') : getSafePlan(urlPlan || DEFAULT_PLAN);
+
+function skey(k){ return `kt_${PLAN}_${k}`; }
+function ukey(k){ return `kt_unified_${k}`; }
+function peso(n){ return '₱'+Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtDate(d){ return new Date(d).toLocaleDateString('en-PH',{month:'short',day:'numeric'}); }
+function fmtTime(d){ return new Date(d).toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}); }
+function formatQty(q){
+  const n = Number(q||0);
+  return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.00$/,'').replace(/(\.\d*[1-9])0+$/,'$1');
+}
+function roundQty(n){ return Math.round(Number(n||0) * 100) / 100; }
+function has(feature){ return FEATURES[PLAN]?.includes(feature); }
+
+function loadJson(key, fallback=null){
   try{
-    const res = await fetch('/api/verify-license',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ key:keyInput })
-    });
-
-    const data = await res.json();
-
-    if(data.valid){
-      localStorage.setItem(key('license'), JSON.stringify(data));
-      return true;
-    }
-
-    return false;
-
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
   }catch(e){
-    // offline fallback
-    const saved = JSON.parse(localStorage.getItem(key('license')) || "null");
-    return saved?.valid;
+    return fallback;
   }
 }
+function saveJson(key, value){
+  if(DEMO_MODE) return;
+  localStorage.setItem(key, JSON.stringify(value));
+}
 
-async function activate(){
-  const keyInput = document.getElementById('licenseKey').value;
-  const ok = await verifyLicense(keyInput);
+let savedLicense = loadJson(ukey('license'));
+let licensed = false;
+let licenseData = null;
+let licenseNotice = '';
 
-  if(ok){
-    startPOS();
+if(savedLicense && savedLicense.valid){
+  if(!savedLicense.expires || new Date(savedLicense.expires) > new Date()){
+    licensed = true;
+    licenseData = savedLicense;
+    if(!DEMO_MODE && savedLicense.plan) PLAN = getSafePlan(savedLicense.plan);
   }else{
-    document.getElementById('loginMsg').innerText = "Invalid license";
+    localStorage.removeItem(ukey('license'));
+    licenseNotice = 'Your saved license has expired. Please renew to continue.';
   }
 }
 
-function useDemo(){
-  if(!DEMO){
-    location.href = "demo.html";
+document.documentElement.style.setProperty('--ac', PLAN_COLORS[PLAN]);
+document.documentElement.style.setProperty('--ac2', PLAN_DARK[PLAN]);
+
+const sampleProducts = [
+  {id:1,name:"Coke Mismo",price:15,cost:11,stock:48,cat:"drinks",fav:true},
+  {id:2,name:"Royal Mismo",price:15,cost:11,stock:24,cat:"drinks",fav:false},
+  {id:3,name:"C2 Apple",price:25,cost:19,stock:12,cat:"drinks",fav:false},
+  {id:4,name:"Lucky Me Pancit Canton",price:14,cost:11,stock:40,cat:"food",fav:true},
+  {id:5,name:"Sky Flakes",price:8,cost:6,stock:35,cat:"food",fav:false},
+  {id:6,name:"Piattos Cheese",price:18,cost:13,stock:11,cat:"food",fav:false},
+  {id:7,name:"Kopiko 78°C",price:30,cost:23,stock:10,cat:"drinks",fav:true},
+  {id:8,name:"Safeguard Sachet",price:8,cost:6,stock:52,cat:"essentials",fav:false},
+  {id:9,name:"Surf Powder (tingi)",price:7,cost:5,stock:60,cat:"essentials",fav:false},
+  {id:10,name:"Bigas (per kilo)",price:55,cost:48,stock:8,cat:"food",fav:false},
+  {id:11,name:"Load ₱10",price:10,cost:10,stock:999,cat:"services",fav:false},
+  {id:12,name:"Nescafe 3-in-1",price:8,cost:6,stock:100,cat:"drinks",fav:false}
+];
+
+const demoSalesSeed = [
+  {
+    id: 9001,
+    items:[{id:1,name:"Coke Mismo",qty:2,price:15,cost:11},{id:4,name:"Lucky Me Pancit Canton",qty:3,price:14,cost:11}],
+    subtotal:72,discount:0,total:72,cash:100,change:28,date:new Date().toISOString()
+  },
+  {
+    id: 9002,
+    items:[{id:7,name:"Kopiko 78°C",qty:1,price:30,cost:23},{id:10,name:"Bigas (per kilo)",qty:1,price:55,cost:48}],
+    subtotal:85,discount:5,total:80,cash:100,change:20,date:new Date().toISOString()
+  }
+];
+
+let settings = (DEMO_MODE ? null : loadJson(skey('settings'))) || {
+  storeName: DEMO_MODE ? `KitaTrack ${PLAN_NAMES[PLAN]} Demo Store` : 'KitaTrack Store',
+  receiptFooter:'Thank you! Balik po kayo.',
+  autoPrint:false
+};
+
+let setupState = DEMO_MODE
+  ? { done:true, step:2, useSample:true, storeName:`KitaTrack ${PLAN_NAMES[PLAN]} Demo Store` }
+  : (loadJson(skey('setup')) || { done:false, step:1, useSample:true, storeName:'' });
+
+let products = DEMO_MODE
+  ? structuredClone(sampleProducts)
+  : (loadJson(skey('products')) || (setupState.done && !setupState.useSample ? [] : structuredClone(sampleProducts)));
+
+let sales = DEMO_MODE ? structuredClone(demoSalesSeed) : (loadJson(skey('sales')) || []);
+let stockLog = DEMO_MODE ? [] : (loadJson(skey('stocklog')) || []);
+let users = DEMO_MODE ? [{name:'Owner',role:'admin',pin:'1234'}] : (loadJson(skey('users')) || [{name:'Owner',role:'admin',pin:'1234'}]);
+
+let cart = [];
+let screen = 'pos';
+let selCat = 'all';
+let search = '';
+let showCart = false;
+let showCheckout = false;
+let toast = null;
+let upgradeModal = null;
+let showQuickAdd = false;
+let receiptSale = null;
+let discountMode = 'none';
+let discountValue = '';
+let filters = { history:'all', report:'today' };
+let deferredInstallPrompt = null;
+let canInstall = false;
+
+function saveSettings(){ saveJson(skey('settings'), settings); }
+function saveProducts(){ saveJson(skey('products'), products); }
+function saveSales(){ saveJson(skey('sales'), sales); }
+function saveStockLog(){ saveJson(skey('stocklog'), stockLog); }
+function saveUsers(){ saveJson(skey('users'), users); }
+function saveSetup(){ saveJson(skey('setup'), setupState); }
+function saveAll(){ saveSettings(); saveProducts(); saveSales(); saveStockLog(); saveUsers(); saveSetup(); }
+
+function showToast(msg, err=false){
+  toast = { msg, err };
+  render();
+  clearTimeout(showToast.t);
+  showToast.t = setTimeout(()=>{ toast=null; render(); }, 2400);
+}
+
+function startSetup(useSample){
+  setupState.useSample = useSample;
+  setupState.done = true;
+  settings.storeName = (setupState.storeName || 'KitaTrack Store').trim() || 'KitaTrack Store';
+  products = useSample ? structuredClone(sampleProducts) : [];
+  sales = [];
+  stockLog = [];
+  saveAll();
+  render();
+}
+
+function completeSetupStep1(){
+  const v = (document.getElementById('setupStoreName')?.value || '').trim();
+  if(!v) return showToast('Enter store name first.', true);
+  setupState.storeName = v;
+  settings.storeName = v;
+  setupState.step = 2;
+  saveSettings();
+  saveSetup();
+  render();
+}
+
+function resetDemoData(){
+  if(!confirm('Reset demo data for this plan?')) return;
+  products = structuredClone(sampleProducts);
+  sales = structuredClone(demoSalesSeed);
+  stockLog = [];
+  cart = [];
+  discountMode = 'none';
+  discountValue = '';
+  showToast('Demo data reset.');
+  render();
+}
+
+function getSubtotal(){ return cart.reduce((s,c) => s + (Number(c.price||0) * Number(c.qty||0)), 0); }
+
+function getDiscountAmount(){
+  if(!has('discounts')) return 0;
+  const subtotal = getSubtotal();
+  const value = Number(discountValue || 0);
+  if(discountMode === 'percent') return Math.min(subtotal, subtotal * (value/100));
+  if(discountMode === 'fixed') return Math.min(subtotal, value);
+  return 0;
+}
+
+function cartTotal(){ return Math.max(0, getSubtotal() - getDiscountAmount()); }
+function cartCount(){ return cart.reduce((s,c)=>s+Number(c.qty||0),0); }
+
+function addToCart(p, qty=1){
+  qty = roundQty(qty);
+  if(qty <= 0) return;
+  if(has('inventory') && Number(p.stock||0) <= 0) return showToast('Out of stock.', true);
+
+  const ex = cart.find(c => c.id === p.id);
+  if(ex){
+    const nextQty = roundQty(Number(ex.qty||0) + qty);
+    if(has('inventory') && nextQty > Number(p.stock||0)) return showToast('Max stock reached.', true);
+    ex.qty = nextQty;
+  }else{
+    if(has('inventory') && qty > Number(p.stock||0)) return showToast('Max stock reached.', true);
+    cart.push({...p, qty});
+  }
+  render();
+}
+
+function updQty(id, d){
+  const c = cart.find(x => x.id === id);
+  const p = products.find(x => x.id === id);
+  if(!c || !p) return;
+  const next = roundQty(Number(c.qty||0) + Number(d||0));
+  if(next <= 0){ rmCart(id); return; }
+  if(has('inventory') && next > Number(p.stock||0)) return showToast('Max stock reached.', true);
+  c.qty = next;
+  render();
+}
+
+function setQty(id, value){
+  const c = cart.find(x => x.id === id);
+  const p = products.find(x => x.id === id);
+  const next = roundQty(value);
+  if(!c || !p) return;
+  if(Number.isNaN(next) || next <= 0){ rmCart(id); return; }
+  if(has('inventory') && next > Number(p.stock||0)) return showToast('Max stock reached.', true);
+  c.qty = next;
+  render();
+}
+
+function rmCart(id){
+  cart = cart.filter(c => c.id !== id);
+  render();
+}
+
+function favoriteProducts(){ return products.filter(p => p.fav); }
+
+function toggleFav(id){
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  p.fav = !p.fav;
+  saveProducts();
+  render();
+}
+
+function addProductFromModal(){
+  const name = (document.getElementById('qaName')?.value || '').trim();
+  const price = Number(document.getElementById('qaPrice')?.value || 0);
+  const cost = Number(document.getElementById('qaCost')?.value || 0);
+  const stock = Number(document.getElementById('qaStock')?.value || 0);
+  const cat = (document.getElementById('qaCat')?.value || 'general').trim().toLowerCase();
+
+  if(!name || price <= 0) return showToast('Enter product name and price.', true);
+
+  const id = Date.now();
+  products.unshift({
+    id,name,
+    price:roundQty(price),
+    cost:roundQty(cost),
+    stock:has('inventory') ? roundQty(stock) : 999,
+    cat,fav:false
+  });
+
+  saveProducts();
+  showQuickAdd = false;
+  showToast('Product added.');
+  render();
+}
+
+function exportCsv(){
+  const rows = [['Date','Items','Total','Cash','Change']];
+  sales.forEach(s => rows.push([
+    new Date(s.date).toLocaleString('en-PH'),
+    s.items.map(i=>`${i.name} x${formatQty(i.qty)}`).join(' | '),
+    s.total,
+    s.cash,
+    s.change
+  ]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${settings.storeName.replace(/\s+/g,'-').toLowerCase()}-${PLAN}-sales.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportBackup(){
+  const payload = JSON.stringify({ plan:PLAN, settings, products, sales, stockLog, users }, null, 2);
+  const blob = new Blob([payload], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${settings.storeName.replace(/\s+/g,'-').toLowerCase()}-${PLAN}-backup.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Backup exported.');
+}
+
+function importBackup(file){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const data = JSON.parse(r.result);
+      settings = data.settings || settings;
+      products = data.products || [];
+      sales = data.sales || [];
+      stockLog = data.stockLog || [];
+      users = data.users || users;
+      saveAll();
+      showToast('Backup restored.');
+      render();
+    }catch(e){
+      showToast('Invalid backup file.', true);
+    }
+  };
+  r.readAsText(file);
+}
+
+function previewReceipt(sale){
+  receiptSale = sale;
+  render();
+}
+
+function receiptHtml(sale){
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Receipt ${sale.id}</title>
+<style>
+html,body{margin:0;padding:0;background:#fff;color:#000;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+body{width:80mm;max-width:80mm}
+.wrap{width:72mm;max-width:72mm;margin:0;padding:4mm}
+.center{text-align:center}
+.line{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:3px 0;align-items:flex-start}
+.line span:first-child{flex:1;min-width:0;word-break:break-word}
+.line span:last-child,.line strong:last-child{white-space:nowrap}
+.muted{font-size:11px;color:#333}
+.dash{border:none;border-top:1px dashed #000;margin:8px 0}
+.title{font-weight:700;font-size:15px}
+.total{font-weight:800;font-size:14px}
+button{padding:8px 12px;border:1px solid #111;border-radius:8px;background:#fff;font:inherit}
+@page{size:80mm auto;margin:0}
+@media print{.noprint{display:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="center title">${settings.storeName}</div>
+<div class="center muted">KitaTrack POS Receipt</div>
+<div class="center muted">${new Date(sale.date).toLocaleString('en-PH')}</div>
+<div class="center muted">Receipt #: ${sale.id}</div>
+<hr class="dash">
+${sale.items.map(i=>`<div class="line"><span>${i.name} x${formatQty(i.qty)}</span><span>${peso(Number(i.price||0)*Number(i.qty||0))}</span></div>`).join('')}
+<hr class="dash">
+<div class="line"><span>Subtotal</span><strong>${peso(sale.subtotal || sale.total)}</strong></div>
+${(sale.discount||0)>0 ? `<div class="line"><span>Discount</span><strong>- ${peso(sale.discount)}</strong></div>` : ``}
+<div class="line total"><span>Total</span><span>${peso(sale.total)}</span></div>
+<div class="line"><span>Cash</span><span>${peso(sale.cash)}</span></div>
+<div class="line"><span>Change</span><span>${peso(sale.change)}</span></div>
+<hr class="dash">
+<div class="center muted">${settings.receiptFooter || 'Thank you!'}</div>
+<div class="center muted" style="margin-top:8px">Powered by KitaTrack POS</div>
+<div class="center noprint" style="margin-top:12px"><button onclick="window.print()">🖨 Print Receipt</button></div>
+</div>
+<script>window.onload=()=>setTimeout(()=>window.print(),250);<\/script>
+</body>
+</html>`;
+}
+
+function printReceipt(sale=receiptSale){
+  if(!sale) return;
+  const w = window.open('', '_blank', 'width=420,height=720');
+  if(!w){
+    showToast('Popup blocked. Allow popups to print.', true);
     return;
   }
-  startPOS();
+  w.document.open();
+  w.document.write(receiptHtml(sale));
+  w.document.close();
 }
 
-function logout(){
-  localStorage.removeItem(key('license'));
-  location.reload();
-}
-
-// ---------------------- POS ----------------------
-
-let products = JSON.parse(localStorage.getItem(key('products')) || "[]");
-let cart = [];
-
-function startPOS(){
-  document.getElementById('loginCard').style.display = "none";
-  document.getElementById('posApp').style.display = "block";
-
-  renderProducts();
-  renderHistory();
-}
-
-function addProduct(){
-  const name = document.getElementById('pName').value;
-  const price = Number(document.getElementById('pPrice').value);
-
-  if(!name || !price) return alert("Fill fields");
-
-  products.push({name, price});
-  localStorage.setItem(key('products'), JSON.stringify(products));
-
-  renderProducts();
-}
-
-function renderProducts(){
-  const el = document.getElementById('products');
-  el.innerHTML = "";
-
-  products.forEach((p,i)=>{
-    const d = document.createElement('div');
-    d.className = "product";
-    d.innerText = p.name + "\n₱" + p.price;
-
-    d.onclick = ()=>{
-      cart.push(p);
-      renderCart();
-    }
-
-    el.appendChild(d);
-  });
-}
-
-// ---------------------- CART ----------------------
-
-function renderCart(){
-  const el = document.getElementById('cart');
-  el.innerHTML = "";
-
-  let total = 0;
-
-  cart.forEach((c,i)=>{
-    total += c.price;
-
-    const div = document.createElement('div');
-    div.className = "cart-item";
-    div.innerHTML = `
-      ${c.name} - ₱${c.price}
-      <button onclick="removeItem(${i})">x</button>
-    `;
-    el.appendChild(div);
-  });
-
-  document.getElementById('total').innerText = total;
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  renderCart();
-}
-
-// ---------------------- CHECKOUT ----------------------
-
-function checkout(){
-  const total = Number(document.getElementById('total').innerText);
-  const cash = Number(document.getElementById('cash').value);
-
-  if(cash < total) return alert("Not enough cash");
-
-  const change = cash - total;
+function completeSale(cash){
+  const total = cartTotal();
+  const subtotal = getSubtotal();
+  const discount = getDiscountAmount();
 
   const sale = {
-    items: cart,
+    id: Date.now(),
+    items: cart.map(c => ({...c, qty:Number(c.qty||0), price:Number(c.price||0), cost:Number(c.cost||0)})),
+    subtotal,
+    discount,
+    discountMode,
+    discountValue:Number(discountValue||0),
     total,
     cash,
-    change,
+    change: cash-total,
     date: new Date().toISOString()
   };
 
-  let history = JSON.parse(localStorage.getItem(key('sales')) || "[]");
-  history.push(sale);
-  localStorage.setItem(key('sales'), JSON.stringify(history));
+  sales.unshift(sale);
 
-  alert("Change: ₱" + change);
+  if(has('inventory')){
+    cart.forEach(c => {
+      const p = products.find(x => x.id === c.id);
+      if(p){
+        const before = Number(p.stock||0);
+        p.stock = Math.max(0, before - c.qty);
+        if(has('stockHistory')){
+          stockLog.unshift({
+            at: sale.date,
+            productId: p.id,
+            productName: p.name,
+            type: 'sale',
+            qty: -c.qty,
+            before,
+            after: p.stock
+          });
+        }
+      }
+    });
+  }
 
   cart = [];
-  renderCart();
-  renderHistory();
+  showCheckout = false;
+  showCart = false;
+  discountMode = 'none';
+  discountValue = '';
+  saveProducts();
+  saveSales();
+  saveStockLog();
+  showToast('Sale complete!');
+  previewReceipt(sale);
+
+  if(settings.autoPrint){
+    setTimeout(()=>printReceipt(sale),250);
+  }
 }
 
-// ---------------------- HISTORY ----------------------
-
-function renderHistory(){
-  const el = document.getElementById('history');
-  el.innerHTML = "";
-
-  const history = JSON.parse(localStorage.getItem(key('sales')) || "[]");
-
-  history.forEach(h=>{
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <p>₱${h.total} - ${new Date(h.date).toLocaleString()}</p>
-    `;
-    el.appendChild(div);
+function salesInRange(mode){
+  const now = new Date();
+  return sales.filter(s => {
+    const d = new Date(s.date);
+    if(mode === 'today') return d.toDateString() === now.toDateString();
+    if(mode === 'week'){
+      const start = new Date(now);
+      start.setDate(now.getDate()-6);
+      start.setHours(0,0,0,0);
+      return d >= start;
+    }
+    if(mode === 'month') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    return true;
   });
 }
 
-// ---------------------- AUTO LOGIN ----------------------
+function topProducts(list){
+  const pm = {};
+  list.forEach(s => s.items.forEach(it => { pm[it.name] = (pm[it.name] || 0) + it.qty; }));
+  return Object.entries(pm).sort((a,b)=>b[1]-a[1]).slice(0,5);
+}
+function profitForSale(s){
+  return s.items.reduce((sum,it) => sum + ((Number(it.price||0)-Number(it.cost||0))*Number(it.qty||0)), 0) - Number(s.discount||0);
+}
+function totalProfit(list){ return list.reduce((sum,s) => sum + profitForSale(s), 0); }
+function lowStockItems(){ return products.filter(p => Number(p.stock||0) <= 5); }
 
-(function init(){
-  if(DEMO){
-    startPOS();
+function openUpgrade(feature){
+  const map = {
+    inventory:{ title:'Inventory Tracking', plan:'business', msg:'Track stock automatically with Business plan.' },
+    reports:{ title:'Reports Dashboard', plan:'business', msg:'See daily, weekly, and monthly reports with Business plan.' },
+    discounts:{ title:'Discount System', plan:'business', msg:'Run promos and discounts with Business plan.' },
+    barcode:{ title:'Barcode Scanner', plan:'pro', msg:'Scan products faster with Pro plan.' },
+    roles:{ title:'Owner & Cashier Roles', plan:'pro', msg:'Manage multiple staff accounts with Pro plan.' },
+    advancedReports:{ title:'Advanced Reports', plan:'pro', msg:'Unlock deeper store insights with Pro plan.' }
+  };
+  upgradeModal = map[feature] || { title:'Upgrade Feature', plan:'business', msg:'This feature is available on a higher plan.' };
+  render();
+}
+
+async function verifyLicense(keyInput){
+  try{
+    const res = await fetch('/api/verify-license', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ key:keyInput })
+    });
+    const data = await res.json();
+
+    if(data.valid){
+      localStorage.setItem(ukey('license'), JSON.stringify(data));
+      return data;
+    }
+
+    return { valid:false, error:data.error || 'Invalid license' };
+  }catch(e){
+    const saved = loadJson(ukey('license'));
+    if(saved?.valid) return saved;
+    return { valid:false, error:'Cannot verify offline. Connect to internet first.' };
+  }
+}
+
+async function doVerify(){
+  const key = (document.getElementById('licKey')?.value || '').trim();
+  if(!key) return;
+
+  document.getElementById('licErr').innerHTML = '<div class="small" style="text-align:center">Verifying...</div>';
+  const result = await verifyLicense(key);
+
+  if(result.valid){
+    licensed = true;
+    licenseData = result;
+    location.href = `${location.pathname}?plan=${getSafePlan(result.plan)}`;
+  }else{
+    document.getElementById('licErr').innerHTML = `<div class="notice" style="background:#fef2f2;border-color:#fecaca;color:#dc2626">${result.error}</div>`;
+  }
+}
+
+function logoutLicense(){
+  if(!confirm('Remove saved license on this device?')) return;
+  localStorage.removeItem(ukey('license'));
+  location.href = `${location.pathname}?plan=basic`;
+}
+
+function renderLicenseScreen(){
+  const plan = getSafePlan(urlPlan || DEFAULT_PLAN);
+  const ac = PLAN_COLORS[plan];
+  const ac2 = PLAN_DARK[plan];
+
+  document.getElementById('app').innerHTML = `
+    <div class="setup-wrap">
+      <div class="setup-card">
+        <div class="setup-logo">K</div>
+        <div class="setup-title">Unlock KitaTrack</div>
+        <div class="setup-sub">Enter your license key to open your ${PLAN_NAMES[plan]} plan.</div>
+        ${licenseNotice ? `<div class="notice" style="margin-bottom:12px;background:#fef2f2;border-color:#fecaca;color:#b91c1c">${licenseNotice}</div>` : ``}
+        <input id="licKey" placeholder="Enter license key" style="width:100%;padding:14px 16px;border-radius:14px;border:2px solid var(--bd);font-size:16px;font-weight:800;text-align:center;letter-spacing:1px;background:#fff;font-family:monospace;margin-bottom:12px" onkeydown="if(event.key==='Enter')doVerify()">
+        <div id="licErr" style="margin-bottom:12px"></div>
+        <button class="bigbtn" style="background:linear-gradient(135deg,${ac},${ac2})" onclick="doVerify()">🔓 Activate License</button>
+        <a href="index.html#pricing" class="toplink" style="margin-top:12px;justify-content:center;width:100%">Renew or upgrade plan</a>
+        <a href="demo.html" class="toplink" style="margin-top:8px;justify-content:center;width:100%">Try demo first</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderSetup(){
+  document.getElementById('app').innerHTML = `
+    <div class="setup-wrap">
+      <div class="setup-card">
+        <div class="setup-logo">K</div>
+        <div class="setup-title">Welcome to KitaTrack</div>
+        <div class="setup-sub">${setupState.step === 1 ? 'What is your store name?' : 'Would you like to start with sample products?'}</div>
+        ${setupState.step === 1 ? `
+          <input id="setupStoreName" value="${setupState.storeName || ''}" placeholder="Store name" style="margin-bottom:12px">
+          <button class="bigbtn" style="background:linear-gradient(135deg,var(--ac),var(--ac2))" onclick="completeSetupStep1()">Continue</button>
+        ` : `
+          <button class="choice act" onclick="startSetup(true)">
+            <div style="font-weight:900;font-size:15px;margin-bottom:4px">Start with sample products</div>
+            <div class="small">Best for quick setup and testing.</div>
+          </button>
+          <button class="choice" onclick="startSetup(false)">
+            <div style="font-weight:900;font-size:15px;margin-bottom:4px">Start empty</div>
+            <div class="small">Add your own products manually.</div>
+          </button>
+          <button class="toplink" style="margin-top:8px" onclick="setupState.step=1;saveSetup();render()">← Back</button>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function installApp(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.finally(()=>{
+    deferredInstallPrompt = null;
+    canInstall = false;
+    render();
+  });
+}
+
+function render(){
+  const app = document.getElementById('app');
+
+  if(!DEMO_MODE && !licensed){
+    renderLicenseScreen();
     return;
   }
 
-  const saved = JSON.parse(localStorage.getItem(key('license')) || "null");
-
-  if(saved?.valid){
-    startPOS();
+  if(!setupState.done){
+    renderSetup();
+    return;
   }
+
+  document.documentElement.style.setProperty('--ac', PLAN_COLORS[PLAN]);
+  document.documentElement.style.setProperty('--ac2', PLAN_DARK[PLAN]);
+
+  const today = new Date().toDateString();
+  const todaySales = sales.filter(s => new Date(s.date).toDateString() === today);
+  const todayTotal = todaySales.reduce((s,t)=>s+t.total,0);
+  const todayProfit = totalProfit(todaySales);
+  const cats = ['all', ...new Set(products.map(p => p.cat || 'general'))];
+  const filtered = products.filter(p => {
+    const mc = selCat === 'all' || (p.cat || 'general') === selCat;
+    const ms = !search || p.name.toLowerCase().includes(search.toLowerCase());
+    return mc && ms;
+  });
+
+  let h = `
+  <div class="app">
+    <header class="hdr">
+      <div class="hdr-l">
+        <div class="logo">
+          <img src="kitatrack-logo.png" alt="KitaTrack" onerror="this.style.display='none';this.parentNode.textContent='K'">
+        </div>
+        <div style="min-width:0">
+          <div class="hdr-t">
+            <span style="color:${PLAN_COLORS[PLAN]}">${settings.storeName || 'KitaTrack'}</span>
+            <span class="plan-pill">${PLAN_NAMES[PLAN]}</span>
+            ${DEMO_MODE ? `<span class="demo-badge">⚡ Demo</span>` : ``}
+          </div>
+          <div class="hdr-s">The POS system that works without internet.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="status-pill">${navigator.onLine ? 'Online' : 'Offline'}</span>
+      </div>
+    </header>
+  `;
+
+  if(toast){
+    h += `<div class="toast" style="background:${toast.err ? '#dc2626' : PLAN_COLORS[PLAN]}">${toast.msg}</div>`;
+  }
+
+  h += `<div class="main">`;
+
+  if(DEMO_MODE){
+    h += `<div class="banner">⚡ Demo mode • ${PLAN_NAMES[PLAN]} preview • data resets when reopened • built to impress real stores</div>`;
+  }else if(licenseData?.expires){
+    h += `<div class="banner">🔑 ${PLAN_NAMES[PLAN]} plan active • Expires ${fmtDate(licenseData.expires)}</div>`;
+  }else if(licensed){
+    h += `<div class="banner">🔑 ${PLAN_NAMES[PLAN]} lifetime plan active</div>`;
+  }
+
+  h += `
+    <div class="hero">
+      <h1>${DEMO_MODE ? `${PLAN_NAMES[PLAN]} Demo Experience` : `Run your store faster with ${PLAN_NAMES[PLAN]}`}</h1>
+      <p>${PLAN === 'basic'
+        ? 'Simple, clean, and reliable selling for small stores.'
+        : PLAN === 'business'
+        ? 'Track stock, profit, and store performance with confidence.'
+        : 'Advanced store control, smarter reports, and premium workflow features.'}</p>
+      <div class="hero-row">
+        <span class="hero-chip">Offline-first</span>
+        <span class="hero-chip">Fast checkout</span>
+        <span class="hero-chip">${PLAN_NAMES[PLAN]} plan</span>
+        ${has('inventory') ? `<span class="hero-chip">Inventory ready</span>` : ``}
+        ${has('advancedReports') ? `<span class="hero-chip">Advanced insights</span>` : ``}
+      </div>
+    </div>
+  `;
+
+  if(screen === 'pos'){
+    h += `
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-l">Sales Today</div>
+          <div class="stat-v">${peso(todayTotal)}</div>
+          <div class="stat-s">${todaySales.length} transaction(s)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">Profit Today</div>
+          <div class="stat-v">${peso(todayProfit)}</div>
+          <div class="stat-s">${has('profitView') ? 'Visible on this plan' : 'Upgrade for profit view'}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">Products</div>
+          <div class="stat-v">${products.length}</div>
+          <div class="stat-s">${has('inventory') ? `${lowStockItems().length} low stock` : 'Basic catalog mode'}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">Top Product</div>
+          <div class="stat-v" style="font-size:16px">${topProducts(salesInRange('today'))[0]?.[0] || '—'}</div>
+          <div class="stat-s">Best seller today</div>
+        </div>
+      </div>
+
+      ${has('inventory') && lowStockItems().length ? `
+        <div class="banner" style="border-color:#fecaca;background:#fff1f2;color:#991b1b">
+          ⚠️ Low stock alert: ${lowStockItems().slice(0,3).map(p=>`${p.name} (${formatQty(p.stock)})`).join(', ')}
+        </div>
+      ` : ``}
+
+      <div class="toolbar">
+        <button class="ibox" onclick="showQuickAdd=true;render()">➕ Quick Add</button>
+        <button class="ibox" onclick="screen='settings';render()">⚙️ Settings</button>
+        ${canInstall ? `<button class="install-btn" onclick="installApp()">⬇ Install</button>` : ``}
+      </div>
+
+      <div class="sbox">
+        <span>🔍</span>
+        <input placeholder="Search products..." value="${search}" oninput="search=this.value;render()">
+      </div>
+
+      ${favoriteProducts().length ? `
+        <div class="fav-wrap">
+          <div class="fav-title">⭐ Fast Favorites</div>
+          <div class="fav-row">
+            ${favoriteProducts().map(p => `<button class="fchip" onclick="addToCart(products.find(x=>x.id===${p.id}))">${p.name}</button>`).join('')}
+          </div>
+        </div>
+      ` : ``}
+
+      <div class="cats">
+        ${cats.map(c => `<button class="cat${selCat===c?' act':''}" onclick="selCat='${c}';render()">${c==='all'?'📦 All':c}</button>`).join('')}
+      </div>
+
+      <div class="grid">
+        ${filtered.map(p => {
+          const ic = cart.find(c => c.id === p.id);
+          const oos = has('inventory') && Number(p.stock||0) <= 0;
+          const profit = Number(p.price||0) - Number(p.cost||0);
+
+          return `
+            <button class="pcard${ic?' in':''}" style="opacity:${oos?0.48:1}" onclick="${oos?'':'addToCart(products.find(x=>x.id==='+p.id+'))'}" oncontextmenu="event.preventDefault();toggleFav(${p.id})">
+              ${p.fav ? `<div class="fav">⭐</div>` : `<div class="fav" style="opacity:.25">☆</div>`}
+              ${ic ? `<div class="qb">${formatQty(ic.qty)}</div>` : ``}
+              <div class="nm">${p.name}</div>
+              <div class="pr">${peso(p.price)}</div>
+              ${has('profitView') ? `<div class="ct">Profit: ${peso(profit)}</div>` : `<div class="ct">${p.cat || 'general'}</div>`}
+              ${has('inventory')
+                ? `<div class="st ${Number(p.stock||0)<=5?'stock-bad':''}">${oos ? 'OUT OF STOCK' : 'Stock: ' + formatQty(p.stock)}</div>`
+                : `<div class="st">${p.cat || 'general'}</div>`}
+            </button>
+          `;
+        }).join('')}
+        ${filtered.length===0 ? `<div class="empty">No products found.</div>` : ``}
+      </div>
+    `;
+
+    if(cartCount()>0 && !showCart){
+      h += `<button class="fcart" onclick="showCart=true;render()">🛒 ${formatQty(cartCount())} items — ${peso(cartTotal())}</button>`;
+    }
+
+    if(showCart && cartCount()>0){
+      h += `
+        <div class="cpanel">
+          <div class="ch">
+            <span style="font-weight:900;font-size:16px">Cart (${formatQty(cartCount())})</span>
+            <button onclick="showCart=false;render()" style="background:none;font-size:18px">✕</button>
+          </div>
+          <div class="ci">
+            ${cart.map(c=>`
+              <div class="citem">
+                <div style="flex:1">
+                  <div style="font-weight:800;font-size:14px">${c.name}</div>
+                  <div style="color:#64748b;font-size:12px">${peso(c.price)} each</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <button class="qbtn" onclick="updQty(${c.id},-1)">−</button>
+                  <input class="qty-input" type="number" step="0.01" value="${formatQty(c.qty)}" onchange="setQty(${c.id}, this.value)">
+                  <button class="qbtn" onclick="updQty(${c.id},1)">+</button>
+                </div>
+                <div style="font-weight:900;min-width:82px;text-align:right">${peso(Number(c.price||0)*Number(c.qty||0))}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="cf">
+            ${has('discounts') ? `
+              <div style="display:flex;gap:8px;margin-bottom:10px">
+                <select onchange="discountMode=this.value;render()" style="flex:1">
+                  <option value="none" ${discountMode==='none'?'selected':''}>No discount</option>
+                  <option value="percent" ${discountMode==='percent'?'selected':''}>Percent</option>
+                  <option value="fixed" ${discountMode==='fixed'?'selected':''}>Fixed amount</option>
+                </select>
+                <input type="number" value="${discountValue}" placeholder="Value" oninput="discountValue=this.value;render()" style="flex:1">
+              </div>
+            ` : ``}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:800">
+              <span>Total</span>
+              <span style="font-size:24px;font-weight:900;color:${PLAN_COLORS[PLAN]}">${peso(cartTotal())}</span>
+            </div>
+            <button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]})" onclick="showCart=false;showCheckout=true;render()">Checkout</button>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  if(screen === 'history'){
+    h += `<div class="section">
+      <h2>Sales History (${sales.length})</h2>
+      <div class="pillbar">
+        ${['all','today','week','month'].map(f => `<button class="pill${filters.history===f?' act':''}" onclick="filters.history='${f}';render()">${f[0].toUpperCase()+f.slice(1)}</button>`).join('')}
+      </div>`;
+
+    const hs = salesInRange(filters.history);
+    if(!hs.length){
+      h += `<div class="empty">No transactions yet.</div>`;
+    }else{
+      hs.forEach(s => {
+        h += `
+          <div class="row" onclick="previewReceipt(s)">
+            <div style="flex:1">
+              <div style="font-weight:800;font-size:14px">${fmtDate(s.date)} · ${fmtTime(s.date)}</div>
+              <div class="small">${s.items.length} item(s) · ${s.items.map(i=>`${i.name} x${formatQty(i.qty)}`).join(', ')}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:900;color:${PLAN_COLORS[PLAN]}">${peso(s.total)}</div>
+              <div class="small">${has('profitView') ? 'Profit ' + peso(profitForSale(s)) : 'Receipt preview'}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+    h += `</div>`;
+  }
+
+  if(screen === 'reports'){
+    if(!has('reports')){
+      h += `
+        <div class="section">
+          <div class="card locked">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              <div class="lock-icon">🔒</div>
+              <div>
+                <div style="font-weight:900">Reports Dashboard</div>
+                <div class="small">Available on Business plan</div>
+              </div>
+            </div>
+            <div class="notice" style="margin-bottom:10px">Upgrade to Business to unlock reports, profit view, low stock, and backup.</div>
+            <button class="bigbtn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8)" onclick="openUpgrade('reports')">Upgrade to Business</button>
+          </div>
+        </div>
+      `;
+    }else{
+      const rs = salesInRange(filters.report);
+      const allTotal = rs.reduce((s,t)=>s+t.total,0);
+      const tp = topProducts(rs);
+
+      h += `
+        <div class="section">
+          <h2>Reports</h2>
+          <div class="pillbar">
+            ${['today','week','month','all'].map(f => `<button class="pill${filters.report===f?' act':''}" onclick="filters.report='${f}';render()">${f[0].toUpperCase()+f.slice(1)}</button>`).join('')}
+          </div>
+
+          <div class="card">
+            <div class="kv"><span>Revenue</span><strong>${peso(allTotal)}</strong></div>
+            <div class="kv"><span>Profit</span><strong>${peso(totalProfit(rs))}</strong></div>
+            <div class="kv"><span>Transactions</span><strong>${rs.length}</strong></div>
+            <div class="kv"><span>Low Stock Items</span><strong class="${lowStockItems().length?'warn':''}">${lowStockItems().length}</strong></div>
+          </div>
+
+          <h3>🏆 Top Products</h3>
+          ${tp.length ? tp.map(([name,qty],i)=>`
+            <div class="row">
+              <span class="lock-icon">${i+1}</span>
+              <span style="flex:1;font-weight:800">${name}</span>
+              <strong>${formatQty(qty)} sold</strong>
+            </div>
+          `).join('') : `<div class="empty">No sales yet.</div>`}
+
+          <h3>📦 Low Stock</h3>
+          ${lowStockItems().length ? lowStockItems().map(p=>`
+            <div class="row">
+              <span style="flex:1;font-weight:800">${p.name}</span>
+              <strong style="color:#dc2626">${formatQty(p.stock)}</strong>
+            </div>
+          `).join('') : `<div class="notice">No low stock items.</div>`}
+
+          ${has('advancedReports') ? `
+            <h3>👑 Pro Insights</h3>
+            <div class="card">
+              <div class="kv"><span>Peak Hour</span><strong>${rs.length ? '5PM - 7PM' : '—'}</strong></div>
+              <div class="kv"><span>Best Category</span><strong>${tp.length ? (products.find(p=>p.name===tp[0][0])?.cat || 'general') : '—'}</strong></div>
+              <div class="kv"><span>Stock History Entries</span><strong>${stockLog.length}</strong></div>
+            </div>
+          ` : `
+            <div class="card locked">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                <div class="lock-icon">🔒</div>
+                <div>
+                  <div style="font-weight:900">Advanced Reports</div>
+                  <div class="small">Available on Pro plan</div>
+                </div>
+              </div>
+              <button class="bigbtn" style="background:linear-gradient(135deg,#9333ea,#7e22ce)" onclick="openUpgrade('advancedReports')">Upgrade to Pro</button>
+            </div>
+          `}
+        </div>
+      `;
+    }
+  }
+
+  if(screen === 'settings'){
+    h += `
+      <div class="section">
+        <h2>Settings</h2>
+        <div class="card">
+          <div class="small" style="margin-bottom:6px">Store name</div>
+          <input id="stName" value="${settings.storeName || ''}" style="margin-bottom:10px">
+
+          <div class="small" style="margin-bottom:6px">Receipt footer</div>
+          <textarea id="stFooter" style="margin-bottom:10px">${settings.receiptFooter || ''}</textarea>
+
+          <div class="card" style="padding:12px;margin-top:0;margin-bottom:10px;background:#f8fafc">
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;cursor:pointer">
+              <input id="stAutoPrint" type="checkbox" ${settings.autoPrint ? 'checked' : ''} style="width:auto;transform:scale(1.1)">
+              Auto-open browser print after every sale
+            </label>
+          </div>
+
+          <button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]});margin-bottom:8px" onclick="settings.storeName=document.getElementById('stName').value.trim()||'KitaTrack Store';settings.receiptFooter=document.getElementById('stFooter').value.trim();settings.autoPrint=!!document.getElementById('stAutoPrint').checked;saveSettings();showToast('Settings saved.');render()">Save Settings</button>
+
+          <button class="bigbtn" style="background:#e2e8f0;color:#334155;margin-bottom:8px" onclick="exportCsv()">Export CSV</button>
+
+          ${has('backup') ? `<button class="bigbtn" style="background:#0f172a;margin-bottom:8px" onclick="exportBackup()">Backup JSON</button>` : ``}
+          ${receiptSale ? `<button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]});margin-bottom:8px" onclick="printReceipt(receiptSale)">🖨 Print Last Receipt</button>` : ``}
+          ${DEMO_MODE ? `<button class="bigbtn" style="background:#475569;margin-bottom:8px" onclick="resetDemoData()">Reset Demo Data</button>` : ``}
+          ${!DEMO_MODE && licensed ? `<button class="bigbtn" style="background:#dc2626" onclick="logoutLicense()">Remove Saved License</button>` : ``}
+        </div>
+      </div>
+    `;
+  }
+
+  h += `
+      </div>
+      <nav class="nav">
+        <button class="${screen==='pos'?'act':''}" onclick="screen='pos';render()">🏪<span>POS</span></button>
+        <button class="${screen==='history'?'act':''}" onclick="screen='history';render()">🧾<span>History</span></button>
+        <button class="${screen==='reports'?'act':''}" onclick="screen='reports';render()">📊<span>Reports</span></button>
+        <button class="${screen==='settings'?'act':''}" onclick="screen='settings';render()">⚙️<span>Settings</span></button>
+      </nav>
+    </div>
+  `;
+
+  if(showQuickAdd){
+    h += `
+      <div class="overlay" onclick="showQuickAdd=false;render()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <div class="mh"><strong>Quick Add Product</strong><button onclick="showQuickAdd=false;render()" style="background:none;font-size:18px">✕</button></div>
+          <div class="section">
+            <div class="small" style="margin-bottom:6px">Product Name</div>
+            <input id="qaName" placeholder="Product name" style="margin-bottom:10px">
+            <div class="small" style="margin-bottom:6px">Price</div>
+            <input id="qaPrice" type="number" step="0.01" placeholder="0" style="margin-bottom:10px">
+            <div class="small" style="margin-bottom:6px">Cost</div>
+            <input id="qaCost" type="number" step="0.01" placeholder="0" style="margin-bottom:10px">
+            <div class="small" style="margin-bottom:6px">Stock</div>
+            <input id="qaStock" type="number" step="0.01" placeholder="0" style="margin-bottom:10px">
+            <div class="small" style="margin-bottom:6px">Category</div>
+            <input id="qaCat" placeholder="general" style="margin-bottom:10px">
+            <button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]})" onclick="addProductFromModal()">Add Product</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if(showCheckout){
+    h += `
+      <div class="overlay" onclick="showCheckout=false;render()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <div class="mh"><strong>Checkout</strong><button onclick="showCheckout=false;render()" style="background:none;font-size:18px">✕</button></div>
+          <div class="section">
+            <div class="card">
+              <div class="kv"><span>Subtotal</span><strong>${peso(getSubtotal())}</strong></div>
+              ${getDiscountAmount()>0 ? `<div class="kv"><span>Discount</span><strong>- ${peso(getDiscountAmount())}</strong></div>` : ``}
+              <div class="kv"><span>Total</span><strong>${peso(cartTotal())}</strong></div>
+            </div>
+            <div class="small" style="margin-bottom:6px">Cash Received</div>
+            <input id="cashInput" type="number" step="0.01" placeholder="Enter cash" style="margin-bottom:12px">
+            <button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]})" onclick="const cash=Number(document.getElementById('cashInput').value||0); if(cash<cartTotal()) return showToast('Not enough cash.', true); completeSale(cash);">Complete Sale</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if(receiptSale){
+    h += `
+      <div class="overlay" onclick="receiptSale=null;render()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <div class="mh"><strong>Receipt Preview</strong><button onclick="receiptSale=null;render()" style="background:none;font-size:18px">✕</button></div>
+          <div class="section">
+            <div class="card">
+              <div style="text-align:center;font-weight:900;font-size:18px;margin-bottom:6px">${settings.storeName}</div>
+              <div style="text-align:center;color:#64748b;font-size:12px;margin-bottom:10px">Receipt #${receiptSale.id}</div>
+              ${receiptSale.items.map(i=>`<div class="kv"><span>${i.name} x${formatQty(i.qty)}</span><strong>${peso(Number(i.price||0)*Number(i.qty||0))}</strong></div>`).join('')}
+              <div class="kv"><span>Total</span><strong>${peso(receiptSale.total)}</strong></div>
+              <div class="kv"><span>Cash</span><strong>${peso(receiptSale.cash)}</strong></div>
+              <div class="kv"><span>Change</span><strong>${peso(receiptSale.change)}</strong></div>
+            </div>
+            <button class="bigbtn" style="background:linear-gradient(135deg,${PLAN_COLORS[PLAN]},${PLAN_DARK[PLAN]})" onclick="printReceipt(receiptSale)">🖨 Print Receipt</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if(upgradeModal){
+    h += `
+      <div class="overlay" onclick="upgradeModal=null;render()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <div class="mh"><strong>${upgradeModal.title}</strong><button onclick="upgradeModal=null;render()" style="background:none;font-size:18px">✕</button></div>
+          <div class="section">
+            <div class="notice" style="margin-bottom:12px">${upgradeModal.msg}</div>
+            <a class="bigbtn" style="background:linear-gradient(135deg,${upgradeModal.plan==='pro' ? '#9333ea' : '#2563eb'},${upgradeModal.plan==='pro' ? '#7e22ce' : '#1d4ed8'})" href="index.html#pricing">Upgrade to ${upgradeModal.plan==='pro' ? 'Pro' : 'Business'}</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  app.innerHTML = h;
+}
+
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  canInstall = true;
+  render();
+});
+
+(function init(){
+  if(DEMO_MODE){
+    render();
+    return;
+  }
+
+  const saved = loadJson(ukey('license'));
+  if(saved?.valid){
+    licensed = true;
+    licenseData = saved;
+    PLAN = getSafePlan(saved.plan || urlPlan || DEFAULT_PLAN);
+    document.documentElement.style.setProperty('--ac', PLAN_COLORS[PLAN]);
+    document.documentElement.style.setProperty('--ac2', PLAN_DARK[PLAN]);
+  }
+
+  render();
 })();
 </script>
-
 </body>
 </html>
